@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Volley Pro 6.0 - Premium Cloud</title>
+    <meta name="theme-color" content="#0B1120">
+    <title>Volley Pro 8.8.0 - BETA</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root { 
             --app-height: 100dvh; 
@@ -19,98 +22,234 @@
             --color-timer: #10B981; 
             --color-danger: #EF4444; 
             --border-subtle: rgba(255, 255, 255, 0.08); 
-            --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3); 
+            --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); 
+            --color-accent-orange: #F97316;
+            --color-gold: #FBBF24;
             --transition-main: all 0.2s ease-out; 
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-condensed: 'Oswald', sans-serif;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; min-width: 0; }
-        body, html { background: #000; display: flex; justify-content: center; align-items: center; height: var(--app-height); width: 100vw; overflow: hidden !important; touch-action: manipulation; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-condensed); -webkit-tap-highlight-color: transparent; min-width: 0; }
+        body, html { background: #000; display: flex; justify-content: center; align-items: center; height: var(--app-height); width: 100vw; overflow: hidden; touch-action: manipulation; user-select: none; }
         
-        #app-container { width: 100%; height: 100%; max-width: 100vw; position: relative; background: var(--bg-deep); overflow: hidden !important; display: flex; flex-direction: column; }
+        #app-container { width: 100%; height: 100%; max-width: 100vw; position: relative; background: var(--bg-deep); overflow: hidden; display: flex; flex-direction: column; }
         @media (min-width: 500px) { #app-container { height: 90vh; max-height: 850px; max-width: 450px; border-radius: 30px; border: 1px solid var(--border-subtle); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8); } #app-container.fullscreen-mode { height: 100vh; max-height: 100vh; border-radius: 0; border: none; max-width: 100vw; } }
         
-        /* Typography for Score */
-        .font-score { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
+        .font-score { font-family: var(--font-display); letter-spacing: 0px; }
 
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none !important; flex-direction: column; animation: slideUpFade 0.3s ease-out forwards; z-index: 1; overflow: hidden !important; background: var(--bg-deep); }
-        .screen.active { display: flex !important; z-index: 10; }
+        .ui-pulse:active { transform: scale(0.96); opacity: 0.8; transition: 0.1s; }
+        .ui-shake { animation: shakeError 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        @keyframes shakeError { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+        
+        .flex-col { display: flex; flex-direction: column; }
+        .mb-2 { margin-bottom: 2vh; }
+        .text-center { text-align: center; }
+        
+        .form-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5vh; display: block; font-weight: 700; text-transform: uppercase; letter-spacing: 0px; }
+
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; animation: slideUpFade 0.3s ease-out forwards; z-index: 1; overflow: hidden; background: var(--bg-deep); }
+        .screen.active { display: flex; z-index: 10; }
         @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         [data-action] { cursor: pointer; transition: var(--transition-main); }
-        [data-action]:active { transform: scale(0.96); opacity: 0.8; }
         
-        /* Modales Corporativos */
-        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: none !important; justify-content: center; align-items: flex-end; z-index: 999; opacity: 0; transition: opacity 0.3s ease; }
-        .modal-overlay.active { display: flex !important; opacity: 1; }
+        .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: flex-end; z-index: 9999; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
         .modal-card { background: var(--bg-surface); border-top: 1px solid var(--border-subtle); width: 100%; max-width: 500px; border-radius: 24px 24px 0 0; padding: 4vh 5vw 6vh 5vw; text-align: center; color: var(--text-main); transform: translateY(100%); transition: transform 0.3s ease-out; max-height: 85vh; overflow-y: auto; }
         .modal-overlay.active .modal-card { transform: translateY(0); }
+        
         #custom-modal { align-items: center; padding: 0 6vw; }
         #custom-modal .modal-card { border-radius: 20px; transform: scale(0.95); border: 1px solid var(--border-subtle); }
         #custom-modal.active .modal-card { transform: scale(1); }
-        .modal-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 1.5vh; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        #stats-modal { align-items: center; padding: 0 4vw; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(8px); }
+        .glass-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); width: 100%; max-width: 420px; border-radius: 24px; padding: 3vh 4vw; text-align: center; color: var(--text-main); transform: scale(0.95); transition: transform 0.2s ease-out; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+        #stats-modal.active .glass-card { transform: scale(1); }
+        .glass-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); font-family: var(--font-condensed); font-weight: 700; cursor: pointer; padding: 1.5vh 1vw; flex: 1; font-size: 0.8rem; border-radius: 12px; transition: 0.2s; text-transform: uppercase; letter-spacing: 0px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: inset 0 0 10px rgba(255,255,255,0.02); }
+        .glass-btn:active { background: rgba(255,255,255,0.15); transform: scale(0.95); }
+        .glass-btn-danger { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #FCA5A5; }
+        
+        .undo-log-item { background: rgba(255,255,255,0.05); padding: 1.5vh; border-radius: 8px; margin-bottom: 1vh; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-subtle); text-align: left;}
+        
+        .modal-title { font-size: 1.2rem; font-family: var(--font-display); font-weight: 800; margin-bottom: 1.5vh; color: var(--text-main); text-transform: uppercase; letter-spacing: 0px; }
         .modal-message { font-size: 0.95rem; line-height: 1.5; margin-bottom: 4vh; color: var(--text-muted); white-space: pre-wrap; word-wrap: break-word; }
-        .modal-actions { display: flex; gap: 3vw; height: 6vh; }
-        .modal-btn { flex: 1; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; font-size: 0.85rem; }
+        .modal-actions { display: flex; gap: 3vw; height: auto; min-height: 6vh; margin-top: 2vh;}
+        
+        .modal-btn { flex: 1; border: none; border-radius: 12px; font-family: var(--font-condensed); font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 0px; transition: 0.2s; font-size: 0.85rem; padding: 1.5vh 1vw; white-space: normal; line-height: 1.2; word-wrap: break-word; }
         .modal-btn-cancel { background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); color: var(--text-main); }
         .modal-btn-confirm { background: var(--text-accent); color: #000; }
         
-        /* Componentes Globales */
         .top-header { display: flex; justify-content: space-between; align-items: center; height: 8vh; padding: 0 4vw; border-bottom: 1px solid var(--border-subtle); background: var(--bg-card); z-index: 2; position: relative; flex-shrink: 0; }
-        .top-header h2 { font-size: 1.1rem; font-weight: 800; color: var(--text-main); letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px; }
+        .top-header h2 { font-size: 1.1rem; font-family: var(--font-display); font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0px;}
         .btn-icon { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 1vh; transition: 0.2s; display: flex; justify-content: center; align-items: center;}
-        .btn-primary { background: var(--text-accent); color: #000; border: none; border-radius: 12px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 2vw; cursor: pointer; transition: var(--transition-main); display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .modern-input { width: 100%; height: 7vh; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; color: var(--text-main); font-size: 1rem; text-align: center; letter-spacing: 1px; outline: none; margin-bottom: 2vh; transition: border-color 0.2s; }
-        .modern-input:focus { border-color: var(--text-accent); }
         
-        /* Tarjetas estilo Ticket */
+        .btn-primary { background: var(--text-accent); color: #000; border: none; border-radius: 12px; font-family: var(--font-display); font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 0px; padding: 1.5vh 2vw; cursor: pointer; transition: var(--transition-main); display: flex; justify-content: center; align-items: center; gap: 8px; height: auto; min-height: 6vh; white-space: normal; line-height: 1.2; text-align: center; }
+        
+        .modern-input { width: 100%; height: 7vh; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; color: var(--text-main); font-size: 1rem; text-align: center; letter-spacing: 0px; outline: none; margin-bottom: 2vh; transition: border-color 0.2s; }
+        .modern-input:focus { border-color: var(--text-accent); }
+        .modern-input:disabled { opacity: 0.5; cursor: not-allowed; }
+        
         .dash-list { flex: 1; display: grid; grid-template-columns: 1fr; gap: 2vh; padding: 2vh 4vw; overflow-y: auto; align-content: start; }
         .dash-card { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 2.5vh 5vw; display: flex; flex-direction: row; align-items: center; justify-content: space-between; text-align: left; box-shadow: var(--glass-shadow); position: relative; overflow: hidden; }
         .dash-card::before { content: ''; position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--border-subtle); }
+        
+        @keyframes dashMatchPoint { 0%, 100% { box-shadow: 0 0 5px rgba(251, 191, 36, 0.2); border-color: var(--border-subtle); } 50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.6); border-color: var(--color-gold); } }
+        .dashboard-match-point-alert { animation: dashMatchPoint 1.5s infinite ease-in-out; }
+
         .match-card { flex-direction: column; padding: 2vh; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5vh; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1vh; width: 100%; }
-        .card-code { font-family: 'Inter', monospace; color: var(--text-accent); font-weight: 800; letter-spacing: 1px; background: rgba(56, 189, 248, 0.1); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem;}
-        .card-tenant { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-        .card-teams { display: flex; align-items: center; gap: 2vw; font-size: 1rem; font-weight: 800; margin-bottom: 1.5vh; width: 100%; }
+        .card-code { font-family: monospace; color: var(--text-accent); font-weight: 800; letter-spacing: 0px; background: rgba(56, 189, 248, 0.1); padding: 4px 10px; border-radius: 6px; font-size: 0.85rem;}
+        .card-tenant { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0px; }
+        .card-teams { display: flex; align-items: center; justify-content: space-between; gap: 2vw; font-size: 1rem; font-weight: 800; margin-bottom: 1.5vh; width: 100%; }
         .card-actions { display: flex; gap: 10px; margin-top: 1vh; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1.5vh;}
-        .nav-btn { background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--text-muted); font-weight: 700; cursor: pointer; padding: 1.2vh 1vw; flex: 1; font-size: 0.75rem; border-radius: 8px; transition: 0.2s; text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        
+        .nav-btn { background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--text-muted); font-family: var(--font-condensed); font-weight: 700; cursor: pointer; padding: 1.5vh 1vw; flex: 1; font-size: 0.75rem; border-radius: 8px; transition: 0.2s; text-transform: uppercase; display: flex; justify-content: center; align-items: center; gap: 6px; height: auto; min-height: 5vh; white-space: normal; line-height: 1.2; text-align: center; letter-spacing: 0px;}
         .nav-btn:active, .active-tab { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        
+        #screen-config .nav-btn.active-tab {
+            background: rgba(56, 189, 248, 0.2); color: var(--text-main); border-color: var(--text-accent); box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); animation: pulseGlow 2s infinite ease-in-out;
+        }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); } 50% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.7); } }
         
         .color-circle { width: 100%; aspect-ratio: 1; border-radius: 50%; cursor: pointer; transition: 0.2s; border: 2px solid transparent; box-sizing: border-box; display: flex; justify-content: center; align-items: center; font-size: 1.2rem;}
         .color-circle.active { border-color: #fff; transform: scale(1.15); box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         .pass-reveal { background: rgba(255,255,255,0.05); padding: 1vh 3vw; border-radius: 8px; font-family: monospace; font-size: 0.9rem; font-weight: 800; color: var(--text-muted); cursor: pointer; user-select: none; touch-action: none; min-width: 90px; text-align: center; transition: all 0.2s ease; border: 1px solid transparent; }
         .pass-reveal:active { background: var(--bg-card); color: var(--text-main); border-color: var(--border-subtle); }
         
-        /* Marcador Pro */
-        #screen-board { padding: 1vh 3vw 2vh; background: var(--bg-deep); justify-content: space-between; }
-        .sets-history-bar { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-align: center; margin-bottom: 1vh; background: var(--bg-surface); border-radius: 8px; padding: 0.8vh; display: flex; justify-content: center; gap: 15px; border: 1px solid var(--border-subtle); }
-        .sh-set { background: rgba(255,255,255,0.03); padding: 2px 8px; border-radius: 4px; }
-        .board-header { display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 1.5vh 4vw; border-radius: 12px; border: 1px solid var(--border-subtle); margin-bottom: 1.5vh; }
+        .toggle-switch { position: relative; width: 50px; height: 26px; display: inline-block; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-subtle); transition: .3s; border-radius: 34px; border: 1px solid rgba(255,255,255,0.1); }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 2px; bottom: 2px; background-color: var(--text-muted); transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: rgba(56, 189, 248, 0.3); border-color: var(--text-accent); }
+        input:checked + .slider:before { transform: translateX(24px); background-color: var(--text-accent); }
+
+        #screen-board { padding: 0; background: var(--bg-deep); }
+        #board-wrapper { display: flex; flex-direction: column; width: 100%; height: 100%; }
+        
+        #board-top-section { flex: 1; display: flex; flex-direction: column; padding: 1vh 3vw 2vh; transition: 0.3s ease; overflow: hidden; position: relative; }
+        .client-mode #board-top-section { flex: 0 0 65%; height: 65%; padding-bottom: 0; }
+        
+        #broadcast-paused-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 17, 32, 0.6); backdrop-filter: blur(10px); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--text-main); text-align: center; padding: 0 4vw; }
+        #broadcast-paused-overlay i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1vh; }
+        #broadcast-paused-overlay .bp-title { font-weight: 800; font-size: 1.2rem; letter-spacing: 0px; }
+        #broadcast-paused-overlay .bp-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5vh; }
+
+        #board-chat-section { display: none; flex-direction: row; flex: 0 0 35%; height: 35%; background: var(--bg-deep); border-top: 1px solid rgba(255,255,255,0.1); position: relative; }
+        .client-mode #board-chat-section { display: flex; }
+        
+        .chat-reactions-bar { display: flex; flex-direction: column; justify-content: space-around; align-items: center; width: 12vw; min-width: 45px; max-width: 60px; background: var(--bg-surface); border-right: 1px solid rgba(255,255,255,0.05); padding: 1vh 0; z-index: 2; }
+        .chat-reactions-bar .btn-icon { background: rgba(255,255,255,0.05); border-radius: 50%; height: 38px; width: 38px; font-size: 1.1rem; }
+        
+        .chat-right-col { display: flex; flex-direction: column; flex: 1; overflow: hidden; position: relative; }
+
+        .spectator-tabs { display: flex; background: var(--bg-surface); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .spec-tab { flex: 1; text-align: center; padding: 1.2vh 0; font-family: var(--font-condensed); font-size: 0.75rem; font-weight: 800; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.2s; text-transform: uppercase; letter-spacing: 0px;}
+        .spec-tab.active { color: var(--text-accent); border-bottom-color: var(--text-accent); background: rgba(56, 189, 248, 0.05); }
+
+        .spec-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+        .spec-content.active { display: flex; }
+
+        .chat-messages { flex: 1; overflow-y: auto; padding: 1.5vh 3vw; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 12px 12px 12px 0; font-size: 0.8rem; color: var(--text-main); width: fit-content; max-width: 90%; word-wrap: break-word; line-height: 1.3; animation: slideInLeft 0.2s ease-out; }
+        .chat-msg.me { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); align-self: flex-end; border-radius: 12px 12px 0 12px; animation: slideInRight 0.2s ease-out;}
+        .chat-nick { font-weight: 800; font-family: var(--font-condensed); font-size: 0.75rem; color: var(--text-muted); margin-right: 4px; text-transform: uppercase;}
+        .chat-msg.me .chat-nick { color: var(--color-gold); }
+        .chat-text { font-size: 0.8rem; }
+        .chat-sys { align-self: center; background: transparent; font-size: 0.7rem; color: var(--text-muted); font-style: italic; border-radius: 0; padding: 2px; border: none; }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .chat-input-area { display: flex; padding: 1vh 2vw; gap: 2vw; background: var(--bg-card); align-items: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        #chat-input { margin: 0; height: 5vh; flex: 1; font-size: 0.85rem; text-align: left; padding: 0 15px; border-radius: 20px;}
+        
+        .floating-emoji { position: absolute; bottom: 8vh; font-size: 2rem; pointer-events: none; animation: floatUp 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; z-index: 50; text-shadow: 0 0 10px rgba(0,0,0,0.5);}
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 1; scale(1.2); } 100% { transform: translateY(-150px) scale(1); opacity: 0; } }
+
+        .plays-container { flex: 1; overflow-y: auto; padding: 1vh 5px; display: flex; flex-direction: column; background: var(--bg-deep); }
+
+        .sets-history-bar { font-size: 0.8rem; font-family: var(--font-condensed); font-weight: 800; color: var(--text-main); text-align: center; margin-bottom: 1vh; background: var(--bg-surface); border-radius: 8px; padding: 0.8vh; display: flex; justify-content: center; gap: 15px; border: 1px solid var(--border-subtle); flex-shrink: 0; text-transform: uppercase; letter-spacing: 0px;}
+        .sh-set { background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; font-family: monospace;}
+        
+        .board-header { display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 1.5vh 4vw; border-radius: 12px; border: 1px solid var(--border-subtle); margin-bottom: 1.5vh; flex-shrink: 0;}
         .color-timer { color: var(--color-timer) !important; cursor: pointer; font-size: 1.3rem; font-family: monospace; font-weight: 800; }
         .timer-paused { color: var(--text-muted) !important; }
-        .teams-container { display: flex; gap: 3vw; flex: 1; margin-bottom: 2vh; }
+        
+        .live-indicator { display: flex; align-items: center; gap: 6px; font-family: var(--font-condensed); font-size: 0.7rem; font-weight: 900; color: var(--text-muted); letter-spacing: 0px; text-transform: uppercase;}
+        .live-dot { width: 8px; height: 8px; background: var(--color-danger); border-radius: 50%; box-shadow: 0 0 8px var(--color-danger); animation: blink 1.5s infinite; }
+        .live-indicator.is-live .live-dot { background: var(--color-timer); box-shadow: 0 0 8px var(--color-timer); }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .teams-container { display: flex; gap: 3vw; flex: 1; margin-bottom: 2vh; flex-direction: row; transition: flex-direction 0.5s; }
+        .teams-container.swapped { flex-direction: row-reverse; }
+
         .team-col { flex: 1; display: flex; flex-direction: column; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 2vh 1vw; position: relative; overflow: hidden; }
         .team-col::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--team-color, var(--text-muted)); }
         
-        .score-box { background: var(--bg-card); width: 100%; flex: 1; border-radius: 16px; display: flex; justify-content: center; align-items: center; font-size: clamp(5rem, 18vh, 10rem); border: 1px solid rgba(255,255,255,0.05); line-height: 1; overflow: hidden; position: relative; touch-action: none; cursor: pointer; margin-top: 1vh; color: var(--team-color, #fff); }
-        .score-val { display: inline-block; transition: color 0.3s; }
-        @keyframes slideUpNum { 0% { transform: translateY(15px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-        .score-anim .score-val { animation: slideUpNum 0.2s ease-out; }
+        .team-name { font-family: var(--font-condensed); font-weight: 900; font-size: clamp(0.9rem, 2.5vh, 1.2rem); text-align: center; margin-bottom: 1vh; white-space: nowrap; overflow: hidden; width: 100%; text-transform: uppercase; color: #fff; text-shadow: 0 0 10px var(--team-color); letter-spacing: 0px; cursor: pointer;}
+        .server-indicator { margin-left: 5px; color: var(--color-gold); font-size: 1rem; vertical-align: middle; transition: opacity 0.3s; }
+        
+        .dots-container { display: flex; gap: 1vw; margin-bottom: 1vh; }
         .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--border-subtle); }
         .dot.won { background: var(--team-color, #fff); border-color: var(--team-color, #fff); box-shadow: 0 0 8px var(--team-color, rgba(255,255,255,0.5)); }
         
-        .bottom-nav { background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; justify-content: center; padding: 1.5vh 2vw; border-radius: 16px; gap: 1vw; }
+        .score-box { background: var(--bg-card); width: 100%; flex: 1; border-radius: 16px; display: flex; justify-content: center; align-items: center; font-size: clamp(4rem, 15vh, 10rem); border: 1px solid rgba(255,255,255,0.05); line-height: 1; overflow: hidden; position: relative; touch-action: manipulation; cursor: pointer; margin-top: 1vh; color: var(--team-color, #fff); transition: transform 0.1s ease-out, box-shadow 0.1s ease-out, filter 0.1s ease-out; }
+        .score-box:active { transform: scale(0.90) translateY(5px); box-shadow: inset 0 20px 30px rgba(0,0,0,0.8); filter: brightness(0.7); }
+        
+        .score-val { display: inline-block; transition: color 0.3s; }
+        @keyframes slideUpNum { 0% { transform: translateY(15px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        .score-anim .score-val { animation: slideUpNum 0.2s ease-out; }
+        
+        .match-point { border: 1px solid var(--color-gold) !important; box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.2); animation: matchPointPulse 2s infinite ease-in-out; }
+        .match-point .score-val { color: var(--color-gold); text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+        @keyframes matchPointPulse { 0%, 100% { box-shadow: inset 0 0 10px rgba(251, 191, 36, 0.1); } 50% { box-shadow: inset 0 0 30px rgba(251, 191, 36, 0.4); } }
+
+        .timeout-container { width: 100%; display: flex; justify-content: space-around; align-items: center; margin-top: 1vh; padding: 0 1vw; flex-shrink: 0; }
+        .timeout-dots { display: flex; gap: 0.8vw; }
+        .dot.timeout-remaining { width: 8px; height: 8px; border: 1px solid var(--border-subtle); background: var(--color-timer); opacity: 0.9; }
+        .dot.timeout-used { background: var(--bg-card); opacity: 0.3; }
+        
+        .timeout-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); font-family: var(--font-condensed); font-size: 0.8rem; font-weight: 800; padding: 6px 14px; border-radius: 8px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; letter-spacing: 0px;}
+        .timeout-btn.active { background: rgba(239, 68, 68, 0.2); color: var(--color-danger); border-color: var(--color-danger); }
+        
+        #timeout-overlay-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; box-sizing: border-box; }
+        #timeout-overlay-wrapper.active { display: flex; animation: fadeIn 0.3s; }
+        .timeout-box { background: var(--bg-surface); padding: 4vh 6vw; border-radius: 20px; border: 2px solid var(--border-subtle); text-align: center; box-shadow: 0 0 50px rgba(239, 68, 68, 0.4); min-width: 250px; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .timeout-title { font-size: 1rem; color: var(--color-danger); text-transform: uppercase; font-family: var(--font-condensed); font-weight: 800; margin-bottom: 1vh; letter-spacing: 0px;}
+        .timeout-timer { font-family: monospace; font-size: 5rem; color: #fff; font-weight: 900; line-height: 1; margin: 1vh 0; }
+        .timeout-team { font-family: var(--font-display); font-weight: 800; color: #fff; text-transform: uppercase; font-size: 1.2rem; text-shadow: 0 0 10px; letter-spacing: 0px;}
+        
+        .bottom-nav { background: var(--bg-surface); border: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; justify-content: center; padding: 1.5vh 2vw; border-radius: 16px; gap: 1vw; flex-shrink: 0;}
         
         #flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #fff; opacity: 0; pointer-events: none; z-index: 9999; transition: opacity 0.4s ease-out; }
         .flash-active { opacity: 0.6 !important; transition: opacity 0.05s ease-in !important; }
         .secret-reveal { display: flex !important; animation: slideUpFade 0.4s ease-out forwards; }
+        
+        .lang-btn-single { position: absolute; top: 4vh; right: 5vw; background: rgba(255,255,255,0.1); border: 1px solid var(--border-subtle); color: var(--text-main); font-family: var(--font-condensed); font-size: 0.8rem; font-weight: 800; padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: 0.2s; z-index: 100; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); backdrop-filter: blur(10px); text-transform: uppercase; letter-spacing: 0px;}
+        .lang-btn-single:hover { background: rgba(56, 189, 248, 0.2); border-color: var(--text-accent); color: var(--text-accent); }
     </style>
 </head>
 <body>
 
 <div id="flash-overlay"></div>
 
+<div id="timeout-overlay-wrapper">
+    <div class="timeout-box" id="timeout-overlay-box">
+        <div class="timeout-title" data-i18n="TIMEOUT_REQ">TIEMPO FUERA SOLICITADO</div>
+        <div class="timeout-timer font-score" id="overlay-timeout-timer">30</div>
+        <div class="timeout-team" id="overlay-timeout-team">TEAM...</div>
+    </div>
+</div>
+
 <div id="app-container">
     
+    <button class="lang-btn-single ui-pulse" id="lang-cycle-btn" data-action="CYCLE_LANG">
+        <i class="ph ph-globe"></i> <span id="current-lang-text" style="text-transform: uppercase;">ES</span>
+    </button>
+
     <div id="custom-modal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-title" id="modal-title">Title</div>
@@ -118,197 +257,381 @@
             <div class="modal-actions" id="modal-actions"></div>
         </div>
     </div>
+    
+    <div id="undo-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-title" data-i18n="UNDO_LOG_TITLE"><i class="ph ph-clock-counter-clockwise"></i> HISTORIAL DE ACCIONES</div>
+            <div class="modal-message" style="margin-bottom: 2vh;" data-i18n="UNDO_LOG_MSG">Selecciona el punto al que deseas regresar. Las acciones posteriores se borrarán.</div>
+            <div id="undo-list-container" style="max-height: 40vh; overflow-y: auto; margin-bottom: 2vh;"></div>
+            <button class="nav-btn ui-pulse" style="width: 100%; background: rgba(255,255,255,0.05);" data-action="CLOSE_MODALS" data-i18n="CANCEL">CANCELAR</button>
+        </div>
+    </div>
+
+    <div id="broadcast-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-title" style="color:var(--text-accent);"><i class="ph ph-broadcast"></i> TRANSMISIÓN LIVE</div>
+            <div class="modal-message">Controla lo que ven los espectadores en la Fan Zone.</div>
+            
+            <div style="display:flex; justify-content: space-between; align-items:center; background:var(--bg-card); padding:2vh 4vw; border-radius:12px; margin-bottom:2vh; border:1px solid var(--border-subtle);">
+                <div style="text-align:left;">
+                    <div style="font-weight:800; color:var(--text-main); font-size:0.9rem;">Video Marcador</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">Si se apaga, la pantalla se desenfoca.</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-broadcast-live" data-action="TOGGLE_BROADCAST" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div style="display:flex; justify-content: space-between; align-items:center; background:var(--bg-card); padding:2vh 4vw; border-radius:12px; margin-bottom:3vh; border:1px solid var(--border-subtle);">
+                <div style="text-align:left;">
+                    <div style="font-weight:800; color:var(--text-main); font-size:0.9rem;">Chat de Fans</div>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">Bloquea el envío de nuevos mensajes.</div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-broadcast-chat" data-action="TOGGLE_BROADCAST" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button class="nav-btn ui-pulse" style="width: 100%; background: rgba(255,255,255,0.05);" data-action="CLOSE_MODALS">CERRAR</button>
+        </div>
+    </div>
+
+    <div id="plays-modal-ref" class="modal-overlay">
+        <div class="modal-card" style="max-height: 90vh; padding-bottom: 2vh; padding-left: 4vw; padding-right: 4vw;">
+            <div class="modal-title"><i class="ph ph-list-numbers"></i> HISTORIAL (Punto a Punto)</div>
+            <div class="modal-message" style="margin-bottom: 2vh;">Registro detallado del set en curso.</div>
+            <div id="ref-plays-container" class="plays-container" style="max-height: 55vh; border-radius: 12px; border: 1px solid var(--border-subtle); padding: 1vh 5px;"></div>
+            <button class="nav-btn ui-pulse" style="width: 100%; background: rgba(255,255,255,0.05); margin-top:2vh;" data-action="CLOSE_MODALS">CERRAR</button>
+        </div>
+    </div>
 
     <div id="rules-modal" class="modal-overlay">
         <div class="modal-card">
-            <div class="modal-title" style="color:var(--text-accent);"><i class="ph ph-sliders-horizontal"></i> REGLAS DEL TORNEO</div>
-            <div class="modal-message">Estas reglas se aplicarán a todos los nuevos partidos creados.</div>
+            <div class="modal-title" style="color:var(--text-accent);"><i class="ph ph-sliders-horizontal"></i> <span data-i18n="RULES">REGLAS DEL TORNEO</span></div>
+            <div class="modal-message" data-i18n="RULES_MSG">Estas reglas se aplicarán a todos los nuevos partidos.</div>
             <div style="text-align:left; margin-bottom:3vh; background: var(--bg-card); padding: 2vh; border-radius: 12px; border: 1px solid var(--border-subtle);">
-                <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5vh; display:block;">SETS MÁXIMOS</label>
-                <select id="admin-cfg-sets" class="modern-input" style="height:6vh; font-size: 0.9rem;"><option value="3">Mejor de 3 Sets</option><option value="5">Mejor de 5 Sets</option></select>
-                <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5vh; display:block; margin-top: 1vh;">PUNTOS POR SET NORMAL</label>
+                <label class="form-label" data-i18n="MAX_SETS">SETS MÁXIMOS</label>
+                <select id="admin-cfg-sets" class="modern-input" style="height:6vh; font-size: 0.9rem;">
+                    <option value="3" data-i18n="BO3">Mejor de 3 Sets</option>
+                    <option value="5" data-i18n="BO5">Mejor de 5 Sets</option>
+                </select>
+                <label class="form-label" style="margin-top: 1vh;" data-i18n="PTS_PER_SET">PUNTOS POR SET NORMAL</label>
                 <input type="number" id="admin-cfg-pts" value="25" class="modern-input" style="height:6vh; font-size: 0.9rem;">
-                <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5vh; display:block; margin-top: 1vh;">PUNTOS TIE-BREAK (ÚLTIMO SET)</label>
+                <label class="form-label" style="margin-top: 1vh;" data-i18n="PTS_TIE">PUNTOS TIE-BREAK (ÚLTIMO SET)</label>
                 <input type="number" id="admin-cfg-tie" value="15" class="modern-input" style="height:6vh; font-size: 0.9rem;">
             </div>
             <div class="modal-actions">
-                <button class="modal-btn modal-btn-cancel" data-action="CLOSE_MODALS">CANCELAR</button>
-                <button class="modal-btn modal-btn-confirm" data-action="SAVE_RULES"><i class="ph ph-floppy-disk"></i> GUARDAR</button>
+                <button class="modal-btn modal-btn-cancel ui-pulse" data-action="CLOSE_MODALS" data-i18n="CANCEL">CANCELAR</button>
+                <button class="modal-btn modal-btn-confirm ui-pulse" data-action="SAVE_RULES"><i class="ph ph-floppy-disk"></i> <span data-i18n="SAVE">GUARDAR</span></button>
             </div>
         </div>
     </div>
 
     <div id="stats-modal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-title" id="stats-title" style="color:var(--text-accent); margin-bottom: 3vh;">¿CÓMO SE GANÓ EL PUNTO?</div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 3vw; text-align: left; margin-bottom: 2vh;">
-                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800; grid-column:span 2; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1vh;">MÉRITO (PUNTO A FAVOR)</div>
-                <button class="nav-btn" data-action="RECORD_STAT" data-stat="ataque"><i class="ph ph-hand-fist"></i> Ataque</button>
-                <button class="nav-btn" data-action="RECORD_STAT" data-stat="bloqueo"><i class="ph ph-wall"></i> Bloqueo</button>
-                <button class="nav-btn" data-action="RECORD_STAT" data-stat="ace" style="grid-column:span 2;"><i class="ph ph-target"></i> Ace (Saque)</button>
-                
-                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:800; grid-column:span 2; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:1vh; margin-top:2vh;">ERROR RIVAL (FALTAS)</div>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_fuera"><i class="ph ph-arrows-out"></i> Fuera</button>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_red"><i class="ph ph-hash"></i> Red</button>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_llevada"><i class="ph ph-hand-palm"></i> Llevada</button>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_doble"><i class="ph ph-number-two"></i> Doble</button>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_linea"><i class="ph ph-sneaker"></i> Pisa Línea</button>
-                <button class="nav-btn" style="color:var(--color-danger);" data-action="RECORD_STAT" data-stat="f_rotacion"><i class="ph ph-arrows-clockwise"></i> Rotación</button>
+        <div class="glass-card">
+            
+            <div id="stats-title" style="font-size: 1.1rem; font-weight: 900; margin-bottom: 2.5vh; text-transform:uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.8);">➕ PUNTO PARA...</div>
+            
+            <div id="stats-merit-title" style="font-size:0.85rem; color:var(--text-main); font-weight:900; margin-bottom: 1vh; text-transform:uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.5);">🏆 MÉRITO</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5vw; margin-bottom: 3vh;">
+                <button class="glass-btn ui-pulse" data-action="RECORD_STAT" data-stat="ataque"><i class="ph ph-hand-fist" style="font-size:1.1rem; margin-bottom:2px;"></i> Ataque</button>
+                <button class="glass-btn ui-pulse" data-action="RECORD_STAT" data-stat="bloqueo"><i class="ph ph-wall" style="font-size:1.1rem; margin-bottom:2px;"></i> Bloqueo</button>
+                <button class="glass-btn ui-pulse" data-action="RECORD_STAT" data-stat="ace"><i class="ph ph-target" style="font-size:1.1rem; margin-bottom:2px;"></i> Ace</button>
             </div>
-            <button class="btn-primary" style="width: 100%; height: 7vh; margin-top: 1vh; background: var(--bg-card); color: var(--text-main);" data-action="RECORD_STAT" data-stat="simple"><i class="ph ph-plus"></i> PUNTO SIMPLE (OMITIR)</button>
-            <button class="nav-btn" style="width: 100%; margin-top: 1vh; background: transparent;" data-action="CLOSE_MODALS">CANCELAR</button>
+            
+            <div id="stats-err-title" style="font-size:0.85rem; color:var(--color-danger); font-weight:900; margin-bottom: 1vh; text-transform:uppercase; text-shadow: 0 0 10px rgba(0,0,0,0.5);">⚠️ ERROR RIVAL</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5vw; margin-bottom: 2vh;">
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_fuera">Fuera</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_red">Red</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_llevada">Llevada</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_doble">Doble</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_linea">Línea</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" data-action="RECORD_STAT" data-stat="f_rotacion">Rotación</button>
+                <button class="glass-btn glass-btn-danger ui-pulse" style="grid-column: span 3;" data-action="RECORD_STAT" data-stat="f_invasion"><i class="ph ph-warning"></i> Invasión de Cancha</button>
+            </div>
+            
+            <button class="glass-btn ui-pulse" style="width: 100%; border:none; box-shadow:none; color: var(--text-muted); margin-top: 1vh;" data-action="CLOSE_MODALS"><i class="ph ph-x"></i> <span data-i18n="CANCEL">CANCELAR (NO SUMAR)</span></button>
         </div>
     </div>
 
     <div id="screen-role" class="screen active" style="padding: 4vh 5vw; justify-content:flex-start; overflow-y: auto !important; -webkit-overflow-scrolling: touch;">
-        <div style="text-align:left; margin-bottom:4vh; flex-shrink: 0; user-select: none;">
-            <h1 id="app-title-secret" style="font-size:3rem; font-weight:900; line-height:1; color:var(--text-main); letter-spacing:-1px; cursor: pointer;">Volley <span style="color: var(--text-accent);">Pro</span></h1>
-            <p style="font-size:0.85rem; color:var(--text-muted); font-weight:500; margin-top: 0.5vh;">Software Oficial V6.0</p>
+        <div style="text-align:left; margin-bottom:4vh; margin-top: 4vh; flex-shrink: 0; user-select: none;">
+            <h1 id="app-title-secret" class="ui-pulse" style="font-family: var(--font-display); font-size:3.5rem; font-weight:900; line-height:1; color:var(--text-main); letter-spacing: 0px; cursor: pointer;">Volley <span style="color: var(--text-accent);">Pro</span></h1>
+            <p style="font-size:0.85rem; color:var(--text-muted); font-weight:500; margin-top: 0.5vh;" data-i18n="SUBTITLE">Software Oficial BETA v8.8.0</p>
         </div>
         
         <div style="display:flex; flex-direction:column; gap:1.5vh; padding-bottom: 2vh;">
-            <div class="dash-card" id="card-superuser" style="display: none; border-left-color: var(--color-accent-orange);" data-action="REQUEST_AUTH" data-role="superuser">
+            <div class="dash-card ui-pulse" id="card-superuser" style="display: none; border-left-color: var(--color-accent-orange);" data-action="REQUEST_AUTH" data-role="superuser">
                 <div>
-                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800;">Súper Usuario</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted);">Administrador Global.</p>
+                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800; text-transform: uppercase;" data-i18n="ROLE_SU">Súper Usuario</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="ROLE_SU_DESC">Administrador Global.</p>
                 </div>
-                <i class="ph-fill ph-crown" style="font-size:2rem; color:var(--color-accent-orange);"></i>
+                <i class="ph-fill ph-crown" style="font-size:2.5rem; color:var(--color-accent-orange);"></i>
             </div>
 
-            <div class="dash-card" style="border-left-color: var(--color-timer);" data-action="REQUEST_AUTH" data-role="admin">
+            <div class="dash-card ui-pulse" style="border-left-color: var(--color-timer);" data-action="REQUEST_AUTH" data-role="admin">
                 <div>
-                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800;">Organización</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted);">Gestión de Torneos y Árbitros.</p>
+                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800; text-transform: uppercase;" data-i18n="ROLE_ADMIN">Administrativo</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="ROLE_ADMIN_DESC">Gestión de Torneos y Árbitros.</p>
                 </div>
-                <i class="ph-fill ph-buildings" style="font-size:2rem; color:var(--color-timer);"></i>
+                <i class="ph-fill ph-user-gear" style="font-size:2.5rem; color:var(--color-timer);"></i>
             </div>
 
-            <div class="dash-card" style="border-left-color: var(--text-main);" data-action="REQUEST_AUTH" data-role="referee">
+            <div class="dash-card ui-pulse" style="border-left-color: var(--color-gold);" data-action="REQUEST_AUTH" data-role="referee">
                 <div>
-                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800;">Árbitro Oficial</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted);">Acceso a Marcador y Stats.</p>
+                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800; text-transform: uppercase;" data-i18n="ROLE_REF">Árbitro Oficial</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="ROLE_REF_DESC">Acceso a Marcador y Stats.</p>
                 </div>
-                <i class="ph-fill ph-whistle" style="font-size:2rem; color:var(--text-main);"></i>
+                <i class="ph-fill ph-flag" style="font-size:2.5rem; color:var(--color-gold);"></i>
             </div>
 
-            <div class="dash-card" style="border-left-color: var(--text-accent);" data-action="REQUEST_AUTH" data-role="client">
+            <div class="dash-card ui-pulse" style="border-left-color: var(--text-accent);" data-action="REQUEST_AUTH" data-role="client">
                 <div>
-                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800;">Espectador</h3>
-                    <p style="font-size:0.75rem; color:var(--text-muted);">Sigue el partido en vivo.</p>
+                    <h3 style="color:var(--text-main); margin-bottom:0.5vh; font-size: 1rem; font-weight: 800; text-transform: uppercase;" data-i18n="ROLE_VIEW">Espectador</h3>
+                    <p style="font-size:0.75rem; color:var(--text-muted);" data-i18n="ROLE_VIEW_DESC">Sigue el partido en vivo.</p>
                 </div>
-                <i class="ph-fill ph-monitor-play" style="font-size:2rem; color:var(--text-accent);"></i>
+                <i class="ph-fill ph-monitor-play" style="font-size:2.5rem; color:var(--text-accent);"></i>
             </div>
         </div>
     </div>
 
     <div id="screen-auth" class="screen" style="padding: 4vh 6vw;">
-        <div class="top-header"><h2><i class="ph ph-lock-key"></i> ACCESO</h2><button class="btn-icon" data-action="NAVIGATE" data-target="role"><i class="ph ph-x"></i></button></div>
+        <div class="top-header"><h2><i class="ph ph-lock-key"></i> <span data-i18n="ACCESS">ACCESO</span></h2><button class="btn-icon ui-pulse" data-action="NAVIGATE" data-target="role"><i class="ph ph-x"></i></button></div>
         <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:2vh;">
             <div id="auth-dynamic-fields"></div>
-            <button class="btn-primary" style="height: 7vh;" data-action="VERIFY_AUTH">INGRESAR <i class="ph ph-arrow-right"></i></button>
+            <button class="btn-primary ui-pulse" id="btn-auth-submit" data-action="VERIFY_AUTH"><span data-i18n="ENTER">INGRESAR</span> <i class="ph ph-arrow-right"></i></button>
             <p id="auth-hint" style="text-align:center; font-size:0.75rem; color:var(--color-danger); margin-top:2vh;"></p>
         </div>
     </div>
 
     <div id="screen-dashboard-super" class="screen">
-        <div class="top-header"><h2><i class="ph-fill ph-crown"></i> GLOBAL ADMIN</h2><button class="btn-icon" style="color:var(--color-danger);" data-action="LOGOUT"><i class="ph ph-sign-out"></i></button></div>
+        <div class="top-header"><h2><i class="ph-fill ph-crown"></i> GLOBAL ADMIN</h2><button class="btn-icon ui-pulse" style="color:var(--color-danger);" data-action="LOGOUT"><i class="ph ph-sign-out"></i></button></div>
         <div style="padding: 2vh 4vw; display:flex; flex-direction:column; flex:1; overflow:hidden;">
             <div style="background:var(--bg-surface); padding:2vh; border-radius:16px; border:1px solid var(--border-subtle); margin-bottom:2vh; flex-shrink: 0;">
-                <h3 style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5vh;">NUEVA ORGANIZACIÓN</h3>
-                <input type="text" id="su-new-tenant" class="modern-input" style="height:6vh; font-size:0.9rem;" placeholder="Nombre Entidad">
-                <input type="password" id="su-new-pass" class="modern-input" style="height:6vh; font-size:0.9rem;" placeholder="Contraseña">
-                <button class="btn-primary" style="width:100%; height:6vh;" data-action="SU_CREATE_ADMIN"><i class="ph ph-plus"></i> CREAR</button>
+                <h3 style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5vh; text-transform: uppercase;" data-i18n="NEW_ORG">NUEVA ORGANIZACIÓN</h3>
+                <input type="text" id="su-new-tenant" class="modern-input" style="font-size:0.9rem;" placeholder="Nombre Entidad">
+                <input type="password" id="su-new-pass" class="modern-input" style="font-size:0.9rem;" placeholder="Contraseña">
+                <button class="btn-primary ui-pulse" style="width:100%;" data-action="SU_CREATE_ADMIN"><i class="ph ph-plus"></i> <span data-i18n="CREATE">CREAR</span></button>
             </div>
-            <h3 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1vh; flex-shrink: 0;">ENTIDADES (Hold para ver pass)</h3>
+            <h3 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1vh; flex-shrink: 0; text-transform: uppercase;" data-i18n="ENTITIES">ENTIDADES (Hold para ver pass)</h3>
             <div id="su-tenant-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:1vh; padding-bottom: 2vh;"></div>
         </div>
     </div>
 
     <div id="screen-dashboard" class="screen">
-        <div class="top-header"><h2 id="dash-title"><i class="ph ph-squares-four"></i> PANEL DE CONTROL</h2><button class="btn-icon" style="color:var(--color-danger);" data-action="LOGOUT"><i class="ph ph-sign-out"></i></button></div>
+        <div class="top-header"><h2 id="dash-title"><i class="ph ph-squares-four"></i> DASHBOARD</h2><button class="btn-icon ui-pulse" style="color:var(--color-danger);" data-action="LOGOUT"><i class="ph ph-sign-out"></i></button></div>
         <div style="display:flex; flex-direction:column; flex:1; padding-bottom:2vh; overflow:hidden;">
             <div style="display:flex; padding:0 4vw; gap:2vw; margin:2vh 0; flex-shrink: 0;">
-                <button class="nav-btn active-tab" id="dtab-active" data-action="SWITCH_TAB" data-tab="active">En Curso</button>
-                <button class="nav-btn" id="dtab-finished" data-action="SWITCH_TAB" data-tab="finished">Historial</button>
+                <button class="nav-btn active-tab ui-pulse" id="dtab-active" data-action="SWITCH_TAB" data-tab="active" data-i18n="DASH_ACTIVE">En Curso</button>
+                <button class="nav-btn ui-pulse" id="dtab-finished" data-action="SWITCH_TAB" data-tab="finished" data-i18n="DASH_HISTORY">Historial</button>
             </div>
             <div class="dash-list" id="dashboard-list"></div>
-            <div style="display:flex; gap:2vw; padding:0 4vw; margin-top:auto; height:7vh; flex-shrink: 0;" id="admin-controls">
-                <button class="btn-primary" style="flex:0.5; background:var(--bg-card); color:var(--text-main); border:1px solid var(--border-subtle);" data-action="OPEN_RULES"><i class="ph ph-gear"></i></button>
-                <button class="btn-primary" style="flex:0.5; background:var(--bg-card); color:var(--text-main); border:1px solid var(--border-subtle);" data-action="LOAD_REFS_SCREEN"><i class="ph ph-users"></i></button>
-                <button class="btn-primary" style="flex:2;" data-action="START_NEW_MATCH"><i class="ph ph-plus-circle"></i> NUEVO PARTIDO</button>
+            
+            <div style="display:flex; gap:2vw; padding:0 4vw; margin-top:auto; flex-shrink: 0;" id="admin-controls">
+                <button class="nav-btn ui-pulse" style="flex:1; background:var(--bg-card); color:var(--text-main); border:1px solid var(--border-subtle);" data-action="OPEN_RULES"><i class="ph ph-sliders-horizontal"></i> <span data-i18n="RULES_BTN">REGLAS</span></button>
+                <button class="nav-btn ui-pulse" style="flex:1; background:var(--bg-card); color:var(--text-main); border:1px solid var(--border-subtle);" data-action="LOAD_REFS_SCREEN"><i class="ph ph-users"></i> <span data-i18n="REFS_BTN">ÁRBITROS</span></button>
+                <button class="btn-primary ui-pulse" style="flex:1.5;" data-action="START_NEW_MATCH"><i class="ph ph-plus-circle"></i> <span data-i18n="NEW_MATCH">PARTIDO</span></button>
             </div>
         </div>
     </div>
 
     <div id="screen-referees" class="screen">
-        <div class="top-header"><h2><i class="ph ph-users"></i> ÁRBITROS</h2><button class="btn-icon" data-action="NAVIGATE" data-target="dashboard"><i class="ph ph-x"></i></button></div>
+        <div class="top-header"><h2><i class="ph ph-users"></i> <span data-i18n="REFS_BTN">ÁRBITROS</span></h2><button class="btn-icon ui-pulse" data-action="NAVIGATE" data-target="dashboard"><i class="ph ph-x"></i></button></div>
         <div style="padding:2vh 4vw; display:flex; flex-direction:column; flex:1;">
             <div style="display:flex; gap:2vw; margin-bottom:2vh; flex-shrink: 0;">
-                <input type="text" id="input-new-ref" class="modern-input" style="height:6vh; margin:0; font-size:0.9rem;" placeholder="Usuario">
-                <input type="password" id="input-ref-pass" class="modern-input" style="height:6vh; margin:0; font-size:0.9rem;" placeholder="Clave">
-                <button class="btn-primary" style="height:6vh; padding:0 3vw;" data-action="CREATE_REFEREE"><i class="ph ph-plus"></i></button>
+                <input type="text" id="input-new-ref" class="modern-input" style="margin:0; font-size:0.9rem;" placeholder="Usuario">
+                <input type="password" id="input-ref-pass" class="modern-input" style="margin:0; font-size:0.9rem;" placeholder="Clave">
+                <button class="btn-primary ui-pulse" style="padding:0 3vw;" data-action="CREATE_REFEREE"><i class="ph ph-plus"></i></button>
             </div>
-            <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom:1vh; text-align:center;">Mantén presionado los puntos para ver la clave.</p>
+            <p style="font-size:0.7rem; color:var(--text-muted); margin-bottom:1vh; text-align:center;" data-i18n="HOLD_PASS">Mantén presionado los puntos para ver la clave.</p>
             <div id="referees-list-container" style="overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:1vh; padding-bottom: 2vh;"></div>
         </div>
     </div>
 
     <div id="screen-config" class="screen">
-        <div class="top-header"><h2 id="config-title"><i class="ph ph-volleyball"></i> SETUP PARTIDO</h2><button class="btn-icon" data-action="NAVIGATE" data-target="dashboard"><i class="ph ph-x"></i></button></div>
+        <div class="top-header"><h2 id="config-title"><i class="ph ph-volleyball"></i> <span data-i18n="SETUP_MATCH">SETUP PARTIDO</span></h2><button class="btn-icon ui-pulse" data-action="NAVIGATE" data-target="dashboard"><i class="ph ph-x"></i></button></div>
         <div style="padding:2vh 4vw; overflow-y:auto; display:flex; flex-direction:column; flex:1;">
+            
+            <h3 id="cfg-team-indicator" style="font-size:0.85rem; text-align:center; text-transform:uppercase; color:var(--text-muted); font-weight:800; margin-bottom:2vh; letter-spacing: 0px;">Configurando...</h3>
+
             <div style="display:flex; gap:2vw; margin-bottom:3vh; background: var(--bg-card); padding: 0.5vh; border-radius: 10px;">
-                <button class="nav-btn active-tab" id="tab-A" style="border-radius: 6px;" data-action="CFG_TEAM" data-team="A">LOCAL</button>
-                <button class="nav-btn" id="tab-B" style="border-radius: 6px;" data-action="CFG_TEAM" data-team="B">VISITANTE</button>
+                <button class="nav-btn ui-pulse active-tab" id="tab-A" style="border-radius: 6px;" data-action="CFG_TEAM" data-team="A" data-i18n="LOCAL">LOCAL</button>
+                <button class="nav-btn ui-pulse" id="tab-B" style="border-radius: 6px;" data-action="CFG_TEAM" data-team="B" data-i18n="VISITOR">VISITANTE</button>
             </div>
             
             <input type="text" id="input-team-name" class="modern-input" placeholder="Nombre del Equipo">
             
-            <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:1vh; font-weight:700;">COLOR DEL EQUIPO</label>
+            <label class="form-label" data-i18n="TEAM_COLOR">COLOR DEL EQUIPO</label>
             <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:2vh 1.5vw; background:var(--bg-surface); padding:2.5vh 2vw; border-radius:16px; border:1px solid var(--border-subtle); margin-bottom:3vh;" id="color-grid-container"></div>
             
-            <label style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5vh; font-weight:700;">ÁRBITRO ASIGNADO</label>
+            <label class="form-label" data-i18n="ASSIGN_REF">ÁRBITRO ASIGNADO</label>
             <select id="input-referee" class="modern-input" style="font-size:1rem; margin-bottom:3vh;"></select>
 
-            <button class="btn-primary" style="width:100%; height:7vh; margin-top:auto;" data-action="SAVE_MATCH"><i class="ph ph-play-circle"></i> CREAR E INICIAR</button>
+            <button class="btn-primary ui-pulse" style="width:100%; margin-top:auto;" data-action="SAVE_MATCH"><i class="ph ph-play-circle"></i> <span data-i18n="START_MATCH">CREAR E INICIAR</span></button>
         </div>
     </div>
 
     <div id="screen-board" class="screen">
-        <div class="sets-history-bar" id="history-bar">Cargando...</div>
-        <div class="board-header">
-            <div style="display:flex; flex-direction:column;"><span style="font-size:0.6rem; color:var(--text-muted); font-weight:800;">RELOJ OFICIAL</span><span class="color-timer font-score" id="timer" data-action="TOGGLE_TIMER" style="font-size: 1.8rem;">00:00:00</span></div>
-            <div style="display:flex; flex-direction:column; align-items:flex-end;"><span style="font-size:0.6rem; color:var(--text-muted); font-weight:800;">ID PARTIDO</span><span style="font-family:monospace; font-weight:800; color:var(--text-accent); font-size:1rem; cursor:pointer; background:rgba(56,189,248,0.1); padding: 2px 8px; border-radius: 4px;" id="match-code-display" data-action="COPY_CODE">---</span></div>
-        </div>
-        <div class="teams-container">
-            <div class="team-col" id="col-A">
-                <div style="font-weight:800; font-size:clamp(0.9rem, 2.5vh, 1.2rem); text-align:center; margin-bottom:1vh; white-space:nowrap; overflow:hidden; width: 100%; text-transform: uppercase;" id="name-A">TEAM A</div>
-                <div style="display:flex; gap:1vw; margin-bottom:1vh;" id="dots-A"></div>
-                <div class="score-box font-score" id="score-A" data-team="A"><span class="score-val">0</span></div>
+        <div id="board-wrapper">
+            
+            <div id="board-top-section">
+                <div id="broadcast-paused-overlay">
+                    <i class="ph-fill ph-video-camera-slash"></i>
+                    <div class="bp-title" data-i18n="PAUSED_BROADCAST">TRANSMISIÓN PAUSADA</div>
+                    <div class="bp-sub">El árbitro ha pausado temporalmente el video marcador. El partido sigue en curso.</div>
+                </div>
+
+                <div class="sets-history-bar" id="history-bar">Cargando...</div>
+                <div class="board-header">
+                    <div style="display:flex; flex-direction:column;" id="header-left-slot"></div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-end;"><span style="font-size:0.6rem; color:var(--text-muted); font-weight:800; text-transform: uppercase;" data-i18n="MATCH_ID">ID PARTIDO</span><span style="font-family:monospace; font-weight:800; color:var(--text-accent); font-size:1rem; cursor:pointer; background:rgba(56,189,248,0.1); padding: 2px 8px; border-radius: 4px;" id="match-code-display" data-action="COPY_CODE" class="ui-pulse">---</span></div>
+                </div>
+                
+                <div class="teams-container" id="board-teams-container">
+                    <div class="team-col" id="col-A">
+                        <div class="team-name" data-action="SET_FIRST_SERVE" data-team="A"><span id="name-A">TEAM A</span> <i class="ph-fill ph-volleyball server-indicator" id="serve-A" style="display:none;"></i></div>
+                        <div class="dots-container" id="dots-A"></div>
+                        <div class="timeout-container">
+                            <div class="timeout-dots" id="timeout-dots-A"></div>
+                            <button class="timeout-btn ui-pulse" id="btn-timeout-A" data-action="REQUEST_TIMEOUT" data-team="A"><i class="ph ph-timer" style="font-size: 1.2rem;"></i> T/O</button>
+                        </div>
+                        <div class="score-box font-score" id="score-A" data-action="SCORE_POINT" data-team="A"><span class="score-val">0</span></div>
+                    </div>
+                    
+                    <button class="btn-icon ui-pulse" id="btn-swap" data-action="MANUAL_SWAP" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); background:var(--bg-deep); border:1px solid var(--border-subtle); border-radius:50%; z-index:5; width:40px; height:40px; box-shadow:0 0 15px rgba(0,0,0,0.8); display:none;"><i class="ph ph-arrows-left-right"></i></button>
+
+                    <div class="team-col" id="col-B">
+                        <div class="team-name" data-action="SET_FIRST_SERVE" data-team="B"><i class="ph-fill ph-volleyball server-indicator" id="serve-B" style="display:none;"></i> <span id="name-B">TEAM B</span></div>
+                        <div class="dots-container" id="dots-B"></div>
+                        <div class="timeout-container">
+                            <div class="timeout-dots" id="timeout-dots-B"></div>
+                            <button class="timeout-btn ui-pulse" id="btn-timeout-B" data-action="REQUEST_TIMEOUT" data-team="B"><i class="ph ph-timer" style="font-size: 1.2rem;"></i> T/O</button>
+                        </div>
+                        <div class="score-box font-score" id="score-B" data-action="SCORE_POINT" data-team="B"><span class="score-val">0</span></div>
+                    </div>
+                </div>
+                
+                <div style="display:flex; justify-content:center; align-items:center; flex-direction:column; margin-bottom:2vh;">
+                    <span style="font-size:0.6rem; color:var(--text-muted); font-weight:800; text-transform: uppercase; margin-bottom: 2px;" data-i18n="OFFICIAL_CLOCK">RELOJ OFICIAL</span>
+                    <span class="color-timer font-score ui-pulse" id="timer" data-action="TOGGLE_TIMER" style="font-size: 2.2rem; line-height: 1;">00:00:00</span>
+                </div>
+
+                <div class="bottom-nav" id="board-controls"></div>
             </div>
-            <div class="team-col" id="col-B">
-                <div style="font-weight:800; font-size:clamp(0.9rem, 2.5vh, 1.2rem); text-align:center; margin-bottom:1vh; white-space:nowrap; overflow:hidden; width: 100%; text-transform: uppercase;" id="name-B">TEAM B</div>
-                <div style="display:flex; gap:1vw; margin-bottom:1vh;" id="dots-B"></div>
-                <div class="score-box font-score" id="score-B" data-team="B"><span class="score-val">0</span></div>
+
+            <div id="board-chat-section">
+                
+                <div class="chat-reactions-bar">
+                    <button class="btn-icon ui-pulse" data-action="SEND_REACTION" data-emoji="👏">👏</button>
+                    <button class="btn-icon ui-pulse" data-action="SEND_REACTION" data-emoji="🔥">🔥</button>
+                    <button class="btn-icon ui-pulse" data-action="SEND_REACTION" data-emoji="🏐">🏐</button>
+                    <button class="btn-icon ui-pulse" data-action="SEND_REACTION" data-emoji="😡">😡</button>
+                </div>
+                
+                <div class="chat-right-col">
+                    <div class="spectator-tabs">
+                        <div class="spec-tab active" data-action="SPEC_SWITCH_TAB" data-tab="chat">💬 <span data-i18n="CHAT">CHAT</span></div>
+                        <div class="spec-tab" data-action="SPEC_SWITCH_TAB" data-tab="plays">📝 <span data-i18n="PLAYS">JUGADAS</span></div>
+                    </div>
+
+                    <div class="spec-content active" id="spec-tab-chat">
+                        <div class="chat-messages" id="chat-messages-container">
+                            <div class="chat-sys">Te uniste al canal del partido.</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" id="chat-input" class="modern-input" placeholder="Mensaje..." maxlength="60">
+                            <button class="btn-primary ui-pulse" id="btn-send-chat" data-action="SEND_CHAT" style="min-height: 4vh; height: 4vh; padding: 0 3vw; border-radius: 12px; font-size: 0.9rem;"><i class="ph-fill ph-paper-plane-right" style="font-size: 1.1rem;"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="spec-content" id="spec-tab-plays">
+                        <div class="plays-container" id="plays-list-container">
+                            </div>
+                    </div>
+                </div>
             </div>
+
         </div>
-        <div class="bottom-nav" id="board-controls"></div>
     </div>
 
 </div>
 
 <script>
-/**
- * CORE_SYSTEM: VOLLEY PRO 6.0 PRO (Fase 1)
- * Upgrades: UI Slate/Clean, Font Bebas Neue, Network Debounce (Rate-limit protection), Graceful Set Closure.
- */
 (() => {
     "use strict";
+
+    document.body.addEventListener('touchstart', () => {}, {passive: true});
 
     const SUPABASE_URL = "https://iwuglirgkvnobhatgedq.supabase.co"; 
     const SUPABASE_KEY = "sb_publishable_sNgWni9L5DWroTgEPKhKQw_cST-OXxR";
     const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-    
     const APP_COLORS = ['#EF4444', '#EA580C', '#F59E0B', '#EAB308', '#84CC16', '#10B981', '#14B8A6', '#06B6D4', '#38BDF8', '#3B82F6', '#8B5CF6', '#D946EF', '#EC4899', '#F8FAFC'];
+
+    const DICT = {
+        es: {
+            SUBTITLE: "Software Oficial BETA v8.8.0", ROLE_SU: "Súper Usuario", ROLE_SU_DESC: "Administrador Global.",
+            ROLE_ADMIN: "Administrativo", ROLE_ADMIN_DESC: "Gestión de Torneos y Árbitros.", ROLE_REF: "Árbitro Oficial",
+            ROLE_REF_DESC: "Acceso a Marcador y Stats.", ROLE_VIEW: "Espectador", ROLE_VIEW_DESC: "Sigue el partido en vivo.",
+            ACCESS: "ACCESO", ENTER: "INGRESAR", NEW_ORG: "NUEVA ORGANIZACIÓN", CREATE: "CREAR", ENTITIES: "ENTIDADES",
+            DASH_ACTIVE: "En Curso", DASH_HISTORY: "Historial", RULES_BTN: "REGLAS", REFS_BTN: "ÁRBITROS", NEW_MATCH: "PARTIDO",
+            HOLD_PASS: "Mantén presionado los puntos para ver la clave.", SETUP_MATCH: "SETUP PARTIDO", LOCAL: "LOCAL", VISITOR: "VISITANTE",
+            TEAM_COLOR: "COLOR DEL EQUIPO", ASSIGN_REF: "ÁRBITRO ASIGNADO", START_MATCH: "CREAR E INICIAR", RULES: "REGLAS DEL TORNEO",
+            RULES_MSG: "Estas reglas se aplicarán a todos los nuevos partidos.", MAX_SETS: "SETS MÁXIMOS", BO3: "Mejor de 3 Sets", BO5: "Mejor de 5 Sets",
+            PTS_PER_SET: "PUNTOS POR SET NORMAL", PTS_TIE: "PUNTOS TIE-BREAK (ÚLTIMO SET)", CANCEL: "CANCELAR", SAVE: "GUARDAR",
+            STATS_MERIT: "MÉRITO (PUNTO A FAVOR)", STATS_ERR: "ERROR RIVAL (FALTAS)", STAT_ATK: "Ataque", STAT_BLK: "Bloqueo", STAT_ACE: "Ace",
+            STAT_OUT: "Fuera", STAT_NET: "Red", STAT_CARRY: "Llevada", STAT_DOUBLE: "Doble", STAT_LINE: "Línea", STAT_ROT: "Rotación", STAT_INV: "Invasión",
+            STAT_SIMPLE: "Punto Rápido", OFFICIAL_CLOCK: "RELOJ OFICIAL", MATCH_ID: "ID PARTIDO", TIMEOUT_REQ: "TIEMPO FUERA SOLICITADO",
+            BACK: "VOLVER", FINISH_SET: "FIN SET", PAUSE: "PAUSA", FINISH_MATCH: "FIN", UNDO_LOG_TITLE: "HISTORIAL DE ACCIONES",
+            UNDO_LOG_MSG: "Selecciona el evento al que deseas regresar. El resto se borrará.", POINT_FOR: "PUNTO PARA", TIMEOUT_FOR: "TIEMPO FUERA",
+            COIN_TOSS: "SORTEO INICIAL", COIN_TOSS_MSG: "Define el equipo que sacará primero y el lado de la cancha.", NO_REF: "Local (Sin Árbitro)", SET_CURR: "SET {X} EN CURSO",
+            LIVE: "EN VIVO", CHAT: "CHAT", PLAYS: "JUGADAS", PAUSED_BROADCAST: "TRANSMISIÓN PAUSADA", CHAT_DISABLED: "Chat desactivado por árbitro", COOLDOWN: "Espera 3s..."
+        },
+        en: {
+            SUBTITLE: "Official Software BETA v8.8.0", ROLE_SU: "Super User", ROLE_SU_DESC: "Global Administrator.",
+            ROLE_ADMIN: "Admin", ROLE_ADMIN_DESC: "Tournament & Referee Mgmt.", ROLE_REF: "Official Referee",
+            ROLE_REF_DESC: "Scoreboard & Stats Access.", ROLE_VIEW: "Spectator", ROLE_VIEW_DESC: "Follow match live.",
+            ACCESS: "LOGIN", ENTER: "ENTER", NEW_ORG: "NEW ORGANIZATION", CREATE: "CREATE", ENTITIES: "ENTITIES",
+            DASH_ACTIVE: "Live", DASH_HISTORY: "History", RULES_BTN: "RULES", REFS_BTN: "REFS", NEW_MATCH: "MATCH",
+            HOLD_PASS: "Hold dots to reveal password.", SETUP_MATCH: "MATCH SETUP", LOCAL: "HOME", VISITOR: "AWAY",
+            TEAM_COLOR: "TEAM COLOR", ASSIGN_REF: "ASSIGN REFEREE", START_MATCH: "CREATE & START", RULES: "TOURNAMENT RULES",
+            RULES_MSG: "These rules apply to all new matches.", MAX_SETS: "MAX SETS", BO3: "Best of 3 Sets", BO5: "Best of 5 Sets",
+            PTS_PER_SET: "POINTS PER NORMAL SET", PTS_TIE: "TIE-BREAK POINTS", CANCEL: "CANCEL", SAVE: "SAVE",
+            STATS_MERIT: "MERIT (POINT SCORED)", STATS_ERR: "OPPONENT ERROR (FAULTS)", STAT_ATK: "Attack", STAT_BLK: "Block", STAT_ACE: "Ace",
+            STAT_OUT: "Out", STAT_NET: "Net", STAT_CARRY: "Carry", STAT_DOUBLE: "Double", STAT_LINE: "Foot Fault", STAT_ROT: "Rotation", STAT_INV: "Invasion",
+            STAT_SIMPLE: "Quick Point", OFFICIAL_CLOCK: "OFFICIAL CLOCK", MATCH_ID: "MATCH ID", TIMEOUT_REQ: "TIMEOUT REQUESTED",
+            BACK: "BACK", FINISH_SET: "END SET", PAUSE: "PAUSE", FINISH_MATCH: "END", UNDO_LOG_TITLE: "ACTION HISTORY",
+            UNDO_LOG_MSG: "Select event to revert to. Subsequent actions will be erased.", POINT_FOR: "POINT FOR", TIMEOUT_FOR: "TIMEOUT",
+            COIN_TOSS: "COIN TOSS", COIN_TOSS_MSG: "Select the team serving first and the court side.", NO_REF: "Local (No Ref)", SET_CURR: "SET {X} IN PROGRESS",
+            LIVE: "LIVE", CHAT: "CHAT", PLAYS: "PLAYS", PAUSED_BROADCAST: "BROADCAST PAUSED", CHAT_DISABLED: "Chat disabled by referee", COOLDOWN: "Wait 3s..."
+        },
+        pt: {
+            SUBTITLE: "Software Oficial BETA v8.8.0", ROLE_SU: "Super Usuário", ROLE_SU_DESC: "Administrador Global.",
+            ROLE_ADMIN: "Administrativo", ROLE_ADMIN_DESC: "Gestão de Torneios e Árbitros.", ROLE_REF: "Árbitro Oficial",
+            ROLE_REF_DESC: "Acesso ao Placar e Stats.", ROLE_VIEW: "Espectador", ROLE_VIEW_DESC: "Acompanhe ao vivo.",
+            ACCESS: "ACESSO", ENTER: "ENTRAR", NEW_ORG: "NOVA ORGANIZAÇÃO", CREATE: "CRIAR", ENTITIES: "ENTIDADES",
+            DASH_ACTIVE: "Em Andamento", DASH_HISTORY: "Histórico", RULES_BTN: "REGRAS", REFS_BTN: "ÁRBITROS", NEW_MATCH: "PARTIDA",
+            HOLD_PASS: "Segure os pontos para ver a senha.", SETUP_MATCH: "CONFIGURAR PARTIDA", LOCAL: "CASA", VISITOR: "VISITANTE",
+            TEAM_COLOR: "COR DA EQUIPE", ASSIGN_REF: "ÁRBITRO ATRIBUÍDO", START_MATCH: "CRIAR E INICIAR", RULES: "REGRAS DO TORNEIO",
+            RULES_MSG: "Estas regras se aplicam a novas partidas.", MAX_SETS: "MÁXIMO DE SETS", BO3: "Melhor de 3 Sets", BO5: "Melhor de 5 Sets",
+            PTS_PER_SET: "PONTOS POR SET NORMAL", PTS_TIE: "PONTOS TIE-BREAK", CANCEL: "CANCELAR", SAVE: "SALVAR",
+            STATS_MERIT: "MÉRITO (PONTO A FAVOR)", STATS_ERR: "ERRO ADVERSÁRIO (FALTAS)", STAT_ATK: "Ataque", STAT_BLK: "Bloqueio", STAT_ACE: "Ace",
+            STAT_OUT: "Fora", STAT_NET: "Rede", STAT_CARRY: "Condução", STAT_DOUBLE: "Dois Toques", STAT_LINE: "Linha", STAT_ROT: "Rotação", STAT_INV: "Invasão",
+            STAT_SIMPLE: "Ponto Rápido", OFFICIAL_CLOCK: "RELÓGIO OFICIAL", MATCH_ID: "ID PARTIDA", TIMEOUT_REQ: "TEMPO TÉCNICO SOLICITADO",
+            BACK: "VOLTAR", FINISH_SET: "FIM SET", PAUSE: "PAUSA", FINISH_MATCH: "FIM", UNDO_LOG_TITLE: "HISTÓRICO DE AÇÕES",
+            UNDO_LOG_MSG: "Selecione o evento para retornar. Ações seguintes serão apagadas.", POINT_FOR: "PONTO PARA", TIMEOUT_FOR: "TEMPO TÉCNICO",
+            COIN_TOSS: "SORTEIO", COIN_TOSS_MSG: "Defina a equipe que saca primeiro e o lado da quadra.", NO_REF: "Local (Sem Árbitro)", SET_CURR: "SET {X} EM ANDAMENTO",
+            LIVE: "AO VIVO", CHAT: "CHAT", PLAYS: "LANCES", PAUSED_BROADCAST: "TRANSMISSÃO PAUSADA", CHAT_DISABLED: "Chat desativado pelo árbitro", COOLDOWN: "Aguarde 3s..."
+        }
+    };
+
+    const DEFAULTS = {
+        rules: () => ({ maxSets: 3, ptsPerSet: 25, ptsTieBreak: 15 }),
+        stats: () => ({ ataque:0, bloqueo:0, ace:0, f_fuera:0, f_red:0, f_llevada:0, f_doble:0, f_linea:0, f_rotacion:0, f_invasion:0, simple:0 }),
+        timeouts: () => ({ left: 2, isRunning: false, startTime: null, currentTime: 30, resumeTimerAfter: false }),
+        broadcast: () => ({ isLive: true, chatEnabled: true })
+    };
 
     const AudioEngine = {
         ctx: null,
@@ -320,9 +643,9 @@
     };
 
     const NetworkLayer = {
-        _syncTimeout: null,
+        _syncTimeout: null, chatChannel: null, connectionStatus: true,
         setupRealtimeSync() {
-            if (!supabase) return;
+            if (!supabase) { this.connectionStatus = false; return; }
             supabase.channel('public:Vol_Matches').on('postgres_changes', { event: '*', schema: 'public', table: 'Vol_Matches' }, payload => {
                 if(payload.eventType === 'DELETE') { StateManager.dispatch('DELETE_MATCH', { code: payload.old.code }); } 
                 else { 
@@ -330,60 +653,84 @@
                     if (s.role !== 'superuser' && s.role !== 'client' && payload.new.tenant !== s.currentTenant) return;
                     StateManager.dispatch('SYNC_MATCHES', { matches: { [payload.new.code]: payload.new.state } });
                 }
-            }).subscribe();
+            }).subscribe((status) => {
+                this.connectionStatus = status === 'SUBSCRIBED';
+                UIEngine.renderConnectionState();
+            });
         },
+        
+        leaveChat() {
+            if (this.chatChannel) { supabase.removeChannel(this.chatChannel); this.chatChannel = null; }
+        },
+
+        joinChat(code) {
+            if (!supabase) return;
+            this.leaveChat();
+            
+            this.chatChannel = supabase.channel('chat_' + code, { config: { broadcast: { ack: false } } });
+            this.chatChannel.on('broadcast', { event: 'msg' }, payload => { UIEngine.appendChatMessage(payload.payload.nick, payload.payload.msg, false); });
+            this.chatChannel.on('broadcast', { event: 'reaction' }, payload => { UIEngine.spawnReaction(payload.payload.emoji); });
+            this.chatChannel.subscribe();
+        },
+
+        async sendChat(code, nick, text) {
+            if (!this.chatChannel) return;
+            this.chatChannel.send({ type: 'broadcast', event: 'msg', payload: { nick, msg: text } });
+            try { await supabase.from('Vol_Chat_Logs').insert({ match_code: code, nickname: nick, message: text }); } catch(e) {}
+        },
+
+        sendReaction(emoji) {
+            if (!this.chatChannel) return;
+            this.chatChannel.send({ type: 'broadcast', event: 'reaction', payload: { emoji } });
+        },
+
         async fetchAllMatches() {
-            if (!supabase) return {}; const s = StateManager.state;
-            let query = supabase.from('Vol_Matches').select('*');
+            if (!supabase) return {}; const s = StateManager.state; let query = supabase.from('Vol_Matches').select('*');
             if (s.role === 'admin' || s.role === 'referee') query = query.eq('tenant', s.currentTenant);
-            const { data } = await query;
-            if (!data) return {}; let map = {}; data.forEach(d => map[d.code] = d.state); return map;
+            const { data } = await query; if (!data) return {}; let map = {}; data.forEach(d => map[d.code] = d.state); return map;
         },
         async authenticate(role, username, password) {
             if (role === 'superuser') return password === 'MASTER2026' ? { success: true, user: 'SÚPER DIOS', tenant: 'GLOBAL' } : { success: false };
             if (!supabase) return { success: false }; 
             const { data, error } = await supabase.from('Vol_Users').select('*').eq('username', username).eq('password', password).eq('role', role).single();
-            if (error || !data) {
-                StateManager.state.clientAuthAttempts++;
-                if (StateManager.state.clientAuthAttempts >= 3) { setTimeout(()=>StateManager.dispatch('LOGOUT'), 500); return { blocked: true }; }
-                return { success: false };
-            }
+            if (error || !data) { StateManager.state.clientAuthAttempts++; if (StateManager.state.clientAuthAttempts >= 3) { setTimeout(()=>StateManager.dispatch('LOGOUT'), 500); return { blocked: true }; } return { success: false }; }
             StateManager.state.clientAuthAttempts = 0; return { success: true, user: data.username, tenant: data.tenant || 'LOCAL' };
         },
-        async createAdmin(tenantName, pass) {
-            if (!supabase) return { success:false, error: { message: "Sin conexión." } };
-            const { error } = await supabase.from('Vol_Users').insert({ username: `Admin_${tenantName}`, password: pass, role: 'admin', tenant: tenantName });
-            return { success: !error, error };
-        },
+        async createAdmin(tenantName, pass) { if (!supabase) return { success:false, error: { message: "Sin conexión." } }; const { error } = await supabase.from('Vol_Users').insert({ username: `Admin_${tenantName}`, password: pass, role: 'admin', tenant: tenantName }); return { success: !error, error }; },
         async fetchTenants() { if (!supabase) return []; const { data } = await supabase.from('Vol_Users').select('username, tenant, password').eq('role', 'admin'); return data || []; },
         async fetchReferees() { if (!supabase) return []; const { data } = await supabase.from('Vol_Users').select('username, password').eq('role', 'referee').eq('tenant', StateManager.state.currentTenant); return data || []; },
         async createReferee(user, pass) { if (!supabase) return { success: false }; const { error } = await supabase.from('Vol_Users').insert({ username: user, password: pass, role: 'referee', tenant: StateManager.state.currentTenant }); return { success: !error }; },
         async deleteReferee(user) { if (!supabase) return { success: false }; try { const { error } = await supabase.from('Vol_Users').delete().eq('username', user).eq('tenant', StateManager.state.currentTenant); return { success: !error }; } catch(e) { return { success: false }; } },
         async deleteMatch(code) { if (!supabase) return; try { await supabase.from('Vol_Matches').delete().eq('code', code); } catch(e){} },
         
-        // DEBOUNCE LOGIC FOR SAVING API CALLS
-        async push(code, match, tenant, immediate = false) {
-            if (!supabase) return; 
+        push(code, match, tenant, immediate = false) {
+            if (!supabase || StateManager.state.role === 'client') return; 
             const execute = async () => { try { await supabase.from('Vol_Matches').upsert({ code, state: match, tenant }); } catch(e){} };
             if (immediate) { if(this._syncTimeout) clearTimeout(this._syncTimeout); execute(); } 
-            else {
-                if (this._syncTimeout) clearTimeout(this._syncTimeout);
-                this._syncTimeout = setTimeout(execute, 1000); // Wait 1 sec after last tap to push to DB
-            }
+            else { if (this._syncTimeout) clearTimeout(this._syncTimeout); this._syncTimeout = setTimeout(execute, 1000); }
         }
     };
 
     const StateManager = {
-        state: { screen: 'role', role: null, pendingRole: null, currentUser: null, currentTenant: null, roomCode: null, dashTab: 'active', cfgTeam: 'A', draft: { A: { name: 'EQUIPO A', color: APP_COLORS[0] }, B: { name: 'EQUIPO B', color: APP_COLORS[9] } }, draftReferee: null, editingCode: null, refereesList: [], tenantsList: [], matches: {}, clientAuthAttempts: 0, statsMode: false, currentStatTeam: null },
-        init() { const mem = localStorage.getItem('VOL_V6_STATE'); if(mem) { try { this.state = {...this.state, ...JSON.parse(mem)}; } catch(e) {} } },
-        save() { localStorage.setItem('VOL_V6_STATE', JSON.stringify({ currentUser: this.state.currentUser, role: this.state.role, currentTenant: this.state.currentTenant })); },
+        state: { lang: 'es', screen: 'role', role: null, pendingRole: null, currentUser: null, currentTenant: null, roomCode: null, dashTab: 'active', cfgTeam: 'A', draft: { A: { name: 'EQUIPO A', color: APP_COLORS[0] }, B: { name: 'EQUIPO B', color: APP_COLORS[9] } }, draftReferee: null, editingCode: null, refereesList: [], tenantsList: [], matches: {}, clientAuthAttempts: 0, currentStatTeam: null, nickname: 'Fan', statsMode: false },
+        init() { const mem = localStorage.getItem('VOL_V8_STATE'); if(mem) { try { this.state = {...this.state, ...JSON.parse(mem)}; } catch(e) {} } },
+        save() { localStorage.setItem('VOL_V8_STATE', JSON.stringify({ currentUser: this.state.currentUser, role: this.state.role, currentTenant: this.state.currentTenant, lang: this.state.lang })); },
+        
+        t(key, params={}) { 
+            let str = DICT[this.state.lang][key] || DICT['es'][key] || key; 
+            Object.keys(params).forEach(p => str = str.replace(`{${p}}`, params[p]));
+            return str;
+        },
+
         dispatch(action, payload = {}) {
             let s = { ...this.state };
             switch(action) {
+                case 'SET_LANG': s.lang = payload.lang; break;
                 case 'NAVIGATE': s.screen = payload.screen; break;
                 case 'SET_ROLE_PENDING': s.pendingRole = payload.role; s.screen = 'auth'; break;
                 case 'LOGIN': s.role = s.pendingRole; s.currentUser = payload.user; s.currentTenant = payload.tenant; s.clientAuthAttempts = 0; s.screen = (s.role === 'superuser') ? 'dashboard-super' : 'dashboard'; break;
-                case 'LOGOUT': s.role = null; s.currentUser = null; s.currentTenant = null; s.roomCode = null; s.screen = 'role'; s.statsMode = false; s.clientAuthAttempts = 0; break;
+                case 'LOGOUT': s.role = null; s.currentUser = null; s.currentTenant = null; s.roomCode = null; s.screen = 'role'; s.clientAuthAttempts = 0; s.statsMode = false; break;
+                case 'LEAVE_BOARD': s.roomCode = null; if(s.role === 'client') NetworkLayer.leaveChat(); s.screen = (s.role === 'admin' || s.role === 'referee') ? 'dashboard' : (s.role === 'superuser' ? 'dashboard-super' : 'role'); if (s.screen === 'role') { s.role = null; s.currentUser = null; s.currentTenant = null; } break;
                 case 'SWITCH_TAB': s.dashTab = payload.tab; break;
                 case 'SET_REFS': s.refereesList = payload.list; break;
                 case 'SET_TENANTS': s.tenantsList = payload.list; break;
@@ -393,60 +740,110 @@
                 case 'EDIT_MATCH': const m = s.matches[payload.code]; if(m) { s.editingCode = m.code; s.draft = JSON.parse(JSON.stringify(m.teams)); s.draftReferee = m.referee; s.screen = 'config'; s.cfgTeam = 'A'; } break;
                 case 'DELETE_MATCH': delete s.matches[payload.code]; break;
                 case 'SYNC_MATCHES': s.matches = { ...s.matches, ...payload.matches }; break;
-                case 'LOAD_ROOM': s.roomCode = payload.code; s.screen = 'board'; break;
-                case 'TOGGLE_STATS_MODE': s.statsMode = !s.statsMode; break;
+                case 'LOAD_ROOM': s.roomCode = payload.code; s.screen = 'board'; if(s.role === 'client') NetworkLayer.joinChat(payload.code); break;
                 case 'SET_STAT_TEAM': s.currentStatTeam = payload.team; break;
+                case 'TOGGLE_STATS_MODE': s.statsMode = !s.statsMode; break;
             }
             this.state = s; this.save(); UIEngine.render(this.state);
         },
-        mutateMatch(mutator, isUndo = false, immediateSync = false) {
+
+        mutateMatch(mutator, isSilent = false, immediateSync = false, logDesc = null) {
             const code = this.state.roomCode; if (!code || !this.state.matches[code]) return;
             let m = JSON.parse(JSON.stringify(this.state.matches[code]));
             
-            if (!m.stats) m.stats = { A: { ataque:0, bloqueo:0, ace:0, f_fuera:0, f_red:0, f_llevada:0, f_doble:0, f_linea:0, f_rotacion:0, f_invasion:0, simple:0 }, B: { ataque:0, bloqueo:0, ace:0, f_fuera:0, f_red:0, f_llevada:0, f_doble:0, f_linea:0, f_rotacion:0, f_invasion:0, simple:0 } };
+            if (!m.rules) m.rules = DEFAULTS.rules();
+            if (!m.stats) m.stats = { A: DEFAULTS.stats(), B: DEFAULTS.stats() };
+            if (!m.timer) m.timer = { isRunning: false, elapsedTime: 0, startTime: null };
             if (!m.currentSet) m.currentSet = 1; if (!m.timeline) m.timeline = { 1: [], 2: [], 3: [], 4: [], 5: [] }; if (!m.historySets) m.historySets = [];
+            if (!m.timeouts) m.timeouts = { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() };
+            if (!m.broadcast) m.broadcast = DEFAULTS.broadcast();
+            if (typeof m.courtSwapped === 'undefined') m.courtSwapped = false;
+            if (typeof m.servingFirst === 'undefined') m.servingFirst = null;
 
-            if (!isUndo) { if (!m.historySnapshots) m.historySnapshots = []; const snap = JSON.parse(JSON.stringify(m)); delete snap.historySnapshots; m.historySnapshots.push(snap); if (m.historySnapshots.length > 15) m.historySnapshots.shift(); }
+            if (!isSilent) { 
+                if (!m.historySnapshots) m.historySnapshots = []; 
+                const snap = JSON.parse(JSON.stringify(m)); 
+                delete snap.historySnapshots; 
+                m.historySnapshots.push({ state: snap, action: logDesc || "Acción" }); 
+                if (m.historySnapshots.length > 25) m.historySnapshots.shift(); 
+            }
+            
             mutator(m); this.state.matches[code] = m; 
-            UIEngine.render(this.state); NetworkLayer.push(code, m, this.state.currentTenant, immediateSync);
+            
+            if(!isSilent) { UIEngine.render(this.state); NetworkLayer.push(code, m, this.state.currentTenant, immediateSync); }
         },
-        undo() {
-            const code = this.state.roomCode; if (!code || !this.state.matches[code]) return;
-            const m = this.state.matches[code];
-            if (m.historySnapshots && m.historySnapshots.length > 0) { const past = m.historySnapshots.pop(); past.historySnapshots = m.historySnapshots; this.state.matches[code] = past; AudioEngine.error(); UIEngine.render(this.state); NetworkLayer.push(code, past, this.state.currentTenant, true); } 
-            else { UIEngine.modal('VACÍO', 'No hay acciones previas.', [{ text: 'OK', type: 'cancel' }]); }
+
+        undoTo(index) {
+            const code = this.state.roomCode; if (!code || !this.state.matches[code]) return; const m = this.state.matches[code];
+            if (m.historySnapshots && m.historySnapshots.length > index) { 
+                const pastState = m.historySnapshots[index].state; pastState.historySnapshots = m.historySnapshots.slice(0, index); 
+                this.state.matches[code] = pastState; AudioEngine.error(); UIEngine.render(this.state); NetworkLayer.push(code, pastState, this.state.currentTenant, true); document.getElementById('undo-modal').classList.remove('active');
+            } 
         }
     };
 
     const TimerSystem = {
         ref: null,
-        start() { if (this.ref) clearInterval(this.ref); this.ref = setInterval(() => { if (StateManager.state.screen === 'board') UIEngine.renderTime(); }, 1000); },
+        start() { this.ref = setInterval(() => { if (StateManager.state.screen === 'board') { UIEngine.renderTime(); this.renderTimeoutCountdown(); } }, 1000); },
         toggle() {
-            const m = StateManager.state.matches[StateManager.state.roomCode]; if (StateManager.state.role !== 'referee' || !m || m.status === 'finished') return; AudioEngine.whistle();
-            StateManager.mutateMatch(m => { if (!m.timer) m.timer = { isRunning: false, elapsedTime: 0, startTime: null }; if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; } else { m.timer.isRunning = true; m.timer.startTime = Date.now(); } }, false, true);
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code];
+            if (StateManager.state.role !== 'referee' || !m || m.status === 'finished' || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning) return; AudioEngine.whistle();
+            StateManager.mutateMatch(match => { 
+                if (!match.timer) match.timer = { isRunning: false, elapsedTime: 0, startTime: null }; 
+                if (match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } else { match.timer.isRunning = true; match.timer.startTime = Date.now(); } 
+            }, false, true, "Toggle Reloj");
+        },
+        renderTimeoutCountdown() {
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if(!code || !m || !m.timeouts) return;
+            ['A', 'B'].forEach(team => { const tOut = m.timeouts[team]; if(tOut.isRunning && tOut.startTime) { const elapsed = Math.floor((Date.now() - tOut.startTime) / 1000); const remaining = 30 - elapsed; if(remaining <= 0) { this.stopTimeout(team); } else { const el = document.getElementById('overlay-timeout-timer'); if (el) el.innerText = remaining; } } });
+        },
+        stopTimeout(team) {
+            AudioEngine.horn(); StateManager.mutateMatch(m => { const tOut = m.timeouts[team]; const shouldResume = tOut.resumeTimerAfter; tOut.isRunning = false; tOut.startTime = null; tOut.currentTime = 30; tOut.resumeTimerAfter = false; if (shouldResume && m.timer) { m.timer.isRunning = true; m.timer.startTime = Date.now(); } }, false, true, "Fin T/O " + team);
         }
     };
 
     const EventManager = {
-        pressTimer: null, longPressTriggered: false, isScoring: false, 
+        isRequestingTimeout: false, chatCooldownActive: false,
         init() {
             document.body.addEventListener('click', e => {
                 AudioEngine.init(); const el = e.target.closest ? e.target.closest('[data-action]') : null; if (!el) return; const act = el.getAttribute('data-action'); 
                 switch(act) {
+                    case 'CYCLE_LANG':
+                        const langs = ['es', 'en', 'pt'];
+                        const currIdx = langs.indexOf(StateManager.state.lang);
+                        StateManager.dispatch('SET_LANG', { lang: langs[(currIdx + 1) % langs.length] });
+                        break;
                     case 'NAVIGATE': StateManager.dispatch('NAVIGATE', { screen: el.getAttribute('data-target') }); break;
                     case 'REQUEST_AUTH': StateManager.dispatch('SET_ROLE_PENDING', { role: el.getAttribute('data-role') }); break;
                     case 'VERIFY_AUTH': this.verify(); break; case 'LOGOUT': StateManager.dispatch('LOGOUT'); break;
+                    case 'LEAVE_BOARD': StateManager.dispatch('LEAVE_BOARD'); break;
                     case 'SWITCH_TAB': StateManager.dispatch('SWITCH_TAB', { tab: el.getAttribute('data-tab') }); break;
                     case 'SU_CREATE_ADMIN': this.suCreateAdmin(); break; case 'OPEN_RULES': this.openRulesModal(); break; case 'SAVE_RULES': this.saveRules(); break;
-                    case 'CFG_TEAM': StateManager.dispatch('CFG_TEAM', { team: el.getAttribute('data-team') }); break; case 'SET_COLOR': StateManager.dispatch('SET_TEAM_COLOR', { color: el.getAttribute('data-color') }); break;
-                    case 'START_NEW_MATCH': StateManager.dispatch('INIT_NEW_MATCH'); break; case 'EDIT_MATCH': StateManager.dispatch('EDIT_MATCH', { code: el.getAttribute('data-code') }); break;
-                    case 'DELETE_MATCH': this.deleteMatch(el.getAttribute('data-code')); break; case 'SAVE_MATCH': this.saveMatch(); break;
+                    case 'CFG_TEAM': StateManager.dispatch('CFG_TEAM', { team: el.getAttribute('data-team') }); break; 
+                    case 'SET_COLOR': StateManager.dispatch('SET_TEAM_COLOR', { color: el.getAttribute('data-color') }); break;
+                    case 'START_NEW_MATCH': StateManager.dispatch('INIT_NEW_MATCH'); break; 
+                    case 'EDIT_MATCH': StateManager.dispatch('EDIT_MATCH', { code: el.getAttribute('data-code') }); break;
+                    case 'DELETE_MATCH': this.deleteMatch(el.getAttribute('data-code')); break; 
+                    case 'SAVE_MATCH': this.saveMatch(); break;
                     case 'LOAD_REFS_SCREEN': this.loadRefsScreen(); break; case 'CREATE_REFEREE': this.createReferee(); break; case 'DELETE_REFEREE': this.deleteReferee(el.getAttribute('data-user')); break;
-                    case 'TOGGLE_TIMER': TimerSystem.toggle(); break; case 'COPY_CODE': navigator.clipboard.writeText(el.innerText).then(()=> UIEngine.modal('COPIADO', 'Código copiado al portapapeles.', [{text:'OK',type:'confirm'}])); break;
-                    case 'TOGGLE_FULLSCREEN': document.documentElement.requestFullscreen().catch(()=>{}); break; case 'UNDO_MATCH': StateManager.undo(); break;
-                    case 'LOAD_ROOM': StateManager.dispatch('LOAD_ROOM', { code: el.getAttribute('data-code') }); break; case 'TOGGLE_STATS_MODE': StateManager.dispatch('TOGGLE_STATS_MODE'); break;
+                    case 'TOGGLE_TIMER': TimerSystem.toggle(); break; case 'COPY_CODE': navigator.clipboard.writeText(el.innerText).then(()=> UIEngine.modal('COPIADO', 'Código copiado.', [{text:'OK',type:'confirm'}])); break;
+                    case 'OPEN_UNDO': this.openUndoLog(); break; case 'UNDO_TO': StateManager.undoTo(parseInt(el.getAttribute('data-index'))); break;
+                    case 'LOAD_ROOM': StateManager.dispatch('LOAD_ROOM', { code: el.getAttribute('data-code') }); break; 
                     case 'CLOSE_MODALS': document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('active')); break; case 'RECORD_STAT': this.recordStat(el.getAttribute('data-stat')); break;
-                    case 'FINISH_SET': this.promptFinishSet(); break; case 'FINISH_MATCH': UIEngine.modal('FINALIZAR PARTIDO', 'Ya no se podrá modificar el marcador.', [{text:'CANCELAR', type:'cancel'},{text:'SÍ, FINALIZAR', type:'confirm', callback:()=>this.finishMatch()}]); break;
+                    case 'FINISH_SET': this.promptFinishSet(); break; case 'FINISH_MATCH': UIEngine.modal(StateManager.t('FINISH_MATCH'), 'Ya no se podrá modificar el marcador.', [{text:StateManager.t('CANCEL'), type:'cancel'},{text:'OK', type:'confirm', callback:()=>this.finishMatch()}]); break;
+                    case 'REQUEST_TIMEOUT': this.requestTimeout(el.getAttribute('data-team')); break;
+                    case 'PAUSE_MATCH': this.pauseMatch(); break;
+                    case 'SCORE_POINT': this.handleScoreClick(el.getAttribute('data-team')); break;
+                    case 'MANUAL_SWAP': this.manualSwap(); break;
+                    case 'TOGGLE_STATS_MODE': StateManager.dispatch('TOGGLE_STATS_MODE'); break;
+                    case 'SET_FIRST_SERVE': this.setFirstServe(el.getAttribute('data-team')); break;
+                    
+                    case 'SEND_CHAT': this.sendChat(); break;
+                    case 'SEND_REACTION': this.sendReaction(el.getAttribute('data-emoji')); break;
+                    
+                    case 'OPEN_BROADCAST_MENU': document.getElementById('broadcast-modal').classList.add('active'); break;
+                    case 'OPEN_PLAYS_MENU': document.getElementById('plays-modal-ref').classList.add('active'); break;
+                    case 'SPEC_SWITCH_TAB': this.specSwitchTab(el.getAttribute('data-tab')); break;
                 }
             });
 
@@ -455,176 +852,454 @@
                 if(e.target.getAttribute('data-action') === 'SET_CUSTOM_COLOR') StateManager.dispatch('SET_TEAM_COLOR', { color: e.target.value });
             });
 
-            const handlePassReveal = (e) => { const el = e.target.closest('.pass-reveal'); if(el) { e.preventDefault(); el.innerText = el.getAttribute('data-pass'); } };
-            const handlePassHide = (e) => { const el = e.target.closest('.pass-reveal'); if(el) el.innerText = '••••••••'; };
+            document.addEventListener('change', (e) => {
+                if(e.target.getAttribute('data-action') === 'TOGGLE_BROADCAST') this.toggleBroadcastSettings();
+            });
+            
+            document.addEventListener('keydown', (e) => { if(e.key === 'Enter' && e.target.id === 'chat-input') { this.sendChat(); } });
+            const handlePassReveal = (e) => { const el = e.target.closest('.pass-reveal'); if(el) { e.preventDefault(); el.innerText = el.getAttribute('data-pass'); } }; const handlePassHide = (e) => { const el = e.target.closest('.pass-reveal'); if(el) el.innerText = '••••••••'; };
             document.body.addEventListener('pointerdown', handlePassReveal); document.body.addEventListener('pointerup', handlePassHide); document.body.addEventListener('pointercancel', handlePassHide); document.body.addEventListener('pointerout', (e) => { if(e.target.classList && e.target.classList.contains('pass-reveal')) handlePassHide(e); });
-
-            let secretTaps = 0, secretTimer = null; const titleEl = document.getElementById('app-title-secret');
-            if(titleEl) { titleEl.addEventListener('click', () => { secretTaps++; clearTimeout(secretTimer); if(secretTaps >= 5) { const suCard = document.getElementById('card-superuser'); if(suCard) { suCard.classList.add('secret-reveal'); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } secretTaps = 0; } secretTimer = setTimeout(() => { secretTaps = 0; }, 1000); }); }
-
-            const startPress = (e) => {
-                const el = e.target.closest('.score-box'); if (!el) return; const s = StateManager.state; const match = s.matches[s.roomCode]; if (s.role !== 'referee' || !match || match.status === 'finished') return;
-                e.preventDefault(); AudioEngine.init(); this.longPressTriggered = false; const team = el.getAttribute('data-team'); el.style.transform = 'scale(0.95)';
-                this.pressTimer = setTimeout(() => { this.longPressTriggered = true; el.style.transform = ''; if (navigator.vibrate) navigator.vibrate([100]); if (!this.isScoring) { this.isScoring = true; this.score(team, -1); setTimeout(()=>this.isScoring=false, 300); } }, 800);
-            };
-            const endPress = (e) => {
-                const el = e.target.closest('.score-box'); if (!el) return; clearTimeout(this.pressTimer); el.style.transform = ''; const s = StateManager.state; const match = s.matches[s.roomCode]; if (s.role !== 'referee' || !match || match.status === 'finished') return;
-                if (!this.longPressTriggered) {
-                    if (this.isScoring) return; this.isScoring = true; setTimeout(()=>this.isScoring=false, 300); const team = el.getAttribute('data-team');
-                    if (s.statsMode) { StateManager.dispatch('SET_STAT_TEAM', { team }); document.getElementById('stats-title').innerText = `PUNTO PARA ${match.teams[team].name.toUpperCase()}`; document.getElementById('stats-modal').classList.add('active'); } 
-                    else { this.score(team, 1, 'simple'); }
-                }
-            };
-            document.body.addEventListener('pointerdown', startPress); document.body.addEventListener('pointerup', endPress); document.body.addEventListener('pointercancel', (e) => { const el = e.target.closest('.score-box'); if (el) { clearTimeout(this.pressTimer); el.style.transform = ''; } });
+            let secretTaps = 0, secretTimer = null; const titleEl = document.getElementById('app-title-secret'); if(titleEl) { titleEl.addEventListener('click', () => { secretTaps++; clearTimeout(secretTimer); if(secretTaps >= 5) { const suCard = document.getElementById('card-superuser'); if(suCard) { suCard.classList.add('secret-reveal'); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } secretTaps = 0; } secretTimer = setTimeout(() => { secretTaps = 0; }, 1000); }); }
         },
 
+        specSwitchTab(tabId) {
+            document.querySelectorAll('.spec-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.spec-tab[data-tab="${tabId}"]`).classList.add('active');
+            document.querySelectorAll('.spec-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`spec-tab-${tabId}`).classList.add('active');
+        },
+
+        toggleBroadcastSettings() {
+            const isLive = document.getElementById('toggle-broadcast-live').checked;
+            const chatEnabled = document.getElementById('toggle-broadcast-chat').checked;
+            StateManager.mutateMatch(m => { m.broadcast.isLive = isLive; m.broadcast.chatEnabled = chatEnabled; }, false, true, "Ajuste de Transmisión");
+        },
+
+        sendChat() {
+            if (this.chatCooldownActive) return;
+            const input = document.getElementById('chat-input'); const text = input.value.trim(); if(!text) return;
+            const s = StateManager.state;
+            
+            UIEngine.appendChatMessage(s.nickname, text, true);
+            NetworkLayer.sendChat(s.roomCode, s.nickname, text);
+            input.value = '';
+
+            this.chatCooldownActive = true;
+            const btn = document.getElementById('btn-send-chat');
+            input.disabled = true; btn.disabled = true;
+            input.placeholder = StateManager.t('COOLDOWN');
+            
+            setTimeout(() => {
+                this.chatCooldownActive = false;
+                input.disabled = false; btn.disabled = false;
+                input.placeholder = "Mensaje...";
+                if(s.screen === 'board') input.focus();
+            }, 3000);
+        },
+        sendReaction(emoji) { UIEngine.spawnReaction(emoji); NetworkLayer.sendReaction(emoji); },
+
+        setFirstServe(team) {
+            const s = StateManager.state; const m = s.matches[s.roomCode];
+            if (s.role !== 'referee' || !m || m.scores.A > 0 || m.scores.B > 0) return;
+            StateManager.mutateMatch(match => { match.servingFirst = team; }, false, true, "Sorteo Saque");
+        },
+
+        handleScoreClick(team) {
+            const s = StateManager.state; const m = s.matches[s.roomCode]; if (s.role !== 'referee' || !m || m.status === 'finished') return; if (navigator.vibrate) navigator.vibrate([50]);
+            
+            if (s.statsMode) {
+                StateManager.dispatch('SET_STAT_TEAM', { team }); 
+                
+                const myTeamName = m.teams[team].name;
+                const myTeamColor = m.teams[team].color;
+                const opp = team === 'A' ? 'B' : 'A';
+                const oppTeamName = m.teams[opp].name;
+                const oppTeamColor = m.teams[opp].color;
+
+                const meritTitle = document.getElementById('stats-merit-title');
+                const errTitle = document.getElementById('stats-err-title');
+
+                document.getElementById('stats-title').innerText = `➕ PUNTO PARA ${myTeamName}`;
+                document.getElementById('stats-title').style.color = myTeamColor;
+
+                meritTitle.innerText = `🏆 MÉRITO DE ${myTeamName}`;
+                meritTitle.style.color = myTeamColor;
+
+                errTitle.innerText = `⚠️ ERROR DE ${oppTeamName}`;
+                errTitle.style.color = oppTeamColor;
+
+                document.getElementById('stats-modal').classList.add('active'); 
+            } else {
+                this.score(team, 'simple');
+            }
+        },
+        
+        manualSwap() { if (StateManager.state.role !== 'referee') return; StateManager.mutateMatch(m => { m.courtSwapped = !m.courtSwapped; }, false, true, "Cambio de Lado Manual"); },
+        pauseMatch() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!m) return; UIEngine.modal('PAUSAR', 'El partido quedará en espera.', [{text: StateManager.t('CANCEL'), type:'cancel'}, {text:'PAUSAR', type:'confirm', callback: () => { StateManager.mutateMatch(match => { if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } }, false, true, "Pausa de Partido"); StateManager.dispatch('LEAVE_BOARD'); }}]); },
+        
+        requestTimeout(team) {
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code];
+            if (StateManager.state.role !== 'referee' || !m || m.status === 'finished' || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning) return;
+            if (!m.timer || !m.timer.isRunning) { UIEngine.modal('RELOJ DETENIDO', 'El reloj del partido debe estar activo para solicitar Tiempo Fuera.', [{text: 'OK', type: 'cancel'}]); return; }
+            
+            const tOut = m.timeouts[team]; 
+            if(tOut.left <= 0) { 
+                AudioEngine.error(); 
+                UIEngine.modal('SIN TIEMPOS FUERA', 'Este equipo ya gastó sus 2 tiempos permitidos en este set.', [{text:'OK', type:'cancel'}]);
+                return; 
+            } 
+            
+            if(this.isRequestingTimeout) return; this.isRequestingTimeout = true; setTimeout(()=>this.isRequestingTimeout=false, 500); AudioEngine.whistle();
+            const logName = `${StateManager.t('TIMEOUT_FOR')} ${m.teams[team].name}`;
+            StateManager.mutateMatch(match => { const t = match.timeouts[team]; t.left--; t.isRunning = true; t.startTime = Date.now(); t.currentTime = 30; if(match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; t.resumeTimerAfter = true; } else { t.resumeTimerAfter = false; } }, false, true, logName); 
+        },
+        openUndoLog() { const s = StateManager.state; const m = s.matches[s.roomCode]; if(!m || !m.historySnapshots || m.historySnapshots.length === 0) { UIEngine.modal('VACÍO', 'No hay acciones.', [{text:'OK', type:'cancel'}]); return; } const cont = document.getElementById('undo-list-container'); cont.innerHTML = ''; for(let i = m.historySnapshots.length - 1; i >= 0; i--) { const snap = m.historySnapshots[i]; cont.innerHTML += `<div class="undo-log-item"><div><strong>#${i+1}</strong> - ${snap.action}</div><button class="btn-primary ui-pulse" style="padding:4px 10px; font-size:0.7rem; min-height:0; height:auto;" data-action="UNDO_TO" data-index="${i}">Restaurar</button></div>`; } document.getElementById('undo-modal').classList.add('active'); },
         async verify() {
             const role = StateManager.state.pendingRole; const hint = document.getElementById('auth-hint'); hint.innerText = 'Verificando...';
             if (role === 'client') {
-                const code = document.getElementById('auth-code').value.toUpperCase().trim(); const { data } = await supabase.from('Vol_Matches').select('state, tenant').eq('code', code).single(); 
-                if (data && data.state) { StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: data.state } }); StateManager.dispatch('LOGIN', { user: 'spectator', tenant: 'CLIENT' }); StateManager.dispatch('LOAD_ROOM', { code }); } else { hint.innerText = "Error: Sala no encontrada."; }
-                return;
+                const code = document.getElementById('auth-code').value.toUpperCase().trim(); let nick = document.getElementById('auth-nick').value.trim(); if(!nick || nick.length === 0) nick = 'Fan';
+                const { data } = await supabase.from('Vol_Matches').select('state, tenant').eq('code', code).single(); 
+                if (data && data.state) { StateManager.state.nickname = nick; StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: data.state } }); StateManager.dispatch('LOGIN', { user: 'spectator', tenant: 'CLIENT' }); StateManager.dispatch('LOAD_ROOM', { code }); } else { UIEngine.triggerShake('btn-auth-submit'); hint.innerText = "Error: Sala no encontrada."; } return;
             }
             const user = document.getElementById('auth-user') ? document.getElementById('auth-user').value.trim() : ''; const pass = document.getElementById('auth-pass').value.trim(); const res = await NetworkLayer.authenticate(role, user, pass);
-            if (res.success) { StateManager.dispatch('LOGIN', { user: res.user, tenant: res.tenant }); const m = await NetworkLayer.fetchAllMatches(); StateManager.dispatch('SYNC_MATCHES', { matches: m }); if(role === 'superuser') { const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } hint.innerText = ''; } 
-            else { if (res.blocked) { UIEngine.modal('BLOQUEADO', 'Intenta ingresar nuevamente desde cero.', [{text:'OK',type:'cancel'}]); hint.innerText = ''; } else { hint.innerText = "Error: Credenciales inválidas."; } }
+            if (res.success) { StateManager.dispatch('LOGIN', { user: res.user, tenant: res.tenant }); const m = await NetworkLayer.fetchAllMatches(); StateManager.dispatch('SYNC_MATCHES', { matches: m }); if(role === 'superuser') { const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } if (role === 'admin') { const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); } hint.innerText = ''; } 
+            else { UIEngine.triggerShake('btn-auth-submit'); if (res.blocked) { UIEngine.modal('BLOQUEADO', 'Intenta ingresar nuevamente desde cero.', [{text:'OK',type:'cancel'}]); hint.innerText = ''; } else { hint.innerText = "Error: Credenciales inválidas."; } }
         },
-
-        async suCreateAdmin() {
-            const name = document.getElementById('su-new-tenant').value.trim().toUpperCase().replace(/\s+/g, '_'); const pass = document.getElementById('su-new-pass').value.trim();
-            if(!name || pass.length < 4) return UIEngine.modal('DATOS INVÁLIDOS', 'El nombre es requerido y la clave debe tener al menos 4 caracteres.', [{text:'OK', type:'cancel'}]);
-            const res = await NetworkLayer.createAdmin(name, pass);
-            if(res.success) { UIEngine.modal('ÉXITO', `Organización ${name} creada.`, [{text:'OK', type:'confirm'}]); document.getElementById('su-new-tenant').value = ''; document.getElementById('su-new-pass').value = ''; const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } 
-            else { UIEngine.modal('ERROR', `Posiblemente el nombre ya exista.`, [{text:'OK', type:'cancel'}]); }
-        },
-
+        async suCreateAdmin() { const name = document.getElementById('su-new-tenant').value.trim().toUpperCase().replace(/\s+/g, '_'); const pass = document.getElementById('su-new-pass').value.trim(); if(!name || pass.length < 4) return UIEngine.modal('DATOS INVÁLIDOS', 'El nombre es requerido y la clave debe tener al menos 4 caracteres.', [{text:'OK', type:'cancel'}]); const res = await NetworkLayer.createAdmin(name, pass); if(res.success) { UIEngine.modal('ÉXITO', `Organización ${name} creada.`, [{text:'OK', type:'confirm'}]); document.getElementById('su-new-tenant').value = ''; document.getElementById('su-new-pass').value = ''; const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } else { UIEngine.modal('ERROR', `Posiblemente el nombre ya exista.`, [{text:'OK', type:'cancel'}]); } },
         async loadRefsScreen() { const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); StateManager.dispatch('NAVIGATE', { screen: 'referees' }); },
-        async createReferee() {
-            const u = document.getElementById('input-new-ref').value.trim(); const p = document.getElementById('input-ref-pass').value.trim();
-            if(!u || !p) return UIEngine.modal('FALTAN DATOS', 'Ingresa usuario y contraseña.', [{text:'OK', type:'cancel'}]);
-            const res = await NetworkLayer.createReferee(u, p);
-            if(res.success) { document.getElementById('input-new-ref').value=''; document.getElementById('input-ref-pass').value=''; this.loadRefsScreen(); } else { UIEngine.modal('ERROR', `No se pudo crear. Intenta otro nombre.`, [{text:'OK', type:'cancel'}]); }
-        },
-        deleteReferee(username) { UIEngine.modal('ELIMINAR ÁRBITRO', `¿Eliminar a ${username} permanentemente?`, [{ text: 'CANCELAR', type: 'cancel' }, { text: 'ELIMINAR', type: 'confirm', callback: async () => { const res = await NetworkLayer.deleteReferee(username); if (res.success) this.loadRefsScreen(); } }]); },
-        deleteMatch(code) { UIEngine.modal('ELIMINAR PARTIDO', '¿Borrar partido? Acción irreversible.', [{ text: 'CANCELAR', type: 'cancel' }, { text: 'BORRAR', type: 'confirm', callback: () => { StateManager.dispatch('DELETE_MATCH', { code }); NetworkLayer.deleteMatch(code); } }]); },
-        openRulesModal() { let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : { maxSets: 3, ptsPerSet: 25, ptsTieBreak: 15 }; document.getElementById('admin-cfg-sets').value = rules.maxSets; document.getElementById('admin-cfg-pts').value = rules.ptsPerSet; document.getElementById('admin-cfg-tie').value = rules.ptsTieBreak; document.getElementById('rules-modal').classList.add('active'); },
+        async createReferee() { const u = document.getElementById('input-new-ref').value.trim(); const p = document.getElementById('input-ref-pass').value.trim(); if(!u || !p) return UIEngine.modal('FALTAN DATOS', 'Ingresa usuario y contraseña.', [{text:'OK', type:'cancel'}]); const res = await NetworkLayer.createReferee(u, p); if(res.success) { document.getElementById('input-new-ref').value=''; document.getElementById('input-ref-pass').value=''; this.loadRefsScreen(); } else { UIEngine.modal('ERROR', `No se pudo crear. Intenta otro nombre.`, [{text:'OK', type:'cancel'}]); } },
+        deleteReferee(username) { UIEngine.modal('ELIMINAR ÁRBITRO', `¿Eliminar a ${username}?`, [{ text: StateManager.t('CANCEL'), type: 'cancel' }, { text: 'ELIMINAR', type: 'confirm', callback: async () => { const res = await NetworkLayer.deleteReferee(username); if (res.success) this.loadRefsScreen(); } }]); },
+        deleteMatch(code) { UIEngine.modal('ELIMINAR PARTIDO', '¿Borrar partido? Acción irreversible.', [{ text: StateManager.t('CANCEL'), type: 'cancel' }, { text: 'BORRAR', type: 'confirm', callback: () => { StateManager.dispatch('DELETE_MATCH', { code }); NetworkLayer.deleteMatch(code); } }]); },
+        openRulesModal() { let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); document.getElementById('admin-cfg-sets').value = rules.maxSets; document.getElementById('admin-cfg-pts').value = rules.ptsPerSet; document.getElementById('admin-cfg-tie').value = rules.ptsTieBreak; document.getElementById('rules-modal').classList.add('active'); },
         saveRules() { const rules = { maxSets: parseInt(document.getElementById('admin-cfg-sets').value), ptsPerSet: parseInt(document.getElementById('admin-cfg-pts').value), ptsTieBreak: parseInt(document.getElementById('admin-cfg-tie').value) }; localStorage.setItem('VOL_RULES_' + StateManager.state.currentTenant, JSON.stringify(rules)); document.getElementById('rules-modal').classList.remove('active'); },
 
         saveMatch() {
             if(document.getElementById('input-team-name').value.trim() !== "") StateManager.state.draft[StateManager.state.cfgTeam].name = document.getElementById('input-team-name').value;
             const isEdit = StateManager.state.editingCode !== null; const code = isEdit ? StateManager.state.editingCode : Math.random().toString(36).substring(2, 8).toUpperCase(); const ref = document.getElementById('input-referee').value || 'Local';
-            let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : { maxSets: 3, ptsPerSet: 25, ptsTieBreak: 15 }; if(isEdit && StateManager.state.matches[code] && StateManager.state.matches[code].rules) rules = StateManager.state.matches[code].rules;
-            const baseStats = { ataque:0, bloqueo:0, ace:0, f_fuera:0, f_red:0, f_llevada:0, f_doble:0, f_linea:0, f_rotacion:0, f_invasion:0, simple:0 };
-            const mData = isEdit ? { ...StateManager.state.matches[code], teams: StateManager.state.draft, referee: ref } : { code, status: 'active', teams: StateManager.state.draft, referee: ref, rules: rules, scores: { A: 0, B: 0 }, sets: { A: 0, B: 0 }, timer: { isRunning: false, elapsedTime: 0, startTime: null }, stats: { A: {...baseStats}, B: {...baseStats} }, timeline: { 1:[], 2:[], 3:[], 4:[], 5:[] }, currentSet: 1, historySets: [], historySnapshots: [] };
+            let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); if(isEdit && StateManager.state.matches[code] && StateManager.state.matches[code].rules) rules = StateManager.state.matches[code].rules;
+            const mData = isEdit ? { ...StateManager.state.matches[code], teams: StateManager.state.draft, referee: ref } : { code, status: 'active', teams: StateManager.state.draft, referee: ref, rules: rules, scores: { A: 0, B: 0 }, sets: { A: 0, B: 0 }, timer: { isRunning: false, elapsedTime: 0, startTime: null }, stats: { A: DEFAULTS.stats(), B: DEFAULTS.stats() }, timeline: { 1:[], 2:[], 3:[], 4:[], 5:[] }, currentSet: 1, historySets: [], historySnapshots: [], timeouts: { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }, broadcast: DEFAULTS.broadcast(), courtSwapped: false, servingFirst: null };
             StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: mData } }); NetworkLayer.push(code, mData, StateManager.state.currentTenant, true); StateManager.dispatch('NAVIGATE', { screen: 'dashboard' });
         },
 
-        recordStat(type) { document.getElementById('stats-modal').classList.remove('active'); this.score(StateManager.state.currentStatTeam, 1, type); },
-        score(team, val, statType = null) {
-            const m = StateManager.state.matches[StateManager.state.roomCode]; if (val < 0 && m.scores[team] === 0) return;
-            if (val > 0 && !m.timer.isRunning) { AudioEngine.error(); UIEngine.modal('RELOJ DETENIDO', 'Reanuda el tiempo para anotar.', [{text:'OK',type:'cancel'}]); return; }
-            if(val > 0) { if (team==='A') AudioEngine.popA(); else AudioEngine.popB(); }
+        recordStat(type) { document.getElementById('stats-modal').classList.remove('active'); this.score(StateManager.state.currentStatTeam, type); },
+        
+        score(team, statType = 'simple') {
+            const m = StateManager.state.matches[StateManager.state.roomCode]; 
+            if (!m.timer || !m.timer.isRunning) { AudioEngine.error(); UIEngine.modal('RELOJ DETENIDO', 'Reanuda el tiempo para modificar el marcador.', [{text:'OK',type:'cancel'}]); return; }
+            if (m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning) { AudioEngine.error(); return; }
+
+            const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25);
+            if ((m.scores.A >= limit || m.scores.B >= limit) && Math.abs(m.scores.A - m.scores.B) >= 2) { AudioEngine.error(); UIEngine.modal('SET TERMINADO', 'El límite de puntos ya se alcanzó.', [{text:'OK',type:'cancel'}]); return; }
+
+            if (team === 'A') AudioEngine.popA(); else AudioEngine.popB();
             const box = document.getElementById(`score-${team}`); if(box) { box.classList.remove('score-anim'); void box.offsetWidth; box.classList.add('score-anim'); }
-            StateManager.mutateMatch(match => { match.scores[team] += val; if (match.scores[team] < 0) match.scores[team] = 0; if(val > 0) { if(statType && match.stats && match.stats[team]) match.stats[team][statType] = (match.stats[team][statType] || 0) + 1; if(match.timeline && match.timeline[match.currentSet]) match.timeline[match.currentSet].push(team); } }, false, false);
+            
+            // Mapper temporal para el texto del historial
+            const statDictMap = {
+                'ataque': 'STAT_ATK', 'bloqueo': 'STAT_BLK', 'ace': 'STAT_ACE',
+                'f_fuera': 'STAT_OUT', 'f_red': 'STAT_NET', 'f_llevada': 'STAT_CARRY',
+                'f_doble': 'STAT_DOUBLE', 'f_linea': 'STAT_LINE', 'f_rotacion': 'STAT_ROT',
+                'f_invasion': 'STAT_INV', 'simple': 'STAT_SIMPLE'
+            };
+            const mappedKey = statDictMap[statType];
+            const reasonTrans = mappedKey ? StateManager.t(mappedKey) : statType;
+            const desc = `${StateManager.t('POINT_FOR')} ${m.teams[team].name} (${reasonTrans})`;
+            
+            StateManager.mutateMatch(match => { 
+                match.scores[team] += 1; 
+                if(match.stats && match.stats[team]) match.stats[team][statType] = (match.stats[team][statType] || 0) + 1; 
+                
+                if(match.timeline && match.timeline[match.currentSet]) {
+                    match.timeline[match.currentSet].push({
+                        t: team,
+                        r: statType,
+                        s: `${match.scores.A} - ${match.scores.B}`
+                    });
+                }
+            }, false, false, desc);
+
+            const updatedM = StateManager.state.matches[StateManager.state.roomCode];
+            if (updatedM.currentSet === updatedM.rules?.maxSets && (updatedM.scores.A === 8 || updatedM.scores.B === 8) && (updatedM.scores.A + updatedM.scores.B === 8)) { setTimeout(() => { StateManager.mutateMatch(m2 => { m2.courtSwapped = !m2.courtSwapped; }, false, true, "Cambio de lado (Punto 8)"); }, 1500); }
+            if ((updatedM.scores.A >= limit || updatedM.scores.B >= limit) && Math.abs(updatedM.scores.A - updatedM.scores.B) >= 2) { setTimeout(() => this.promptFinishSet(), 800); }
         },
 
-        promptFinishSet() {
-            const m = StateManager.state.matches[StateManager.state.roomCode];
-            UIEngine.modal('CERRAR SET', `¿Confirmar que el set terminó ${m.scores.A} - ${m.scores.B}?`, [
-                {text:'CANCELAR', type:'cancel'},
-                {text:'CONFIRMAR', type:'confirm', callback:()=>this.executeFinishSet()}
-            ]);
-        },
-
+        promptFinishSet() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!code || !m || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning) return; UIEngine.modal('CERRAR SET', `¿Confirmar que el set terminó ${m.scores.A} - ${m.scores.B}?`, [{text:StateManager.t('CANCEL'), type:'cancel'}, {text:'CONFIRMAR', type:'confirm', callback:()=>this.executeFinishSet()}]); },
         executeFinishSet() {
             AudioEngine.horn(); const f = document.getElementById('flash-overlay'); f.classList.add('flash-active'); setTimeout(()=>f.classList.remove('flash-active'), 100);
             StateManager.mutateMatch(m => {
                 const winner = m.scores.A > m.scores.B ? 'A' : (m.scores.B > m.scores.A ? 'B' : null); if (winner) m.sets[winner]++;
                 if(!m.historySets) m.historySets = []; m.historySets.push({ A: m.scores.A, B: m.scores.B });
-                m.scores.A = 0; m.scores.B = 0; if(!m.currentSet) m.currentSet = 1; m.currentSet++;
-                if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; }
-            }, false, true); // Immediate sync on set close
+                const setsToWin = Math.ceil((m.rules?.maxSets || 3) / 2);
+                if (m.sets.A >= setsToWin || m.sets.B >= setsToWin) { m.status = 'finished'; if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; } m.timeouts = { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }; } 
+                else { m.scores.A = 0; m.scores.B = 0; if(!m.currentSet) m.currentSet = 1; m.currentSet++; m.courtSwapped = !m.courtSwapped; if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; } m.timeouts = { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }; }
+            }, false, true, "Cierre de Set"); 
+            const s = StateManager.state; if (s.matches[s.roomCode].status === 'finished') { StateManager.dispatch('LEAVE_BOARD'); UIEngine.modal('PARTIDO FINALIZADO', 'El partido ha concluido oficialmente.', [{text:'OK', type:'confirm'}]); }
         },
-
-        finishMatch() { AudioEngine.end(); StateManager.mutateMatch(m => { m.status = 'finished'; if(m.timer.isRunning) { m.timer.isRunning=false; m.timer.elapsedTime+=(Date.now()-m.timer.startTime); } }, false, true); StateManager.dispatch('NAVIGATE', { screen: 'dashboard' }); },
+        finishMatch() { AudioEngine.end(); StateManager.mutateMatch(m => { m.status = 'finished'; if(m.timer.isRunning) { m.timer.isRunning=false; m.timer.elapsedTime+=(Date.now()-m.timer.startTime); } }, false, true, "Fin Manual"); StateManager.dispatch('LEAVE_BOARD'); },
     };
 
     const UIEngine = {
-        render(s) {
-            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active')); const activeScreen = document.getElementById(`screen-${s.screen}`); if(activeScreen) activeScreen.classList.add('active');
-            document.getElementById('app-container').classList.toggle('stats-active', s.statsMode);
+        applyi18n() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (DICT[StateManager.state.lang] && DICT[StateManager.state.lang][key]) {
+                    if (el.tagName === 'INPUT' && el.type === 'text') el.placeholder = DICT[StateManager.state.lang][key];
+                    else el.innerHTML = DICT[StateManager.state.lang][key];
+                }
+            });
+            const langTxt = document.getElementById('current-lang-text');
+            if (langTxt) langTxt.innerText = StateManager.state.lang;
+        },
 
+        triggerShake(elementId) { const el = document.getElementById(elementId); if(el) { el.classList.remove('ui-shake'); void el.offsetWidth; el.classList.add('ui-shake'); } },
+        appendChatMessage(nick, msg, isMe) { const cont = document.getElementById('chat-messages-container'); const div = document.createElement('div'); div.className = isMe ? 'chat-msg me' : 'chat-msg'; div.innerHTML = `<span class="chat-nick">${nick}:</span><span class="chat-text">${msg}</span>`; cont.appendChild(div); cont.scrollTop = cont.scrollHeight; },
+        spawnReaction(emoji) { const rightCol = document.querySelector('.chat-right-col'); const el = document.createElement('div'); el.className = 'floating-emoji'; el.innerText = emoji; el.style.left = Math.floor(Math.random() * 80 + 10) + '%'; rightCol.appendChild(el); setTimeout(() => { if (el && el.parentNode) el.parentNode.removeChild(el); }, 2000); },
+
+        renderConnectionState() {
+            const hLeft = document.getElementById('header-left-slot');
+            if (StateManager.state.role === 'client' && hLeft) {
+                hLeft.innerHTML = `<div class="live-indicator ${NetworkLayer.connectionStatus ? 'is-live' : ''}"><div class="live-dot"></div> <span data-i18n="LIVE">${StateManager.t('LIVE')}</span></div>`;
+            }
+        },
+
+        renderPlays(containerId, m) {
+            const cont = document.getElementById(containerId);
+            if (!cont) return;
+            const plays = m.timeline && m.timeline[m.currentSet] ? m.timeline[m.currentSet] : [];
+            if (plays.length === 0) { cont.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding: 2vh 0; font-size:0.8rem;">Sin jugadas aún en este set.</div>`; return; }
+
+            const getIcon = (type) => {
+                const map = {
+                    'ataque': '<i class="ph-fill ph-hand-fist"></i>',
+                    'bloqueo': '<i class="ph-fill ph-wall"></i>',
+                    'ace': '<i class="ph-fill ph-target"></i>',
+                    'f_fuera': '<i class="ph-bold ph-arrow-u-down-right"></i>',
+                    'f_red': '<i class="ph-bold ph-hash"></i>',
+                    'f_llevada': '<i class="ph-bold ph-hand-grabbing"></i>',
+                    'f_doble': '<i class="ph-bold ph-number-circle-two"></i>',
+                    'f_linea': '<i class="ph-bold ph-footprints"></i>',
+                    'f_rotacion': '<i class="ph-bold ph-arrows-clockwise"></i>',
+                    'f_invasion': '<i class="ph-fill ph-warning-circle"></i>',
+                    'simple': '<i class="ph-fill ph-lightning"></i>'
+                };
+                return map[type] || '<i class="ph-fill ph-volleyball"></i>';
+            };
+
+            const dictMap = {
+                'ataque': 'STAT_ATK', 'bloqueo': 'STAT_BLK', 'ace': 'STAT_ACE',
+                'f_fuera': 'STAT_OUT', 'f_red': 'STAT_NET', 'f_llevada': 'STAT_CARRY',
+                'f_doble': 'STAT_DOUBLE', 'f_linea': 'STAT_LINE', 'f_rotacion': 'STAT_ROT',
+                'f_invasion': 'STAT_INV', 'simple': 'STAT_SIMPLE'
+            };
+            
+            let html = '';
+            for(let i = plays.length - 1; i >= 0; i--) {
+                const p = plays[i];
+                let teamStr = typeof p === 'string' ? p : p.t;
+                let statType = typeof p === 'string' ? 'simple' : p.r;
+                
+                // Mapeo seguro de textos
+                let mappedKey = dictMap[statType];
+                let reasonTxt = typeof p === 'string' ? StateManager.t('STAT_SIMPLE') : (mappedKey ? StateManager.t(mappedKey) : statType);
+                
+                let scoreTxt = typeof p === 'string' ? '--' : p.s;
+                let iconHtml = getIcon(statType);
+
+                let scoreA = "-", scoreB = "-";
+                if(scoreTxt.includes(" - ")) {
+                    [scoreA, scoreB] = scoreTxt.split(" - ");
+                }
+
+                const teamColor = m.teams[teamStr].color;
+                const colorA = teamStr === 'A' ? m.teams.A.color : 'rgba(255,255,255,0.15)';
+                const colorB = teamStr === 'B' ? m.teams.B.color : 'rgba(255,255,255,0.15)';
+                const isError = statType.startsWith('f_');
+                const iconColor = isError ? 'var(--color-danger)' : teamColor;
+
+                // V8.8.0 TRUE 1-LINE LAYOUT
+                html += `
+                <div style="background: var(--bg-surface); border-radius: 8px; padding: 1vh 5px; border-left: 4px solid ${teamColor}; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8vh; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                    
+                    <div style="display: flex; align-items: center; gap: 6px; flex: 1; overflow: hidden; white-space: nowrap;">
+                        <span style="color: ${iconColor}; font-size: 1.1rem; display: flex; flex-shrink: 0; filter: drop-shadow(0 0 5px ${iconColor}80);">${iconHtml}</span>
+                        <span style="color: ${teamColor}; font-weight: 800; font-family: var(--font-condensed); font-size: 0.9rem; text-transform: uppercase; text-overflow: ellipsis; overflow: hidden; letter-spacing: 0.5px;">${m.teams[teamStr].name}</span>
+                        <span style="color: var(--text-muted); font-size: 0.75rem; font-family: var(--font-condensed); text-transform: uppercase; flex-shrink: 0;">• ${reasonTxt}</span>
+                    </div>
+                    
+                    <div style="font-family: var(--font-display); font-size: 1.4rem; display: flex; gap: 4px; align-items: center; margin-left: 8px; flex-shrink: 0; padding-right: 2px;">
+                        <span style="color: ${colorA}; text-shadow: ${teamStr === 'A' ? `0 0 8px ${colorA}` : 'none'}; transition: 0.3s; width: 22px; text-align: right;">${scoreA}</span>
+                        <span style="color: rgba(255,255,255,0.15); font-size: 0.9rem;">-</span>
+                        <span style="color: ${colorB}; text-shadow: ${teamStr === 'B' ? `0 0 8px ${colorB}` : 'none'}; transition: 0.3s; width: 22px; text-align: left;">${scoreB}</span>
+                    </div>
+
+                </div>`;
+            }
+            cont.innerHTML = html;
+        },
+
+        render(s) {
+            this.applyi18n();
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active')); const activeScreen = document.getElementById(`screen-${s.screen}`); if(activeScreen) activeScreen.classList.add('active');
+            document.getElementById('lang-cycle-btn').style.display = s.screen === 'role' ? 'flex' : 'none';
+            
             if (s.screen === 'auth') {
                 const c = document.getElementById('auth-dynamic-fields');
-                if (s.pendingRole === 'client') c.innerHTML = `<input type="text" id="auth-code" class="modern-input" placeholder="CÓDIGO DE SALA">`;
-                else if (s.pendingRole === 'superuser') c.innerHTML = `<input type="password" id="auth-pass" class="modern-input" placeholder="MASTER PIN">`;
-                else c.innerHTML = `<input type="text" id="auth-user" class="modern-input" placeholder="USUARIO"><input type="password" id="auth-pass" class="modern-input" placeholder="CONTRASEÑA">`;
+                if (s.pendingRole === 'client') { c.innerHTML = `<input type="text" id="auth-code" class="modern-input" autocomplete="off" autocapitalize="none" placeholder="CÓDIGO DE SALA"><input type="text" id="auth-nick" class="modern-input" autocomplete="off" maxlength="10" placeholder="TU APODO (Ej: Juan)">`; }
+                else if (s.pendingRole === 'superuser') c.innerHTML = `<input type="password" id="auth-pass" class="modern-input" autocomplete="new-password" placeholder="MASTER PIN">`;
+                else c.innerHTML = `<input type="text" id="auth-user" class="modern-input" autocomplete="off" autocapitalize="none" placeholder="USUARIO"><input type="password" id="auth-pass" class="modern-input" autocomplete="new-password" placeholder="CONTRASEÑA">`;
             }
-            if (s.screen === 'dashboard-super') {
-                document.getElementById('su-tenant-list').innerHTML = s.tenantsList.map(t => `<div style="background:var(--bg-surface); padding:1.5vh 4vw; border-radius:12px; border-left:4px solid var(--text-accent); display:flex; justify-content:space-between; align-items:center;"><div><div style="font-weight:800; color:var(--text-main); font-size:1rem;">${t.tenant}</div><div style="font-size:0.7rem; color:var(--text-muted);">Admin: ${t.username}</div></div><div class="pass-reveal" data-pass="${t.password}">••••••••</div></div>`).join('');
-            }
+            if (s.screen === 'dashboard-super') { document.getElementById('su-tenant-list').innerHTML = s.tenantsList.map(t => `<div style="background:var(--bg-surface); padding:1.5vh 4vw; border-radius:12px; border-left:4px solid var(--text-accent); display:flex; justify-content:space-between; align-items:center;"><div><div style="font-weight:800; color:var(--text-main); font-size:1rem;">${t.tenant}</div><div style="font-size:0.7rem; color:var(--text-muted);">Admin: ${t.username}</div></div><div class="pass-reveal" data-pass="${t.password}">••••••••</div></div>`).join(''); }
             if (s.screen === 'dashboard') {
+                const headerTitle = document.getElementById('dash-title');
+                if (s.role === 'admin') { headerTitle.innerHTML = `<i class="ph-fill ph-user-gear"></i> ${s.currentTenant}`; } else { headerTitle.innerHTML = `<i class="ph-fill ph-flag"></i> REF: ${s.currentUser}`; }
                 document.querySelectorAll('.nav-tab').forEach(el=>el.classList.remove('active-tab')); document.getElementById('dtab-' + s.dashTab).classList.add('active-tab');
                 const list = Object.values(s.matches).filter(m => (s.role === 'referee' ? m.referee === s.currentUser : true) && m.status === s.dashTab);
                 document.getElementById('dashboard-list').innerHTML = list.map(m => {
                     const started = (m.scores.A > 0 || m.scores.B > 0 || m.sets.A > 0 || m.sets.B > 0);
-                    let ctrl = '', winnerA='', winnerB=''; if(m.status==='finished'){ const w = m.sets.A>m.sets.B?'A':'B'; if(w==='A')winnerA='<i class="ph-fill ph-trophy"></i>'; else winnerB='<i class="ph-fill ph-trophy"></i>'; }
-                    if (s.dashTab === 'active' && s.role === 'admin') ctrl = `<div class="card-actions"><button class="nav-btn" data-action="EDIT_MATCH" data-code="${m.code}"><i class="ph ph-pencil-simple"></i> Editar</button>${!started?`<button class="nav-btn" style="color:var(--color-danger);" data-action="DELETE_MATCH" data-code="${m.code}"><i class="ph ph-trash"></i></button>`:''}</div>`;
-                    return `<div class="dash-card match-card"><div class="card-header"><span class="card-code" data-action="LOAD_ROOM" data-code="${m.code}">${m.code}</span> <span class="card-tenant">${m.tenant || s.currentTenant}</span></div><div class="card-teams" data-action="LOAD_ROOM" data-code="${m.code}"><div style="flex:1; color:${m.teams.A.color}">${m.teams.A.name} ${winnerA}</div><div style="color:var(--text-muted); font-size:0.75rem;">VS</div><div style="flex:1; text-align:right; color:${m.teams.B.color}">${winnerB} ${m.teams.B.name}</div></div><div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">Sets: ${m.sets.A} - ${m.sets.B} • Ref: ${m.referee}</div>${ctrl}</div>`;
+                    let ctrl = '', winnerA='', winnerB=''; 
+                    if(m.status==='finished'){ const w = m.sets.A > m.sets.B ? 'A' : 'B'; if(w==='A') winnerA='<i class="ph-fill ph-trophy"></i>'; else winnerB='<i class="ph-fill ph-trophy"></i>'; }
+                    if (s.dashTab === 'active' && s.role === 'admin') { ctrl = `<div class="card-actions"><button class="nav-btn ui-pulse" data-action="EDIT_MATCH" data-code="${m.code}"><i class="ph ph-pencil-simple"></i> Editar</button>${!started?`<button class="nav-btn ui-pulse" style="color:var(--color-danger);" data-action="DELETE_MATCH" data-code="${m.code}"><i class="ph ph-trash"></i></button>`:''}</div>`; }
+                    const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25);
+                    const isMatchPoint = s.dashTab === 'active' && ((m.scores.A >= limit - 1 && m.scores.A > m.scores.B) || (m.scores.B >= limit - 1 && m.scores.B > m.scores.A)) && (m.sets.A === Math.ceil((m.rules?.maxSets||3)/2)-1 || m.sets.B === Math.ceil((m.rules?.maxSets||3)/2)-1);
+                    const alertClass = isMatchPoint ? 'dashboard-match-point-alert' : '';
+                    let historyString = '';
+                    if(m.historySets && m.historySets.length > 0) { historyString = m.historySets.map((set, i) => `<span style="background:rgba(255,255,255,0.05); padding: 4px 8px; border-radius:6px; border:1px solid rgba(255,255,255,0.1);">S${i+1}: ${set.A}-${set.B}</span>`).join(''); if (m.status !== 'finished') historyString += `<span style="color:var(--text-accent); font-style:italic;"> | ${StateManager.t('SET_CURR', {X: m.currentSet})}</span>`; } 
+                    else { historyString = `<span style="color:var(--text-muted); font-style:italic;">${StateManager.t('SET_CURR', {X: m.currentSet})}</span>`; }
+                    const scoreDisplay = `<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 0 3vw;"><div style="font-family:var(--font-display); font-size: 2.2rem; color:var(--text-main); line-height:1; letter-spacing:0px;">${m.sets.A} - ${m.sets.B}</div><div style="font-size: 0.6rem; color:var(--text-muted); font-weight:800; letter-spacing:0px; margin-top: 2px;">SETS</div></div>`;
+                    return `<div class="dash-card match-card ui-pulse ${alertClass}"><div class="card-header"><span class="card-code" data-action="LOAD_ROOM" data-code="${m.code}">${m.code}</span> <span class="card-tenant">${m.tenant || s.currentTenant}</span></div><div class="card-teams" data-action="LOAD_ROOM" data-code="${m.code}" style="align-items: center;"><div style="flex:1; color:${m.teams.A.color}; font-size:1.05rem;">${m.teams.A.name} ${winnerA}</div>${scoreDisplay}<div style="flex:1; text-align:right; color:${m.teams.B.color}; font-size:1.05rem;">${winnerB} ${m.teams.B.name}</div></div><div style="font-size:0.75rem; color:var(--text-muted); font-weight:700; margin-bottom:1vh; display:flex; flex-wrap:wrap; gap:6px;">${historyString}</div><div style="font-size:0.7rem; color:var(--text-muted); margin-top: auto;">Ref: ${m.referee}</div>${ctrl}</div>`;
                 }).join('');
                 document.getElementById('admin-controls').style.display = s.role === 'admin' ? 'flex' : 'none';
             }
-            if (s.screen === 'referees') { 
-                document.getElementById('referees-list-container').innerHTML = s.refereesList.map(r => `<div style="background:var(--bg-surface); padding:1.5vh 4vw; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap: 2vw;"><div style="font-weight:700; color:var(--text-main); font-size:0.95rem; flex:1; overflow:hidden; text-overflow:ellipsis;"><i class="ph-fill ph-user-circle" style="color:var(--text-accent);"></i> ${r.username}</div><div class="pass-reveal" data-pass="${r.password}">••••••••</div><button class="btn-icon" style="color:var(--color-danger); font-size: 1.2rem; padding: 0.5vh;" data-action="DELETE_REFEREE" data-user="${r.username}"><i class="ph ph-trash"></i></button></div>`).join(''); 
-            }
+            if (s.screen === 'referees') { document.getElementById('referees-list-container').innerHTML = s.refereesList.map(r => `<div style="background:var(--bg-surface); padding:1.5vh 4vw; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap: 2vw;"><div style="font-weight:700; color:var(--text-main); font-size:0.95rem; flex:1; overflow:hidden; text-overflow:ellipsis;"><i class="ph-fill ph-user-circle" style="color:var(--text-accent);"></i> ${r.username}</div><div class="pass-reveal" data-pass="${r.password}">••••••••</div><button class="btn-icon ui-pulse" style="color:var(--color-danger); font-size: 1.2rem; padding: 0.5vh;" data-action="DELETE_REFEREE" data-user="${r.username}"><i class="ph ph-trash"></i></button></div>`).join(''); }
+            
             if (s.screen === 'config') {
-                document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active-tab')); document.getElementById('tab-' + s.cfgTeam).classList.add('active-tab'); document.getElementById('input-team-name').value = s.draft[s.cfgTeam].name;
+                document.getElementById('cfg-team-indicator').innerText = s.cfgTeam === 'A' ? "CONFIG. LOCAL" : "CONFIG. VISITANTE"; document.getElementById('cfg-team-indicator').style.color = s.draft[s.cfgTeam].color;
+                document.querySelectorAll('#screen-config .nav-tab').forEach(el => el.classList.remove('active-tab')); document.getElementById('tab-' + s.cfgTeam).classList.add('active-tab'); document.getElementById('input-team-name').value = s.draft[s.cfgTeam].name;
                 let colorHtml = APP_COLORS.map(c => `<div class="color-circle ${s.draft[s.cfgTeam].color === c ? 'active' : ''}" style="background:${c};" data-action="SET_COLOR" data-color="${c}"></div>`).join('');
-                let curCol = s.draft[s.cfgTeam].color; let isCustom = !APP_COLORS.includes(curCol);
-                colorHtml += `<div style="position:relative; width:100%; aspect-ratio:1;"><div class="color-circle ${isCustom ? 'active' : ''}" style="background: conic-gradient(#EF4444, #F59E0B, #10B981, #38BDF8, #8B5CF6, #EC4899, #EF4444); color: white;"><i class="ph ph-palette"></i></div><input type="color" data-action="SET_CUSTOM_COLOR" value="${curCol.startsWith('#') && curCol.length===7 ? curCol : '#ffffff'}" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></div>`;
-                document.getElementById('color-grid-container').innerHTML = colorHtml;
-                document.getElementById('input-referee').innerHTML = s.refereesList.length>0 ? s.refereesList.map(r=>`<option value="${r.username}">${r.username}</option>`).join('') : '<option value="Local">Local</option>';
+                let curCol = s.draft[s.cfgTeam].color; let isCustom = !APP_COLORS.includes(curCol); colorHtml += `<div style="position:relative; width:100%; aspect-ratio:1;"><div class="color-circle ${isCustom ? 'active' : ''}" style="background: conic-gradient(#EF4444, #F59E0B, #10B981, #38BDF8, #8B5CF6, #EC4899, #EF4444); color: white;"><i class="ph ph-palette"></i></div><input type="color" data-action="SET_CUSTOM_COLOR" value="${curCol.startsWith('#') && curCol.length===7 ? curCol : '#ffffff'}" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;"></div>`;
+                document.getElementById('color-grid-container').innerHTML = colorHtml; document.getElementById('input-referee').innerHTML = s.refereesList.length>0 ? s.refereesList.map(r=>`<option value="${r.username}">${r.username}</option>`).join('') : `<option value="Local">${StateManager.t('NO_REF')}</option>`;
             }
             if (s.screen === 'board' && s.roomCode && s.matches[s.roomCode]) {
                 const m = s.matches[s.roomCode]; document.getElementById('match-code-display').innerText = m.code;
-                const limit = m.rules?.ptsPerSet || 25; const hBar = document.getElementById('history-bar');
-                if(m.historySets && m.historySets.length > 0) { hBar.innerHTML = m.historySets.map((set, i) => `<div class="sh-set">S${i+1}: ${set.A}-${set.B}</div>`).join(''); } else { hBar.innerHTML = 'SET 1 EN CURSO'; }
+                
+                if(s.role === 'client') { document.getElementById('board-wrapper').classList.add('client-mode'); this.renderConnectionState(); } 
+                else { document.getElementById('board-wrapper').classList.remove('client-mode'); }
+
+                const overlay = document.getElementById('broadcast-paused-overlay');
+                const chatInput = document.getElementById('chat-input');
+                const chatBtn = document.getElementById('btn-send-chat');
+
+                if (s.role === 'client') {
+                    if (m.broadcast && !m.broadcast.isLive) { overlay.style.display = 'flex'; } else { overlay.style.display = 'none'; }
+                    if (m.broadcast && !m.broadcast.chatEnabled) { 
+                        chatInput.disabled = true; chatBtn.disabled = true; 
+                        chatInput.placeholder = StateManager.t('CHAT_DISABLED'); 
+                    } else if (!EventManager.chatCooldownActive) { 
+                        chatInput.disabled = false; chatBtn.disabled = false; 
+                        chatInput.placeholder = "Mensaje..."; 
+                    }
+                } else {
+                    overlay.style.display = 'none';
+                }
+
+                if(s.role === 'referee') {
+                    document.getElementById('header-left-slot').innerHTML = `<button class="btn-icon ui-pulse" data-action="OPEN_BROADCAST_MENU" style="padding:0; margin-top:2px; color: ${m.broadcast?.isLive !== false ? 'var(--text-accent)' : 'var(--text-muted)'}"><i class="ph-fill ph-broadcast"></i></button>`;
+                    document.getElementById('toggle-broadcast-live').checked = m.broadcast?.isLive !== false;
+                    document.getElementById('toggle-broadcast-chat').checked = m.broadcast?.chatEnabled !== false;
+                }
+
+                this.renderPlays('plays-list-container', m);
+                if (s.role === 'referee') this.renderPlays('ref-plays-container', m);
+
+                const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25); 
+                const hBar = document.getElementById('history-bar');
+                if(m.historySets && m.historySets.length > 0) { hBar.innerHTML = m.historySets.map((set, i) => `<div class="sh-set">S${i+1}: ${set.A}-${set.B}</div>`).join(''); } 
+                else { hBar.innerHTML = StateManager.t('SET_CURR', {X: 1}); }
+
+                const boardCont = document.getElementById('board-teams-container');
+                if (m.courtSwapped) boardCont.classList.add('swapped'); else boardCont.classList.remove('swapped');
+
+                let servingTeam = m.servingFirst || null; 
+                const currentPlays = m.timeline && m.timeline[m.currentSet] ? m.timeline[m.currentSet] : [];
+                if (currentPlays.length > 0) {
+                    const lastPlay = currentPlays[currentPlays.length - 1];
+                    servingTeam = typeof lastPlay === 'string' ? lastPlay : lastPlay.t;
+                }
+                
+                let showHintA = false, showHintB = false;
+                if (m.scores.A === 0 && m.scores.B === 0 && !m.servingFirst) {
+                    showHintA = true; showHintB = true;
+                }
+
+                document.getElementById('btn-swap').style.display = s.role === 'referee' ? 'flex' : 'none';
 
                 ['A', 'B'].forEach(t => {
                     document.getElementById(`col-${t}`).style.setProperty('--team-color', m.teams[t].color);
-                    document.getElementById(`name-${t}`).innerText = m.teams[t].name; document.getElementById(`name-${t}`).style.color = m.teams[t].color;
-                    const sc = document.getElementById(`score-${t}`); sc.querySelector('.score-val').innerText = m.scores[t];
-                    sc.style.setProperty('--team-color', m.teams[t].color);
+                    const nameEl = document.getElementById(`name-${t}`); nameEl.innerText = m.teams[t].name; 
                     
-                    const isMatchPoint = m.scores[t] >= limit - 1 && m.scores[t] > m.scores[t==='A'?'B':'A']; sc.classList.toggle('match-point', isMatchPoint);
+                    const serveEl = document.getElementById(`serve-${t}`);
+                    if (servingTeam === t) {
+                        serveEl.style.display = 'inline-block';
+                        serveEl.style.color = 'var(--color-gold)';
+                        serveEl.style.opacity = '1';
+                    } else if ((showHintA && t === 'A') || (showHintB && t === 'B')) {
+                        serveEl.style.display = s.role === 'referee' ? 'inline-block' : 'none';
+                        serveEl.style.color = 'var(--text-muted)';
+                        serveEl.style.opacity = '0.3';
+                    } else {
+                        serveEl.style.display = 'none';
+                    }
+                    
+                    const sc = document.getElementById(`score-${t}`); sc.querySelector('.score-val').innerText = m.scores[t]; sc.style.setProperty('--team-color', m.teams[t].color);
+                    const opp = t === 'A' ? 'B' : 'A'; sc.classList.toggle('match-point', m.scores[t] >= limit - 1 && m.scores[t] > m.scores[opp]);
+                    
                     const dots = document.getElementById(`dots-${t}`); dots.innerHTML = ''; const req = Math.ceil((m.rules?.maxSets||3)/2);
                     for(let i=0; i<req; i++) { const d = document.createElement('div'); d.className = i<m.sets[t] ? 'dot won' : 'dot'; if(i<m.sets[t]) d.style.setProperty('--team-color', m.teams[t].color); dots.appendChild(d); }
+                    
+                    if(m.timeouts) {
+                        const tOut = m.timeouts[t]; const tDots = document.getElementById(`timeout-dots-${t}`); tDots.innerHTML = '';
+                        for(let i=0; i<2; i++) { const d = document.createElement('div'); d.className = i < tOut.left ? 'dot timeout-remaining' : 'dot timeout-used'; tDots.appendChild(d); }
+                        const tBtn = document.getElementById(`btn-timeout-${t}`);
+                        if (tOut.isRunning) { tBtn.innerHTML = `<i class="ph-fill ph-timer" style="font-size: 1.2rem;"></i> EN T/O`; tBtn.classList.add('active'); } 
+                        else { tBtn.innerHTML = `<i class="ph ph-timer" style="font-size: 1.2rem;"></i> T/O`; tBtn.classList.remove('active'); }
+                        if(tOut.left <= 0) tBtn.style.opacity = '0.3'; else tBtn.style.opacity = '1';
+                    }
                 });
                 
-                this.renderTime(); const ctrl = document.getElementById('board-controls');
-                if(s.role !== 'referee' || m.status === 'finished') {
-                    let exitAct = s.role === 'client' ? 'LOGOUT' : 'NAVIGATE'; let exitTarget = 'dashboard';
-                    ctrl.innerHTML = `<button class="nav-btn" data-action="TOGGLE_FULLSCREEN"><i class="ph ph-corners-out"></i> PANTALLA COMPLETA</button><button class="nav-btn" style="background: var(--bg-card);" data-action="${exitAct}" data-target="${exitTarget}"><i class="ph ph-sign-out"></i> SALIR</button>`;
+                this.renderTime(); this.renderTimeoutGlow(); 
+
+                const ctrl = document.getElementById('board-controls');
+                const tOutActive = m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning;
+
+                if(s.role !== 'referee' || m.status === 'finished' || tOutActive) {
+                    ctrl.innerHTML = `<button class="nav-btn ui-pulse" style="background: var(--bg-card);" data-action="LEAVE_BOARD"><i class="ph ph-arrow-left"></i> ${StateManager.t('BACK')}</button>`;
                 } else {
-                    ctrl.innerHTML = `<button class="nav-btn" style="${s.statsMode?'background:var(--text-accent);color:#000':''}" data-action="TOGGLE_STATS_MODE"><i class="ph ph-chart-bar"></i> ${s.statsMode?'ON':'OFF'}</button><button class="nav-btn" data-action="FINISH_SET"><i class="ph-fill ph-flag-checkered"></i> CERRAR SET</button><button class="nav-btn" data-action="UNDO_MATCH"><i class="ph ph-arrow-u-up-left"></i> DESHACER</button><button class="nav-btn" data-action="TOGGLE_FULLSCREEN"><i class="ph ph-corners-out"></i></button><button class="nav-btn" style="background:rgba(239, 68, 68, 0.15); color:var(--color-danger);" data-action="FINISH_MATCH"><i class="ph-fill ph-stop-circle"></i> FIN</button>`;
+                    ctrl.innerHTML = `
+                        <button class="nav-btn ui-pulse" data-action="OPEN_PLAYS_MENU"><i class="ph ph-list-numbers"></i> HISTORIAL</button>
+                        <button class="nav-btn ui-pulse" style="${s.statsMode?'background:var(--text-accent);color:#000;box-shadow: 0 0 10px rgba(56,189,248,0.5);':''}" data-action="TOGGLE_STATS_MODE">
+                            <i class="ph ${s.statsMode ? 'ph-chart-bar' : 'ph-lightning'}"></i> ${s.statsMode ? '[📊 DETALLE]' : '[⚡ RÁPIDO]'}
+                        </button>
+                        <button class="nav-btn ui-pulse" data-action="OPEN_UNDO"><i class="ph ph-arrow-u-up-left"></i></button>
+                        <button class="nav-btn ui-pulse" data-action="FINISH_SET"><i class="ph-fill ph-flag-checkered"></i> ${StateManager.t('FINISH_SET')}</button>
+                    `;
                 }
             }
         },
-        renderTime() {
-            const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m || !m.timer) return;
-            let ms = m.timer.elapsedTime; if (m.timer.isRunning && m.status !== 'finished' && m.timer.startTime) ms += (Date.now() - m.timer.startTime);
-            const h = String(Math.floor(ms/3600000)).padStart(2,'0'), min = String(Math.floor((ms%3600000)/60000)).padStart(2,'0'), sec = String(Math.floor((ms%60000)/1000)).padStart(2,'0');
-            const el = document.getElementById('timer'); if (el) { el.innerText = `${h}:${min}:${sec}`; el.classList.toggle('timer-paused', !m.timer.isRunning); }
+
+        renderTimeoutGlow() {
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; const overlay = document.getElementById('timeout-overlay-wrapper');
+            if(!code || !m || !m.timeouts || m.status === 'finished') { overlay.classList.remove('active'); return; }
+            const tA = m.timeouts.A; const tB = m.timeouts.B;
+            if(tA.isRunning) { this.activateOverlay(m.teams.A.name, m.teams.A.color, tA.currentTime); } else if (tB.isRunning) { this.activateOverlay(m.teams.B.name, m.teams.B.color, tB.currentTime); } else { overlay.classList.remove('active'); }
         },
-        modal(title, msg, actions) {
-            const m = document.getElementById('custom-modal'); document.getElementById('modal-title').innerHTML = title; document.getElementById('modal-msg').innerText = msg; const c = document.getElementById('modal-actions'); c.innerHTML = '';
-            actions.forEach(a => { const btn = document.createElement('button'); btn.className = `modal-btn modal-btn-${a.type}`; btn.innerText = a.text; btn.onclick = () => { m.classList.remove('active'); if (a.callback) a.callback(); }; c.appendChild(btn); }); m.classList.add('active');
-        }
+        activateOverlay(name, color, time) { const overlay = document.getElementById('timeout-overlay-wrapper'); const box = document.getElementById('timeout-overlay-box'); overlay.classList.add('active'); document.getElementById('overlay-timeout-timer').innerText = time; document.getElementById('overlay-timeout-team').innerText = name; document.getElementById('overlay-timeout-team').style.color = color; box.style.borderColor = color; box.style.boxShadow = `0 0 40px var(--color-danger)`; },
+        renderTime() { const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m || !m.timer) return; let ms = m.timer.elapsedTime; if (m.timer.isRunning && m.status !== 'finished' && m.timer.startTime) ms += (Date.now() - m.timer.startTime); const h = String(Math.floor(ms/3600000)).padStart(2,'0'), min = String(Math.floor((ms%3600000)/60000)).padStart(2,'0'), sec = String(Math.floor((ms%60000)/1000)).padStart(2,'0'); const el = document.getElementById('timer'); if (el) { el.innerText = `${h}:${min}:${sec}`; el.classList.toggle('timer-paused', !m.timer.isRunning); } },
+        modal(title, msg, actions) { AudioEngine.whistle(); const m = document.getElementById('custom-modal'); document.getElementById('modal-title').innerHTML = title; document.getElementById('modal-msg').innerText = msg; const c = document.getElementById('modal-actions'); c.innerHTML = ''; actions.forEach(a => { const btn = document.createElement('button'); btn.className = `modal-btn modal-btn-${a.type} ui-pulse`; btn.innerText = a.text; btn.onclick = () => { m.classList.remove('active'); if (a.callback) a.callback(); }; c.appendChild(btn); }); m.classList.add('active'); }
     };
 
     document.addEventListener('DOMContentLoaded', () => {
         StateManager.init(); EventManager.init(); TimerSystem.start(); NetworkLayer.setupRealtimeSync(); UIEngine.render(StateManager.state);
-        console.log("Volley Pro 6.0 PRO - Network Debounced, Clean UI, Set Closure Prompted.");
+        console.log("Volley Pro BETA v8.8.0 PRO - The Clean History Update.");
     });
 })();
 </script>
