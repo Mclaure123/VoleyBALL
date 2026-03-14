@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0B1120">
-    <title>Volley Pro 9.0.2 - BETA</title>
+    <title>Volley Pro 9.0.2 - BETA 2</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -603,7 +603,7 @@
             CANCEL: "CANCELAR", SAVE: "GUARDAR", STATS_MERIT: "MÉRITO (PUNTO A FAVOR)", STATS_ERR: "ERROR RIVAL (FALTAS)", STAT_ATK: "Ataque", STAT_BLK: "Bloqueo", 
             STAT_ACE: "Ace", STAT_OUT: "Fuera", STAT_NET: "Red", STAT_CARRY: "Llevada", STAT_DOUBLE: "Doble", STAT_LINE: "Línea", STAT_ROT: "Rotación", STAT_INV: "Invasión",
             STAT_SIMPLE: "Punto Rápido", OFFICIAL_CLOCK: "RELOJ OFICIAL", MATCH_ID: "ID PARTIDO", TIMEOUT_REQ: "TIEMPO FUERA SOLICITADO",
-            BACK: "VOLVER", FINISH_SET: "FIN SET", PAUSE: "PAUSA", FINISH_MATCH: "FIN", UNDO_LOG_TITLE: "HISTORIAL DE ACCIONES",
+            BACK: "VOLTAR", FINISH_SET: "FIN SET", PAUSE: "PAUSA", FINISH_MATCH: "FIN", UNDO_LOG_TITLE: "HISTORIAL DE ACCIONES",
             UNDO_LOG_MSG: "Selecciona el evento al que deseas regresar. El resto se borrará.", POINT_FOR: "PUNTO PARA", TIMEOUT_FOR: "TIEMPO FUERA",
             COIN_TOSS: "SORTEO INICIAL", COIN_TOSS_MSG: "Define el equipo que sacará primero y el lado de la cancha.", NO_REF: "Local (Sin Árbitro)", SET_CURR: "SET {X} EN CURSO",
             LIVE: "EN VIVO", CHAT: "CHAT", PLAYS: "JUGADAS", PAUSED_BROADCAST: "TRANSMISIÓN PAUSADA", CHAT_DISABLED: "Chat desactivado por árbitro", COOLDOWN: "Espera 3s...",
@@ -675,25 +675,12 @@
         
         async fetchAllMatches() { if (!supabase) return {}; const s = StateManager.state; let query = supabase.from('Vol_Matches').select('*'); if (s.role === 'admin' || s.role === 'referee') query = query.eq('tenant', s.currentTenant); const { data } = await query; if (!data) return {}; let map = {}; data.forEach(d => map[d.code] = d.state); return map; },
         
-        // V9.0.2 [BETA 2] - DIRECT SUPABASE AUTH
         async authenticate(role, username, password) { 
             if (!supabase) return { success: false, error: 'No hay conexión a la base de datos.' }; 
             try {
-                // If it's a superuser, force query user to be 'SuperAdmin' (per user's DB screenshot)
                 let queryUser = role === 'superuser' ? 'SuperAdmin' : username;
-                
-                const { data, error } = await supabase
-                    .from('Vol_Users')
-                    .select('*')
-                    .eq('username', queryUser)
-                    .eq('password', password)
-                    .eq('role', role)
-                    .single(); 
-                
-                if (error || !data) { 
-                    return { success: false, error: 'Usuario o contraseña incorrectos.' }; 
-                } 
-                
+                const { data, error } = await supabase.from('Vol_Users').select('*').eq('username', queryUser).eq('password', password).eq('role', role).single(); 
+                if (error || !data) { return { success: false, error: 'Usuario o contraseña incorrectos.' }; } 
                 StateManager.state.clientAuthAttempts = 0; 
                 return { success: true, user: data.username, tenant: data.tenant || 'GLOBAL' }; 
             } catch (e) {
@@ -710,11 +697,9 @@
         async updateUserPass(role, idField, idValue, newPass) { if (!supabase) return { success: false }; try { let query = supabase.from('Vol_Users').update({ password: newPass }).eq('role', role).eq(idField, idValue); if (role === 'referee') query = query.eq('tenant', StateManager.state.currentTenant); const { error } = await query; return { success: !error }; } catch(e) { return { success: false }; } },
         async deleteMatch(code) { if (!supabase) return; try { await supabase.from('Vol_Matches').delete().eq('code', code); } catch(e){} },
         
-        // V9.0 LIGAS DB OPS
         async fetchTournaments() { if (!supabase) return []; const { data } = await supabase.from('Vol_Tournaments').select('*').eq('tenant', StateManager.state.currentTenant).order('created_at', { ascending: false }); return data || []; },
         async createTournament(name) { if (!supabase) return { success: false }; const { error, data } = await supabase.from('Vol_Tournaments').insert({ tenant: StateManager.state.currentTenant, name }).select().single(); return { success: !error, tournament: data }; },
         
-        // V8.15.0 TEAMS & PLAYERS DB
         async fetchTeamsDB() { if (!supabase) return []; const { data } = await supabase.from('Vol_Teams').select('*').eq('tenant', StateManager.state.currentTenant); return data || []; },
         async createTeamDB(name, color) { if (!supabase) return { success: false }; const { error } = await supabase.from('Vol_Teams').insert({ tenant: StateManager.state.currentTenant, name, color }); return { success: !error }; },
         async deleteTeamDB(id) { if (!supabase) return { success: false }; const { error } = await supabase.from('Vol_Teams').delete().eq('id', id); return { success: !error }; },
@@ -815,19 +800,14 @@
                     case 'OPEN_BROADCAST_MENU': document.getElementById('broadcast-modal').classList.add('active'); break; case 'OPEN_PLAYS_MENU': document.getElementById('plays-modal-ref').classList.add('active'); break;
                     case 'SPEC_SWITCH_TAB': this.specSwitchTab(el.getAttribute('data-tab')); break;
                     case 'START_SCHEDULED_MATCH': StateManager.mutateMatch(m => { m.status = 'active'; }, false, true, "Inicio de Partido"); break;
-                    
-                    // DB TEAMS & ROSTER
                     case 'LOAD_TEAMS_SCREEN': this.loadTeamsScreen(); break; case 'CREATE_TEAM': this.createTeamDB(); break; case 'DELETE_TEAM_DB': this.deleteTeamDB(el.getAttribute('data-id')); break;
                     case 'VIEW_TEAM_ROSTER': this.loadPlayersDB(el.getAttribute('data-id'), el.getAttribute('data-name'), el.getAttribute('data-color')); break; case 'CREATE_PLAYER': this.createPlayerDB(); break; case 'DELETE_PLAYER_DB': this.deletePlayerDB(el.getAttribute('data-id')); break;
                     case 'OPEN_LIVE_ROSTER': this.openLiveRoster(el.getAttribute('data-team')); break; case 'SAVE_LIVE_ROSTER': this.saveLiveRoster(); break;
-
                     case 'OPEN_PENALTY': this.openPenaltyModal(); break; case 'PENALTY_TEAM_CHANGE': this.updatePenaltyPlayers(); break; case 'ISSUE_CARD': this.issueCard(el.getAttribute('data-color')); break;
                     case 'RECORD_STAT': this.prepareStat(el.getAttribute('data-stat')); break; case 'CONFIRM_STAT_PLAYER': this.confirmStatPlayer(el.getAttribute('data-player'), el.getAttribute('data-playername')); break;
                     case 'TOGGLE_VAR': this.toggleVar(); break;
                     case 'REPORT_TAB': document.querySelectorAll('#screen-report .nav-btn').forEach(b => b.classList.remove('active-tab')); el.classList.add('active-tab'); document.querySelectorAll('.report-tab-content').forEach(c => c.classList.remove('active')); document.getElementById('rtab-' + el.getAttribute('data-tab')).classList.add('active'); break;
                     case 'VIEW_REPORT': this.generateMatchReport(el.getAttribute('data-code')); break; case 'SHARE_REPORT': this.shareReport(); break;
-                    
-                    // V9.0 TACTICS & LEAGUES
                     case 'PROMPT_CREATE_TOURNAMENT': this.promptCreateTournament(); break;
                     case 'LOAD_STANDINGS': this.loadStandingsScreen(); break;
                     case 'LOAD_STANDINGS_TABLE': this.calculateStandings(); break;
@@ -862,92 +842,107 @@
             let secretTaps = 0, secretTimer = null; const titleEl = document.getElementById('app-title-secret'); if(titleEl) { titleEl.addEventListener('click', () => { secretTaps++; clearTimeout(secretTimer); if(secretTaps >= 5) { const suCard = document.getElementById('card-superuser'); if(suCard) { suCard.classList.add('secret-reveal'); if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } secretTaps = 0; } secretTimer = setTimeout(() => { secretTaps = 0; }, 1000); }); }
         },
 
-        // V9.0.2 [BETA 2] ROBUST AUTHENTICATION
         async verify() { 
             const role = StateManager.state.pendingRole; 
             const hint = document.getElementById('auth-hint'); 
             const btnSubmit = document.getElementById('btn-auth-submit');
-            
-            hint.innerText = 'Verificando en Supabase...'; 
-            btnSubmit.disabled = true; 
+            hint.innerText = 'Verificando en Supabase...'; btnSubmit.disabled = true; 
             
             try {
-                // LÓGICA PARA ESPECTADORES
                 if (role === 'client') { 
                     const codeEl = document.getElementById('auth-code');
                     const nickEl = document.getElementById('auth-nick');
                     const code = codeEl ? codeEl.value.trim().toUpperCase() : '';
                     const nick = nickEl ? (nickEl.value.trim() || 'Fan') : 'Fan';
-                    
-                    if(!code) { 
-                        hint.innerText = "Ingresa el código del partido."; 
-                        UIEngine.triggerShake('btn-auth-submit'); 
-                        btnSubmit.disabled = false;
-                        return; 
-                    }
-                    
-                    if (!StateManager.state.matches || !StateManager.state.matches[code]) {
-                        hint.innerText = "El partido no existe o ya finalizó."; 
-                        UIEngine.triggerShake('btn-auth-submit'); 
-                        btnSubmit.disabled = false;
-                        return;
-                    }
-
-                    StateManager.state.nickname = nick;
-                    StateManager.dispatch('LOAD_ROOM', { code });
-                    hint.innerText = '';
-                    btnSubmit.disabled = false;
-                    return; 
+                    if(!code) { hint.innerText = "Ingresa el código del partido."; UIEngine.triggerShake('btn-auth-submit'); btnSubmit.disabled = false; return; }
+                    if (!StateManager.state.matches || !StateManager.state.matches[code]) { hint.innerText = "El partido no existe o ya finalizó."; UIEngine.triggerShake('btn-auth-submit'); btnSubmit.disabled = false; return; }
+                    StateManager.state.nickname = nick; StateManager.dispatch('LOAD_ROOM', { code }); hint.innerText = ''; btnSubmit.disabled = false; return; 
                 } 
 
-                // LÓGICA PARA SUPER, ADMIN Y ÁRBITRO
-                const userEl = document.getElementById('auth-user');
-                const passEl = document.getElementById('auth-pass');
-                const user = userEl ? userEl.value.trim() : ''; 
-                const pass = passEl ? passEl.value.trim() : ''; 
+                const userEl = document.getElementById('auth-user'); const passEl = document.getElementById('auth-pass');
+                const user = userEl ? userEl.value.trim() : ''; const pass = passEl ? passEl.value.trim() : ''; 
                 
-                if (!pass) {
-                    hint.innerText = "La contraseña es obligatoria.";
-                    UIEngine.triggerShake('btn-auth-submit');
-                    btnSubmit.disabled = false;
-                    return;
-                }
-                if (role !== 'superuser' && !user) {
-                    hint.innerText = "El nombre de usuario es obligatorio.";
-                    UIEngine.triggerShake('btn-auth-submit');
-                    btnSubmit.disabled = false;
-                    return;
-                }
+                if (!pass) { hint.innerText = "La contraseña es obligatoria."; UIEngine.triggerShake('btn-auth-submit'); btnSubmit.disabled = false; return; }
+                if (role !== 'superuser' && !user) { hint.innerText = "El nombre de usuario es obligatorio."; UIEngine.triggerShake('btn-auth-submit'); btnSubmit.disabled = false; return; }
 
-                // Llama a Supabase con los datos exactos que tipeaste
                 const res = await NetworkLayer.authenticate(role, user, pass); 
                 
                 if (res.success) { 
                     StateManager.dispatch('LOGIN', { user: res.user, tenant: res.tenant }); 
-                    const m = await NetworkLayer.fetchAllMatches(); 
-                    StateManager.dispatch('SYNC_MATCHES', { matches: m }); 
-                    
-                    if(role === 'superuser') { 
-                        const t = await NetworkLayer.fetchTenants(); 
-                        StateManager.dispatch('SET_TENANTS', { list: t }); 
-                    } else if (role === 'admin') { 
-                        const refs = await NetworkLayer.fetchReferees(); 
-                        StateManager.dispatch('SET_REFS', { list: refs }); 
-                    } 
+                    const m = await NetworkLayer.fetchAllMatches(); StateManager.dispatch('SYNC_MATCHES', { matches: m }); 
+                    if(role === 'superuser') { const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } 
+                    else if (role === 'admin') { const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); } 
                     hint.innerText = ''; 
                 } else { 
-                    UIEngine.triggerShake('btn-auth-submit'); 
-                    hint.innerText = res.error; 
+                    UIEngine.triggerShake('btn-auth-submit'); hint.innerText = res.error; 
                 } 
-            } catch (error) {
-                UIEngine.triggerShake('btn-auth-submit');
-                hint.innerText = "Error crítico de sistema.";
-            } finally {
-                btnSubmit.disabled = false; 
-            }
+            } catch (error) { UIEngine.triggerShake('btn-auth-submit'); hint.innerText = "Error crítico de sistema."; } finally { btnSubmit.disabled = false; }
         },
 
-        // V9.0 LIGAS LOGIC
+        // ==========================================
+        // FUNCIONES DE SÚPER USUARIO (GLOBAL)
+        // ==========================================
+        promptPasswordChange(type, id, currentPass) {
+            UIEngine.modal('GESTIÓN DE CONTRASEÑA', 
+                `<div style="text-align:left; margin-bottom: 2vh;">
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Usuario/Entidad:</div>
+                    <div style="font-weight: 800; color: var(--text-accent); margin-bottom: 1vh; text-transform: uppercase;">${id}</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Contraseña Actual:</div>
+                    <div class="pass-reveal" data-pass="${currentPass}" style="display:inline-block; margin-bottom: 2vh; font-size: 1.2rem;">••••••••</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5vh;">Nueva Contraseña (Opcional):</div>
+                    <input type="text" id="input-new-pass-modal" class="modern-input" placeholder="Escribe para cambiarla..." style="margin-bottom:0;">
+                </div>`, 
+                [ { text: 'CERRAR', type: 'cancel' }, { text: 'GUARDAR CAMBIO', type: 'confirm', callback: async () => {
+                        const newPass = document.getElementById('input-new-pass-modal').value.trim(); if (!newPass) return; 
+                        const idField = type === 'admin' ? 'tenant' : 'username'; const res = await NetworkLayer.updateUserPass(type, idField, id, newPass);
+                        if (res.success) { AudioEngine.popA(); if (type === 'admin') { const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } else if (type === 'referee') { const r = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: r }); } UIEngine.modal('ÉXITO', 'La contraseña ha sido actualizada en Supabase.', [{text:'OK', type:'confirm'}]); } else { UIEngine.modal('ERROR', 'Hubo un problema de conexión al cambiar la clave.', [{text:'OK', type:'cancel'}]); }
+                    }} ]
+            );
+        },
+        async suCreateAdmin() {
+            const tenant = document.getElementById('su-new-tenant').value.trim(); const pass = document.getElementById('su-new-pass').value.trim();
+            if (!tenant || !pass) return UIEngine.modal('ERROR', 'Completa el nombre de la entidad y la contraseña.', [{text:'OK', type:'cancel'}]);
+            const res = await NetworkLayer.createAdmin(tenant, pass);
+            if(res.success) { document.getElementById('su-new-tenant').value = ''; document.getElementById('su-new-pass').value = ''; const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); AudioEngine.popA(); } 
+            else { UIEngine.modal('ERROR', 'No se pudo crear. Quizás el nombre de la organización ya existe.', [{text:'OK', type:'cancel'}]); }
+        },
+        suDeleteAdmin(tenant) {
+            UIEngine.modal('ELIMINAR ORGANIZACIÓN', `¿Seguro que deseas eliminar a ${tenant}? Se borrará su acceso.`, [
+                {text:'CANCELAR', type:'cancel'}, {text:'ELIMINAR', type:'danger', callback: async () => { const res = await NetworkLayer.deleteAdmin(tenant); if(res.success) { const t = await NetworkLayer.fetchTenants(); StateManager.dispatch('SET_TENANTS', { list: t }); } }}
+            ]);
+        },
+
+        // ==========================================
+        // FUNCIONES DE ADMINISTRATIVO (LOCAL)
+        // ==========================================
+        async loadRefsScreen() { const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); StateManager.dispatch('NAVIGATE', { screen: 'referees' }); },
+        async createReferee() {
+            const user = document.getElementById('input-new-ref').value.trim(); const pass = document.getElementById('input-ref-pass').value.trim();
+            if (!user || !pass) return UIEngine.modal('ERROR', 'Escribe un usuario y contraseña para el árbitro.', [{text:'OK', type:'cancel'}]);
+            const res = await NetworkLayer.createReferee(user, pass);
+            if(res.success) { document.getElementById('input-new-ref').value = ''; document.getElementById('input-ref-pass').value = ''; const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); AudioEngine.popA(); } 
+            else { UIEngine.modal('ERROR', 'No se pudo crear. El nombre de usuario ya está en uso.', [{text:'OK', type:'cancel'}]); }
+        },
+        deleteReferee(user) {
+            UIEngine.modal('ELIMINAR ÁRBITRO', `¿Seguro que deseas eliminar el acceso del árbitro ${user}?`, [
+                {text:'CANCELAR', type:'cancel'}, {text:'ELIMINAR', type:'danger', callback: async () => { const res = await NetworkLayer.deleteReferee(user); if(res.success) { const refs = await NetworkLayer.fetchReferees(); StateManager.dispatch('SET_REFS', { list: refs }); } }}
+            ]);
+        },
+        deleteMatch(code) {
+            UIEngine.modal('ELIMINAR PARTIDO', `¿Estás seguro de borrar el partido ${code}? Esta acción es irreversible.`, [
+                {text:'CANCELAR', type:'cancel'}, {text:'SÍ, ELIMINAR', type:'danger', callback: () => { NetworkLayer.deleteMatch(code); StateManager.dispatch('DELETE_MATCH', { code }); }}
+            ]);
+        },
+
+        // ==========================================
+        // FUNCIÓN DEL VAR (ÁRBITRO)
+        // ==========================================
+        toggleVar() {
+            const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m) return;
+            if (m.varActive) { StateManager.mutateMatch(match => { match.varActive = false; }, false, true, "VAR Finalizado"); document.getElementById('var-overlay').style.display = 'none'; AudioEngine.whistle(); } 
+            else { StateManager.mutateMatch(match => { match.varActive = true; if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } }, false, true, "Desafío / VAR Solicitado"); document.getElementById('var-overlay').style.display = 'flex'; AudioEngine.horn(); }
+        },
+
         async startNewMatchSetup() { const t = await NetworkLayer.fetchTournaments(); StateManager.dispatch('SET_TOURNAMENTS', { list: t }); let html = '<option value="">-- Partido Amistoso (Sin Liga) --</option>'; t.forEach(tr => html += `<option value="${tr.id}">${tr.name}</option>`); document.getElementById('select-tournament').innerHTML = html; const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); StateManager.dispatch('INIT_NEW_MATCH'); },
         promptCreateTournament() { UIEngine.modal('NUEVA LIGA / TORNEO', '<input type="text" id="input-new-tournament" class="modern-input" placeholder="Nombre de la Liga (Ej: Verano 2026)" style="margin-bottom:0;">', [{ text: 'CANCELAR', type: 'cancel' }, { text: 'CREAR', type: 'confirm', callback: async () => { const name = document.getElementById('input-new-tournament').value.trim(); if(!name) return; const res = await NetworkLayer.createTournament(name); if(res.success) { AudioEngine.popA(); const list = await NetworkLayer.fetchTournaments(); let html = '<option value="">-- Partido Amistoso (Sin Liga) --</option>'; list.forEach(t => html += `<option value="${t.id}">${t.name}</option>`); document.getElementById('select-tournament').innerHTML = html; document.getElementById('select-tournament').value = res.tournament.id; } }}]); },
         openRulesModal() { let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); document.getElementById('admin-cfg-sets').value = rules.maxSets; document.getElementById('admin-cfg-pts').value = rules.ptsPerSet; document.getElementById('admin-cfg-tie').value = rules.ptsTieBreak; document.getElementById('admin-cfg-subs').checked = rules.fivbSubs || false; document.getElementById('rules-modal').classList.add('active'); },
@@ -957,7 +952,6 @@
             const code = Math.random().toString(36).substring(2, 8).toUpperCase(); const ref = document.getElementById('input-referee').value || 'Local'; const tid = document.getElementById('select-tournament').value || null; const schedDateStr = document.getElementById('input-schedule-date').value; let matchStatus = 'active'; if(schedDateStr) { matchStatus = 'scheduled'; }
             let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); 
             
-            // Auto-fill rosters if needed
             const pCount = rules.fivbSubs ? 12 : 6;
             ['A', 'B'].forEach(t => { if (!StateManager.state.draft[t].roster || StateManager.state.draft[t].roster.length === 0) { StateManager.state.draft[t].roster = Array.from({length: pCount}, (_, i) => ({ id: 'gen_'+t+'_'+(i+1), number: i+1, name: 'Jugador '+(i+1), is_captain: false, is_libero: false, on_court: false })); } });
 
@@ -985,7 +979,6 @@
             html += `</table>`; document.getElementById('standings-content').innerHTML = html;
         },
 
-        // V9.0 TACTICS LOGIC (FIVB)
         openStartersModal(teamCode) {
             const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m) return;
             document.getElementById('starters-team-name').innerText = m.teams[teamCode].name; document.getElementById('btn-save-starters').setAttribute('data-team', teamCode);
@@ -1019,7 +1012,6 @@
             document.getElementById('subs-modal').classList.remove('active'); AudioEngine.whistle();
         },
 
-        // V8.15.0 DB TEAMS & ROSTERS
         async loadTeamsScreen() { const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); StateManager.dispatch('SET_DB_PLAYERS', { list: [], teamId: null }); StateManager.dispatch('NAVIGATE', { screen: 'teams' }); },
         async createTeamDB() { const n = document.getElementById('input-new-team-name').value.trim(); const c = document.getElementById('input-new-team-color').value; if(!n) return; const res = await NetworkLayer.createTeamDB(n, c); if(res.success) { document.getElementById('input-new-team-name').value = ''; const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); } },
         deleteTeamDB(id) { UIEngine.modal('ELIMINAR EQUIPO', 'Borrará también a sus jugadores.', [{text: 'CANCELAR', type:'cancel'}, {text: 'BORRAR', type:'confirm', callback: async () => { const res = await NetworkLayer.deleteTeamDB(id); if(res.success) { const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); if(StateManager.state.currentDbTeamView === id) StateManager.dispatch('SET_DB_PLAYERS', { list: [], teamId: null }); } }}]); },
@@ -1029,17 +1021,12 @@
         openLiveRoster(teamCode) { const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m || StateManager.state.role !== 'referee') return; document.getElementById('live-roster-team-name').innerText = m.teams[teamCode].name; document.getElementById('live-roster-team-name').setAttribute('data-editing-team', teamCode); const roster = m.teams[teamCode].roster || []; let html = ''; roster.forEach((p, index) => { html += `<div style="display:flex; gap:2vw; background: var(--bg-card); padding: 1vh; border-radius: 8px; border: 1px solid var(--border-subtle);"><input type="number" class="modern-input live-edit-num" data-index="${index}" value="${p.number}" style="margin:0; flex:0.3; height:5vh;"><input type="text" class="modern-input live-edit-name" data-index="${index}" value="${p.name}" style="margin:0; flex:1; height:5vh;"></div>`; }); document.getElementById('live-roster-list').innerHTML = html; document.getElementById('live-roster-modal').classList.add('active'); },
         saveLiveRoster() { const teamCode = document.getElementById('live-roster-team-name').getAttribute('data-editing-team'); const m = StateManager.state.matches[StateManager.state.roomCode]; const nums = document.querySelectorAll('.live-edit-num'); const names = document.querySelectorAll('.live-edit-name'); let newRoster = JSON.parse(JSON.stringify(m.teams[teamCode].roster)); let usedNumbers = new Set(); let collisionDetected = false; nums.forEach((input, i) => { let proposedNum = parseInt(input.value) || 0; if (usedNumbers.has(proposedNum)) { proposedNum = 99 - i; collisionDetected = true; } newRoster[i].number = proposedNum; newRoster[i].name = names[i].value.trim() || 'Jugador ' + proposedNum; usedNumbers.add(proposedNum); }); StateManager.mutateMatch(match => { match.teams[teamCode].roster = newRoster; }, false, true, "Edición de Roster: " + match.teams[teamCode].name); document.getElementById('live-roster-modal').classList.remove('active'); if (collisionDetected) UIEngine.modal('NÚMEROS DUPLICADOS', 'El sistema corrigió automáticamente algunos números repetidos para evitar conflictos.', [{text:'OK', type:'cancel'}]); else AudioEngine.popA(); },
 
-        // CORE MATCH LOGIC & STATS
         prepareStat(statType) {
             document.getElementById('stats-modal').classList.remove('active');
             const s = StateManager.state; const teamScoring = s.currentStatTeam; const isError = statType.startsWith('f_'); const targetTeam = isError ? (teamScoring === 'A' ? 'B' : 'A') : teamScoring;
             s.pendingStat = { teamScoring, statType, targetTeam };
             const m = s.matches[s.roomCode]; const roster = m.teams[targetTeam].roster || [];
-            
-            // V9.0: Filtrado Inteligente de Titulares
-            let displayRoster = roster;
-            if (m.rules?.fivbSubs) { const onCourtPlayers = roster.filter(p => p.on_court); if(onCourtPlayers.length > 0) displayRoster = onCourtPlayers; }
-
+            let displayRoster = roster; if (m.rules?.fivbSubs) { const onCourtPlayers = roster.filter(p => p.on_court); if(onCourtPlayers.length > 0) displayRoster = onCourtPlayers; }
             document.getElementById('sp-title').innerText = isError ? '⚠️ ¿QUIÉN COMETIÓ LA FALTA?' : '⭐ ¿QUIÉN ANOTÓ?'; document.getElementById('sp-title').style.color = m.teams[targetTeam].color;
             let html = `<button class="btn-primary ui-pulse" style="grid-column: span 2; background: var(--bg-surface); color: var(--text-main); border: 1px solid var(--border-subtle);" data-action="CONFIRM_STAT_PLAYER" data-player="Equipo" data-playername="Colectivo">👤 EQUIPO / NO IDENTIFICADO</button>`;
             displayRoster.forEach(p => { html += `<button class="btn-primary ui-pulse" style="background: rgba(255,255,255,0.05); color: var(--text-main); font-size: 0.9rem; text-transform: uppercase;" data-action="CONFIRM_STAT_PLAYER" data-player="${p.number}" data-playername="${p.name}">#${p.number} ${p.name.substring(0,12)}</button>`; });
@@ -1059,7 +1046,6 @@
             if ((updatedM.scores.A >= limit || updatedM.scores.B >= limit) && Math.abs(updatedM.scores.A - updatedM.scores.B) >= 2) { setTimeout(() => this.promptFinishSet(), 800); } 
         },
 
-        // CHAT, BROADCAST & UI INTERACTIONS
         specSwitchTab(tabId) { document.querySelectorAll('.spec-tab').forEach(t => t.classList.remove('active')); document.querySelector(`.spec-tab[data-tab="${tabId}"]`).classList.add('active'); document.querySelectorAll('.spec-content').forEach(c => c.classList.remove('active')); document.getElementById(`spec-tab-${tabId}`).classList.add('active'); },
         toggleBroadcastSettings() { const isLive = document.getElementById('toggle-broadcast-live').checked; const chatEnabled = document.getElementById('toggle-broadcast-chat').checked; StateManager.mutateMatch(m => { m.broadcast.isLive = isLive; m.broadcast.chatEnabled = chatEnabled; }, false, true, "Ajuste de Transmisión"); },
         sendChat() { if (this.chatCooldownActive) return; const input = document.getElementById('chat-input'); const text = input.value.trim(); if(!text) return; const s = StateManager.state; UIEngine.appendChatMessage(s.nickname, text, true); NetworkLayer.sendChat(s.roomCode, s.nickname, text); input.value = ''; this.chatCooldownActive = true; const btn = document.getElementById('btn-send-chat'); input.disabled = true; btn.disabled = true; input.placeholder = StateManager.t('COOLDOWN'); setTimeout(() => { this.chatCooldownActive = false; input.disabled = false; btn.disabled = false; input.placeholder = "Mensaje..."; if(s.screen === 'board') input.focus(); }, 3000); },
@@ -1069,22 +1055,14 @@
         pauseMatch() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!m) return; UIEngine.modal('OPCIONES DEL PARTIDO', 'El reloj se ha detenido. ¿Qué deseas hacer ahora?', [ {text: 'CANCELAR', type: 'cancel'}, {text: 'PAUSAR Y SALIR', type: 'cancel', callback: () => { StateManager.mutateMatch(match => { if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } }, false, true, "Pausa de Partido"); StateManager.dispatch('LEAVE_BOARD'); }}, {text: 'TERMINAR PARTIDO', type: 'danger', callback: () => { UIEngine.modal('FINALIZAR', '¿Seguro? El partido se cerrará permanentemente y no se podrá modificar.', [ {text: 'CANCELAR', type: 'cancel'}, {text: 'SÍ, FINALIZAR', type: 'confirm', callback: () => this.finishMatch()} ]); }} ]); },
         requestTimeout(team) { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (StateManager.state.role !== 'referee' || !m || m.status === 'finished' || m.status === 'scheduled' || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning || m.varActive) return; if (!m.timer || !m.timer.isRunning) { UIEngine.modal('RELOJ DETENIDO', 'El reloj del partido debe estar activo para solicitar Tiempo Fuera.', [{text: 'OK', type: 'cancel'}]); return; } const tOut = m.timeouts[team]; if(tOut.left <= 0) { AudioEngine.error(); UIEngine.modal('SIN TIEMPOS FUERA', 'Este equipo ya gastó sus 2 tiempos permitidos en este set.', [{text:'OK', type:'cancel'}]); return; } if(this.isRequestingTimeout) return; this.isRequestingTimeout = true; setTimeout(()=>this.isRequestingTimeout=false, 500); AudioEngine.whistle(); const logName = `${StateManager.t('TIMEOUT_FOR')} ${m.teams[team].name}`; StateManager.mutateMatch(match => { const t = match.timeouts[team]; t.left--; t.isRunning = true; t.startTime = Date.now(); t.currentTime = 30; if(match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; t.resumeTimerAfter = true; } else { t.resumeTimerAfter = false; } }, false, true, logName); },
         openUndoLog() { const s = StateManager.state; const m = s.matches[s.roomCode]; if(!m || !m.historySnapshots || m.historySnapshots.length === 0) { UIEngine.modal('VACÍO', 'No hay acciones.', [{text:'OK', type:'cancel'}]); return; } const cont = document.getElementById('undo-list-container'); cont.innerHTML = ''; for(let i = m.historySnapshots.length - 1; i >= 0; i--) { const snap = m.historySnapshots[i]; cont.innerHTML += `<div class="undo-log-item"><div><strong>#${i+1}</strong> - ${snap.action}</div><button class="btn-primary ui-pulse" style="padding:4px 10px; font-size:0.7rem; min-height:0; height:auto;" data-action="UNDO_TO" data-index="${i}">Restaurar</button></div>`; } document.getElementById('undo-modal').classList.add('active'); },
-        
-        // V8.13.0 PENALTY LOGIC
         openPenaltyModal() { const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m) return; document.getElementById('penalty-team-select').innerHTML = `<option value="A">${m.teams.A.name}</option><option value="B">${m.teams.B.name}</option>`; this.updatePenaltyPlayers(); document.getElementById('penalty-modal').classList.add('active'); },
         updatePenaltyPlayers() { const m = StateManager.state.matches[StateManager.state.roomCode]; const team = document.getElementById('penalty-team-select').value; const roster = m.teams[team].roster || []; let html = `<option value="Colectivo / No Identificado">👤 Colectivo / No Identificado</option><option value="Banca / Entrenador">👔 Banca / Entrenador</option>`; roster.forEach(p => { html += `<option value="#${p.number} ${p.name}">#${p.number} ${p.name}</option>`; }); document.getElementById('penalty-player-select').innerHTML = html; },
         issueCard(color) {
-            const m = StateManager.state.matches[StateManager.state.roomCode]; const team = document.getElementById('penalty-team-select').value; const player = document.getElementById('penalty-player-select').value; const opp = team === 'A' ? 'B' : 'A';
-            document.getElementById('penalty-modal').classList.remove('active');
-            if(color === 'yellow') {
-                const desc = `🟨 Amarilla: ${m.teams[team].name} (${player})`;
-                StateManager.mutateMatch(match => { if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: 'p_yellow', p: player, s: `${match.scores.A} - ${match.scores.B}` }); } }, false, true, desc);
-                AudioEngine.error(); UIEngine.modal('AMONESTACIÓN', desc, [{text:'OK', type:'cancel'}]);
-            } else if(color === 'red') {
-                const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25);
-                if ((m.scores.A >= limit || m.scores.B >= limit) && Math.abs(m.scores.A - m.scores.B) >= 2) { AudioEngine.error(); return; }
-                const desc = `🟥 Roja: ${m.teams[team].name} (${player})`;
-                StateManager.mutateMatch(match => { match.scores[opp] += 1; if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: 'p_red', p: player, s: `${match.scores.A} - ${match.scores.B}` }); } }, false, false, desc);
+            const m = StateManager.state.matches[StateManager.state.roomCode]; const team = document.getElementById('penalty-team-select').value; const player = document.getElementById('penalty-player-select').value; const opp = team === 'A' ? 'B' : 'A'; document.getElementById('penalty-modal').classList.remove('active');
+            if(color === 'yellow') { const desc = `🟨 Amarilla: ${m.teams[team].name} (${player})`; StateManager.mutateMatch(match => { if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: 'p_yellow', p: player, s: `${match.scores.A} - ${match.scores.B}` }); } }, false, true, desc); AudioEngine.error(); UIEngine.modal('AMONESTACIÓN', desc, [{text:'OK', type:'cancel'}]); } 
+            else if(color === 'red') {
+                const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25); if ((m.scores.A >= limit || m.scores.B >= limit) && Math.abs(m.scores.A - m.scores.B) >= 2) { AudioEngine.error(); return; }
+                const desc = `🟥 Roja: ${m.teams[team].name} (${player})`; StateManager.mutateMatch(match => { match.scores[opp] += 1; if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: 'p_red', p: player, s: `${match.scores.A} - ${match.scores.B}` }); } }, false, false, desc);
                 AudioEngine.whistle(); const updatedM = StateManager.state.matches[StateManager.state.roomCode];
                 if (updatedM.currentSet === updatedM.rules?.maxSets && (updatedM.scores.A === 8 || updatedM.scores.B === 8) && (updatedM.scores.A + updatedM.scores.B === 8)) { setTimeout(() => { StateManager.mutateMatch(m2 => { m2.courtSwapped = !m2.courtSwapped; }, false, true, "Cambio de lado (Punto 8)"); }, 1500); }
                 if ((updatedM.scores.A >= limit || updatedM.scores.B >= limit) && Math.abs(updatedM.scores.A - updatedM.scores.B) >= 2) { setTimeout(() => this.promptFinishSet(), 800); } else { NetworkLayer.push(StateManager.state.roomCode, updatedM, StateManager.state.currentTenant, true); }
@@ -1092,7 +1070,6 @@
             }
         },
 
-        // CONTROL DE SET Y PARTIDO
         promptFinishSet() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!code || !m || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning || m.varActive) return; UIEngine.modal('CERRAR SET', `¿Confirmar que el set terminó ${m.scores.A} - ${m.scores.B}?`, [{text:StateManager.t('CANCEL'), type:'cancel'}, {text:'CONFIRMAR', type:'confirm', callback:()=>this.executeFinishSet()}]); },
         executeFinishSet() { 
             AudioEngine.horn(); const f = document.getElementById('flash-overlay'); f.classList.add('flash-active'); setTimeout(()=>f.classList.remove('flash-active'), 100); 
@@ -1100,20 +1077,14 @@
                 const winner = m.scores.A > m.scores.B ? 'A' : (m.scores.B > m.scores.A ? 'B' : null); if (winner) m.sets[winner]++; 
                 if(!m.historySets) m.historySets = []; m.historySets.push({ A: m.scores.A, B: m.scores.B }); 
                 const setsToWin = Math.ceil((m.rules?.maxSets || 3) / 2); 
-                if (m.sets.A >= setsToWin || m.sets.B >= setsToWin) { 
-                    m.status = 'finished'; if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; } 
-                } else { 
-                    m.scores.A = 0; m.scores.B = 0; if(!m.currentSet) m.currentSet = 1; m.currentSet++; m.courtSwapped = !m.courtSwapped; m.timer.isRunning = false; m.timer.elapsedTime = 0; m.timer.startTime = null; 
-                    // V9.0 Reset Titulares al acabar set
-                    if(m.rules?.fivbSubs) { ['A', 'B'].forEach(t => { m.teams[t].roster.forEach(p => p.on_court = false); }); }
-                } 
+                if (m.sets.A >= setsToWin || m.sets.B >= setsToWin) { m.status = 'finished'; if (m.timer.isRunning) { m.timer.isRunning = false; m.timer.elapsedTime += (Date.now() - m.timer.startTime); m.timer.startTime = null; } } 
+                else { m.scores.A = 0; m.scores.B = 0; if(!m.currentSet) m.currentSet = 1; m.currentSet++; m.courtSwapped = !m.courtSwapped; m.timer.isRunning = false; m.timer.elapsedTime = 0; m.timer.startTime = null; if(m.rules?.fivbSubs) { ['A', 'B'].forEach(t => { m.teams[t].roster.forEach(p => p.on_court = false); }); } } 
                 m.timeouts = { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() };
             }, false, true, "Cierre de Set"); 
             if (StateManager.state.matches[StateManager.state.roomCode].status === 'finished') { StateManager.dispatch('LEAVE_BOARD'); UIEngine.modal('PARTIDO FINALIZADO', 'El partido ha concluido oficialmente.', [{text:'OK', type:'confirm'}]); } 
         },
         finishMatch() { AudioEngine.end(); StateManager.mutateMatch(m => { m.status = 'finished'; if(m.timer.isRunning) { m.timer.isRunning=false; m.timer.elapsedTime+=(Date.now()-m.timer.startTime); } }, false, true, "Fin Manual"); StateManager.dispatch('LEAVE_BOARD'); },
 
-        // V8.18.0 REPORT & V8.19.0 SHARE
         generateMatchReport(code) { const m = StateManager.state.matches[code]; if (!m) return; let pStats = {}; let tarjetas = []; Object.values(m.timeline).forEach(setPlays => { setPlays.forEach(play => { const t = typeof play === 'string' ? play : play.t; const r = typeof play === 'string' ? 'simple' : play.r; const p = typeof play === 'string' ? null : play.p; if (r === 'p_yellow' || r === 'p_red') { tarjetas.push(`Set ${m.currentSet} | ${t === 'A' ? m.teams.A.name : m.teams.B.name} | ${typeof p === 'object' ? p.name : p} (${r === 'p_red' ? '🟥 Roja' : '🟨 Amarilla'})`); return; } if (p && p.name && p.num !== 'Equipo') { const pId = `${t}_${p.num}`; if (!pStats[pId]) pStats[pId] = { name: p.name, num: p.num, team: t, atk:0, blk:0, ace:0, err:0, total:0 }; if (r === 'ataque') pStats[pId].atk++; else if (r === 'bloqueo') pStats[pId].blk++; else if (r === 'ace') pStats[pId].ace++; else if (r.startsWith('f_')) pStats[pId].err++; if (!r.startsWith('f_')) pStats[pId].total++; } }); }); const rankedPlayers = Object.values(pStats).sort((a, b) => b.total - a.total); const mvp = rankedPlayers.length > 0 && rankedPlayers[0].total > 0 ? rankedPlayers[0] : null; let htmlResumen = `<div id="rtab-resumen" class="report-tab-content active">`; if (mvp) htmlResumen += `<div class="mvp-card"><div style="font-weight: 900; font-size: 1.2rem; text-transform: uppercase;">⭐ MVP DEL PARTIDO</div><div style="font-family: var(--font-display); font-size: 3rem; margin: 1vh 0;">#${mvp.num} ${mvp.name}</div><div style="font-size: 1rem; font-weight: 700;">${mvp.total} Puntos Totales</div><div style="font-size: 0.8rem; margin-top: 1vh; opacity: 0.9;">(${mvp.atk} Atq | ${mvp.blk} Blq | ${mvp.ace} Ace)</div></div>`; else htmlResumen += `<div style="text-align:center; color:var(--text-muted); padding:4vh 0;">Faltan datos individuales para definir MVP.</div>`; htmlResumen += `<div style="display:flex; justify-content:space-around; background:var(--bg-card); padding:3vh; border-radius:12px; border:1px solid var(--border-subtle);"><div style="text-align:center;"><div style="font-family:var(--font-display); font-size:3rem; color:${m.teams.A.color};">${m.sets.A}</div><div style="font-size:0.8rem; font-weight:800; color:var(--text-muted);">${m.teams.A.name}</div></div><div style="font-family:var(--font-display); font-size:2rem; color:var(--text-muted); align-self:center;">VS</div><div style="text-align:center;"><div style="font-family:var(--font-display); font-size:3rem; color:${m.teams.B.color};">${m.sets.B}</div><div style="font-size:0.8rem; font-weight:800; color:var(--text-muted);">${m.teams.B.name}</div></div></div></div>`; let htmlJugadores = `<div id="rtab-jugadores" class="report-tab-content">`; ['A', 'B'].forEach(team => { const tPlayers = rankedPlayers.filter(p => p.team === team); htmlJugadores += `<h3 style="color:${m.teams[team].color}; font-size:1rem; margin-bottom:1vh; text-transform:uppercase;">${m.teams[team].name}</h3><div class="stats-table-wrapper"><table class="stats-table"><tr><th class="col-name">Jugador</th><th>PTS</th><th>ATQ</th><th>BLQ</th><th>ACE</th><th>ERR</th></tr>`; if(tPlayers.length === 0) htmlJugadores += `<tr><td colspan="6" style="color:var(--text-muted);">Sin datos.</td></tr>`; tPlayers.forEach(p => { htmlJugadores += `<tr><td class="col-name">#${p.num} ${p.name}</td><td class="col-pts">${p.total}</td><td>${p.atk}</td><td>${p.blk}</td><td>${p.ace}</td><td class="col-err">${p.err}</td></tr>`; }); htmlJugadores += `</table></div>`; }); htmlJugadores += `</div>`; let htmlActa = `<div id="rtab-acta" class="report-tab-content"><div style="background:var(--bg-card); padding:2vh 4vw; border-radius:12px; border:1px solid var(--border-subtle); margin-bottom:2vh;"><div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:800; margin-bottom:1vh;">CÓDIGO OFICIAL</div><div style="font-family:monospace; font-size:1.5rem; color:var(--text-accent);">${m.code}</div><div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:800; margin-top:2vh; margin-bottom:1vh;">RESULTADOS POR SET</div>${m.historySets.map((s, i) => `<div style="font-weight:800; font-size:1rem; color:var(--text-main);">Set ${i+1}: ${s.A} - ${s.B}</div>`).join('')}</div><div style="background:var(--bg-card); padding:2vh 4vw; border-radius:12px; border:1px solid var(--border-subtle);"><div style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; font-weight:800; margin-bottom:1vh;">REGISTRO DISCIPLINARIO</div>`; if (tarjetas.length === 0) htmlActa += `<div style="color:var(--text-muted); font-size:0.9rem;">Sin tarjetas.</div>`; else tarjetas.forEach(t => htmlActa += `<div style="font-size:0.9rem; margin-bottom:0.5vh; font-weight:700;">${t}</div>`); htmlActa += `</div></div>`; document.getElementById('report-content').innerHTML = htmlResumen + htmlJugadores + htmlActa; StateManager.dispatch('NAVIGATE', { screen: 'report' }); },
         async shareReport() { const reportTab = document.querySelector('.report-tab-content.active'); if (!reportTab) return; const btn = document.getElementById('btn-share-report'); const originalIcon = btn.innerHTML; btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i>'; btn.style.pointerEvents = 'none'; try { const canvas = await html2canvas(reportTab, { backgroundColor: '#0B1120', scale: 2, useCORS: true }); canvas.toBlob(async (blob) => { const file = new File([blob], "VolleyPro_Reporte.png", { type: "image/png" }); if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ title: 'Reporte de Partido - Volley Pro', text: '¡Mira las estadísticas de este partido oficial!', files: [file] }); } else { const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = "VolleyPro_Reporte.png"; a.click(); URL.revokeObjectURL(url); UIEngine.modal('IMAGEN DESCARGADA', 'El reporte se ha guardado en tus descargas.', [{text:'OK', type:'confirm'}]); } btn.innerHTML = originalIcon; btn.style.pointerEvents = 'auto'; }, 'image/png'); } catch (error) { console.error(error); UIEngine.modal('ERROR', 'No se pudo generar la imagen para compartir.', [{text:'OK', type:'cancel'}]); btn.innerHTML = originalIcon; btn.style.pointerEvents = 'auto'; } }
     };
