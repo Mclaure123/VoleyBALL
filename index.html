@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#060913" id="meta-theme-color">
-    <title>Volley Pro V10.0 - Oficial Beta</title>
+    <title>Volley Pro V10.1 - Oficial Beta</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -43,7 +43,6 @@
         
         .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; animation: slideUpFade 0.3s ease-out forwards; z-index: 1; overflow: hidden; background-color: var(--bg-deep); background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 20px 20px, 40px 40px; background-position: 0 0, 10px 10px; transform: translateZ(0); } body.light-theme .screen { background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px); } .screen.active { display: flex; z-index: 10; } @keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } } [data-action] { cursor: pointer; transition: var(--transition-main); }
         
-        /* Modales */
         .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(16px); display: none; justify-content: center; align-items: flex-end; z-index: 9999; opacity: 0; transition: opacity 0.3s ease; } .modal-overlay.active { display: flex; opacity: 1; }
         .modal-card { background: var(--bg-surface); backdrop-filter: blur(24px); border-top: 1px solid var(--border-subtle); border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); width: 100%; max-width: 500px; border-radius: 28px 28px 0 0; padding: 4vh 5vw 6vh 5vw; text-align: center; color: var(--text-main); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1); max-height: 85vh; overflow-y: auto; z-index: 10000; box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), var(--glass-shadow); } .modal-overlay.active .modal-card { transform: translateY(0); }
         #custom-modal { align-items: center; padding: 0 6vw; } #custom-modal .modal-card { border-radius: 24px; transform: scale(0.95) translateY(20px); border: 1px solid var(--border-subtle); padding: 3vh 4vw; } #custom-modal.active .modal-card { transform: scale(1) translateY(0); }
@@ -71,7 +70,7 @@
         .standings-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; font-weight: 700; } .standings-table th { background: rgba(0,0,0,0.3); padding: 10px 5px; color: var(--text-muted); font-weight: 900; text-transform: uppercase; } .standings-table td { padding: 10px 5px; border-top: 1px solid var(--border-subtle); color: var(--text-main); } .standings-table tr:nth-child(even) { background: rgba(255,255,255,0.02); } body.light-theme .standings-table tr:nth-child(even) { background: rgba(0,0,0,0.02); } .st-team { text-align: left; font-weight: 800; max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .st-pts { font-weight: 900; color: var(--color-gold); font-size: 1rem; } .st-rank { font-family: var(--font-display); font-size: 1.2rem; color: var(--text-muted); }
         .player-tactics-card { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; transition: 0.2s; cursor: pointer; } .player-tactics-card.selected { border-color: var(--text-accent); background: rgba(0, 229, 255, 0.1); } .pt-num { font-family: monospace; color: var(--text-muted); font-weight: 900; margin-right: 10px; font-size: 1rem; }
         
-        #board-wrapper { display: flex; flex-direction: column; width: 100%; height: 100%; transition: all 0.3s ease; } #board-top-section { flex: 1; display: flex; flex-direction: column; transition: 0.3s ease; overflow: hidden; position: relative;} .client-mode #board-top-section { flex: 0 0 65%; height: 65%; padding-bottom: 0; } .client-mode.tv-mode #board-chat-section { display: none !important; } .client-mode.tv-mode #board-top-section { flex: 0 0 100% !important; height: 100% !important; padding-bottom: 10px; }
+        #board-wrapper { display: flex; flex-direction: column; width: 100%; height: 100%; transition: all 0.3s ease; } #board-top-section { flex: 1; display: flex; flex-direction: column; transition: 0.3s ease; overflow: hidden; position: relative;} .client-mode #board-top-section { flex: 0 0 65%; height: 65%; padding-bottom: 0; } .client-mode.tv-mode-active #board-chat-section { display: none !important; } .client-mode.tv-mode-active #board-top-section { flex: 0 0 100% !important; height: 100% !important; padding-bottom: 10px; }
         #lobby-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-deep); z-index: 60; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; border-bottom: 1px solid var(--border-subtle); } #lobby-overlay h2 { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-accent); letter-spacing: 1px; margin-bottom: 10px; } .lobby-teams { display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 1.5rem; font-weight: 900; width: 100%; margin: 15px 0; }
         #broadcast-paused-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 17, 32, 0.8); backdrop-filter: blur(10px); z-index: 50; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--text-main); text-align: center; padding: 0 20px; } body.light-theme #broadcast-paused-overlay { background: rgba(255, 255, 255, 0.8); } #broadcast-paused-overlay i { font-size: 3.5rem; color: var(--text-muted); margin-bottom: 10px; } #broadcast-paused-overlay .bp-title { font-weight: 900; font-size: 1.2rem; } #broadcast-paused-overlay .bp-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: 5px; font-weight: 700;}
 
@@ -174,6 +173,15 @@
         .confetti-piece { position: absolute; width: 10px; height: 10px; background: #ffd700; top: -20px; opacity: 0; animation: confettiFall 3s infinite linear; }
         @keyframes confettiFall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
         @keyframes flipInY { from { transform: perspective(400px) rotate3d(0, 1, 0, 90deg); opacity: 0; } to { transform: perspective(400px); opacity: 1; } }
+
+        /* Pantalla de giro obligatorio para TV */
+        #tv-rotate-prompt { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 99999; color: #fff; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        @media (orientation: portrait) { .tv-mode-active #tv-rotate-prompt { display: flex !important; } }
+        /* Alerta visual de Saque Obligatorio */
+        .needs-serve-select { animation: pulseServeAlert 1s infinite alternate; border: 2px dashed var(--text-accent); border-radius: 10px; padding: 5px; }
+        @keyframes pulseServeAlert { from { box-shadow: 0 0 5px var(--text-accent); } to { box-shadow: 0 0 20px var(--text-accent), inset 0 0 10px var(--text-accent); } }
+        /* Pantalla Fin de Partido para Fans */
+        #client-finished-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:var(--bg-deep); z-index: 100; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 20px; }
     </style>
 </head>
 <body>
@@ -186,7 +194,11 @@
         <i class="ph-bold ph-monitor-play" style="font-size: 6rem; color: #fff; margin-bottom: 2vh; animation: pulseGlow 1.5s infinite;"></i><h1 style="font-family: var(--font-display); font-size: 4rem; color: #fff; letter-spacing: 2px; text-align: center; line-height: 1;">REVISIÓN<br>EN CURSO</h1><p style="color: #fff; font-weight: 900; font-size: 1.2rem; margin-top: 1vh; text-transform: uppercase;">Desafío Solicitado (VAR)</p><button id="btn-close-var" class="btn-primary ui-pulse" style="margin-top: 6vh; display:none; background: #fff; color: #EA580C; padding: 2vh 4vw; box-shadow: 0 10px 20px rgba(0,0,0,0.5);" data-action="TOGGLE_VAR"><i class="ph-bold ph-check-circle" style="font-size: 1.5rem;"></i> REANUDAR PARTIDO</button>
     </div>
     
-    <div id="timeout-overlay-wrapper"><div class="timeout-box" id="overlay-timeout-box"><div class="timeout-title">TIEMPO FUERA SOLICITADO</div><div class="timeout-timer font-score" id="overlay-timeout-timer">30</div><div class="timeout-team" id="overlay-timeout-team">TEAM...</div></div></div>
+    <div id="timeout-overlay-wrapper"><div class="timeout-box" id="overlay-timeout-box"><div class="timeout-title">TIEMPO FUERA SOLICITADO</div><div class="timeout-timer font-score" id="overlay-timeout-timer">30</div><div class="timeout-team" id="overlay-timeout-team">TEAM...</div><button id="btn-cancel-timeout" class="btn-primary ui-pulse" style="margin-top:15px; width:100%; background:var(--color-danger); display:none;" data-action="CANCEL_TIMEOUT">CORTAR TIEMPO</button></div></div>
+    
+    <div id="tv-rotate-prompt"><i class="ph-bold ph-device-mobile-camera" style="font-size:5rem; margin-bottom:20px; animation: spin 2s infinite linear;"></i><h1 style="font-family:var(--font-display); font-size:3rem;">GIRA TU TELÉFONO</h1><p>El Modo TV solo funciona en horizontal.</p></div>
+    
+    <div id="client-finished-overlay"><i class="ph-fill ph-trophy" style="font-size: 5rem; color:var(--color-gold); margin-bottom: 20px;"></i><h1 style="font-family:var(--font-display); font-size:3.5rem; color:#fff;" id="cfo-title">PARTIDO FINALIZADO</h1><p style="color:var(--text-muted); font-size: 1.2rem;" id="cfo-score">A 0 - 0 B</p><button class="btn-primary ui-pulse" style="margin-top:30px; background:var(--text-accent); color:#000;" data-action="LEAVE_BOARD">SALIR DEL PARTIDO</button></div>
 
     <div id="custom-modal" class="modal-overlay"><div class="modal-card"><div class="modal-title" id="modal-title">Title</div><div class="modal-message" id="modal-msg">Message</div><div class="modal-actions" id="modal-actions"></div></div></div>
     <div id="team-select-modal" class="modal-overlay"><div class="modal-card"><div class="modal-title"><i class="ph ph-shield-chevron"></i> EQUIPOS OFICIALES</div><div class="modal-message" style="margin-bottom: 15px;">Selecciona un equipo de la liga.</div><div id="ts-list" style="max-height: 45vh; overflow-y: auto; margin-bottom: 15px;"></div><button class="nav-btn ui-pulse" style="width: 100%; background: var(--bg-card);" data-action="CLOSE_MODALS">CANCELAR</button></div></div>
@@ -207,7 +219,7 @@
         <div class="top-header" style="background: transparent; border: none; padding: 0; justify-content: flex-end;"><button class="btn-icon ui-pulse" data-action="TOGGLE_THEME" title="Cambiar Tema"><i class="ph-fill ph-sun theme-icon"></i></button></div>
         <div style="text-align:left; margin-bottom:20px; margin-top: 10px; flex-shrink: 0; user-select: none;">
             <h1 id="app-title-secret" class="ui-pulse" style="font-family: var(--font-display); font-size:3.5rem; font-weight:900; line-height:1; color:var(--text-main); letter-spacing: 1px; cursor: pointer;">Volley <span style="color: var(--text-accent);">Pro</span></h1>
-            <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top: 5px;">V10.0 - Edición Oficial Beta</p>
+            <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top: 5px;">V10.1 - Oficial Beta</p>
         </div>
         <div style="display:flex; flex-direction:column; gap:10px; padding-bottom: 20px;">
             <div class="dash-card ui-pulse" id="card-superuser" style="display: none; border-left-color: var(--color-accent-orange);" data-action="REQUEST_AUTH" data-role="superuser"><div><h3 style="color:var(--text-main); margin-bottom:2px; font-size: 1rem; font-weight: 900; text-transform: uppercase;">Súper Usuario</h3><p style="font-size:0.8rem; color:var(--text-muted); font-weight: 700;">Administrador Global.</p></div><i class="ph-fill ph-crown" style="font-size:2rem; color:var(--color-accent-orange);"></i></div>
@@ -362,12 +374,19 @@
     const DEFAULTS = { rules: () => ({ maxSets: 3, ptsPerSet: 25, ptsTieBreak: 15, fivbSubs: false }), stats: () => ({ ataque:0, bloqueo:0, ace:0, f_fuera:0, f_red:0, f_llevada:0, f_doble:0, f_linea:0, f_rotacion:0, f_invasion:0, simple:0 }), timeouts: () => ({ left: 2, isRunning: false, startTime: null, currentTime: 30, resumeTimerAfter: false }), broadcast: () => ({ isLive: true, chatEnabled: true }) };
     
     const WakeLockSystem = { lock: null, async request() { if ('wakeLock' in navigator) { try { this.lock = await navigator.wakeLock.request('screen'); } catch (err) {} } }, release() { if (this.lock !== null) { this.lock.release().then(() => this.lock = null).catch(() => this.lock = null); } } };
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && StateManager.state.roomCode) WakeLockSystem.request(); });
 
     const AudioEngine = { ctx: null, init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); if(this.ctx.state === 'suspended') this.ctx.resume(); }, play(f, t, d, v) { if(!this.ctx) return; const o=this.ctx.createOscillator(), g=this.ctx.createGain(); o.type=t; o.frequency.value=f; g.gain.setValueAtTime(v, this.ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime+d); o.connect(g); g.connect(this.ctx.destination); o.start(); o.stop(this.ctx.currentTime+d); }, popA() { this.play(600, 'sine', 0.1, 0.2); }, popB() { this.play(400, 'sine', 0.1, 0.2); }, whistle() { this.play(1200, 'triangle', 0.3, 0.1); }, horn() { this.play(300, 'sawtooth', 0.8, 0.2); }, error() { this.play(150, 'square', 0.2, 0.1); }, end() { this.play(200, 'sawtooth', 1.5, 0.3); }, timeoutEnd() { this.play(800, 'square', 0.15, 0.3); setTimeout(()=>this.play(800, 'square', 0.15, 0.3), 250); setTimeout(()=>this.play(800, 'square', 0.4, 0.3), 500); } };
 
     const StateManager = {
         state: { theme: 'dark', screen: 'role', role: null, pendingRole: null, lockedRole: false, currentUser: null, currentTenant: null, roomCode: null, dashTab: 'active', cfgTeam: 'A', draft: { A: { name: 'EQUIPO A', color: APP_COLORS[5], dbId: null, roster: [] }, B: { name: 'EQUIPO B', color: APP_COLORS[2], dbId: null, roster: [] }, tournamentId: null, referee: null, date: null }, editingMatchCode: null, refereesList: [], tenantsList: [], tournamentsList: [], dbTeamsList: [], currentDbTeamView: null, dbPlayersList: [], matches: {}, clientAuthAttempts: 0, currentStatTeam: null, statsMode: false, pendingStat: null, nickname: 'Fan' },
-        init() { const mem = localStorage.getItem('VOL_V9_STATE'); if(mem) { try { const parsed = JSON.parse(mem); this.state = {...this.state, ...parsed}; if (this.state.role && this.state.currentUser) { this.state.screen = this.state.role === 'superuser' ? 'dashboard-super' : 'dashboard'; } } catch(e) {} } this.applyTheme(); return (this.state.role && this.state.currentUser); },
+        init() { 
+            const mem = localStorage.getItem('VOL_V9_STATE'); 
+            const clientMem = localStorage.getItem('VOL_CLIENT_SESSION');
+            if(mem) { try { const parsed = JSON.parse(mem); this.state = {...this.state, ...parsed}; if (this.state.role && this.state.currentUser) { this.state.screen = this.state.role === 'superuser' ? 'dashboard-super' : 'dashboard'; } } catch(e) {} } 
+            if(!this.state.role && clientMem) { try { const cData = JSON.parse(clientMem); this.state.role = 'client'; this.state.currentUser = cData.nick; this.state.nickname = cData.nick; this.state.roomCode = cData.code; this.state.screen = 'board'; } catch(e) {} }
+            this.applyTheme(); return (this.state.role && this.state.currentUser); 
+        },
         save() { localStorage.setItem('VOL_V9_STATE', JSON.stringify({ currentUser: this.state.currentUser, role: this.state.role, currentTenant: this.state.currentTenant, theme: this.state.theme })); },
         applyTheme() { if(this.state.theme === 'light') { document.body.classList.add('light-theme'); document.querySelectorAll('.theme-icon').forEach(i => { i.classList.remove('ph-sun'); i.classList.add('ph-moon'); }); } else { document.body.classList.remove('light-theme'); document.querySelectorAll('.theme-icon').forEach(i => { i.classList.remove('ph-moon'); i.classList.add('ph-sun'); }); } },
         dispatch(action, payload = {}) {
@@ -378,7 +397,7 @@
                 case 'SET_ROLE_PENDING': s.pendingRole = payload.role; s.screen = 'auth'; break;
                 case 'LOGIN': s.role = s.pendingRole; s.currentUser = payload.user; s.currentTenant = payload.tenant; s.clientAuthAttempts = 0; s.screen = (s.role === 'superuser') ? 'dashboard-super' : 'dashboard'; break;
                 case 'LOGOUT': s.role = null; s.currentUser = null; s.currentTenant = null; s.roomCode = null; s.clientAuthAttempts = 0; s.statsMode = false; s.screen = s.lockedRole ? 'auth' : 'role'; break;
-                case 'LEAVE_BOARD': s.roomCode = null; WakeLockSystem.release(); if(s.role === 'client') NetworkLayer.leaveChat(); s.screen = (s.role === 'admin' || s.role === 'referee') ? 'dashboard' : (s.role === 'superuser' ? 'dashboard-super' : 'role'); if (s.screen === 'role') { s.role = null; s.currentUser = null; s.currentTenant = null; if (s.lockedRole) s.screen = 'auth'; } break;
+                case 'LEAVE_BOARD': s.roomCode = null; WakeLockSystem.release(); if(s.role === 'client') { NetworkLayer.leaveChat(); localStorage.removeItem('VOL_CLIENT_SESSION'); } s.screen = (s.role === 'admin' || s.role === 'referee') ? 'dashboard' : (s.role === 'superuser' ? 'dashboard-super' : 'role'); if (s.screen === 'role') { s.role = null; s.currentUser = null; s.currentTenant = null; if (s.lockedRole) s.screen = 'auth'; } break;
                 case 'SWITCH_TAB': s.dashTab = payload.tab; break;
                 case 'SET_REFS': s.refereesList = payload.list; break;
                 case 'SET_TENANTS': s.tenantsList = payload.list; break;
@@ -452,6 +471,7 @@
             if(this.ref) clearInterval(this.ref); 
             this.ref = setInterval(() => { if (StateManager.state.screen === 'board') { UIEngine.renderTime(); this.renderTimeoutCountdown(); } }, 1000); 
             setInterval(() => { const banner = document.getElementById('offline-banner'); if (!navigator.onLine || (supabase && !NetworkLayer.connectionStatus)) { if (banner) banner.style.display = 'block'; } else { if (banner) banner.style.display = 'none'; } }, 2000); 
+            setInterval(() => { if (StateManager.state.screen === 'dashboard' && navigator.onLine) { NetworkLayer.fetchAllMatches().then(m => { if(Object.keys(m).length > 0) StateManager.dispatch('SYNC_MATCHES', { matches: m }); }); } }, 15000);
         }, 
         toggle() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (StateManager.state.role !== 'referee' || !m || m.status === 'finished' || m.status === 'scheduled' || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning || m.varActive) return; AudioEngine.whistle(); StateManager.mutateMatch(match => { if (!match.timer) match.timer = { isRunning: false, elapsedTime: 0, startTime: null }; if (match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } else { match.timer.isRunning = true; match.timer.startTime = Date.now(); } }, false, true, "Toggle Reloj"); }, 
         renderTimeoutCountdown() { 
@@ -470,15 +490,17 @@
                     } 
                 } 
             }); 
-            if (isActive && StateManager.state.role !== 'referee') {
+            if (isActive) {
                 document.getElementById('timeout-overlay-wrapper').classList.add('active'); 
+                document.getElementById('btn-cancel-timeout').style.display = StateManager.state.role === 'referee' ? 'block' : 'none';
                 UIEngine.checkOracle(m, StateManager.state.role);
-            } else if (!isActive) {
+            } else {
                 document.getElementById('timeout-overlay-wrapper').classList.remove('active'); 
                 UIEngine.checkOracle(m, StateManager.state.role);
             }
         }, 
-        stopTimeout(team) { AudioEngine.timeoutEnd(); StateManager.mutateMatch(m => { const tOut = m.timeouts[team]; const shouldResume = tOut.resumeTimerAfter; tOut.isRunning = false; tOut.startTime = null; tOut.currentTime = 30; tOut.resumeTimerAfter = false; if (shouldResume && m.timer) { m.timer.isRunning = true; m.timer.startTime = Date.now(); } }, false, true, "Fin T/O " + team); } 
+        stopTimeoutFromUI() { const m = StateManager.state.matches[StateManager.state.roomCode]; if(m.timeouts.A.isRunning) this.stopTimeout('A'); if(m.timeouts.B.isRunning) this.stopTimeout('B'); },
+        stopTimeout(team) { AudioEngine.timeoutEnd(); StateManager.mutateMatch(m => { const tOut = m.timeouts[team]; tOut.isRunning = false; tOut.startTime = null; tOut.currentTime = 30; tOut.resumeTimerAfter = false; }, false, true, "Fin T/O " + team); } 
     };
 
     const UIEngine = {
@@ -516,12 +538,24 @@
                 if(s.role === 'client') boardWrapper.classList.add('client-mode');
                 else boardWrapper.classList.remove('client-mode');
 
+                const btnTvMode = document.getElementById('btn-tv-mode');
+                if(btnTvMode) btnTvMode.style.display = s.role === 'client' ? 'flex' : 'none';
+
+                const cfo = document.getElementById('client-finished-overlay');
+                if (s.role === 'client' && m.status === 'finished') {
+                    cfo.style.display = 'flex';
+                    document.getElementById('cfo-title').innerText = `¡VICTORIA PARA ${m.scores.A > m.scores.B || m.sets.A > m.sets.B ? m.teams.A.name : m.teams.B.name}!`;
+                    document.getElementById('cfo-score').innerText = `${m.teams.A.name} ${m.sets.A} - ${m.sets.B} ${m.teams.B.name}`;
+                    return; 
+                } else {
+                    cfo.style.display = 'none';
+                }
+
                 const currentSet = m.currentSet || 1;
                 const limit = currentSet === (m.rules?.maxSets || 3) ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25);
 
                 this.renderTime();
                 
-                // Fan Zone Flash Effect
                 if (s.role === 'client' && this._lastRenderScores) {
                     if (m.scores.A > this._lastRenderScores.A) this.triggerFlash(m.teams.A.color);
                     if (m.scores.B > this._lastRenderScores.B) this.triggerFlash(m.teams.B.color);
@@ -574,6 +608,10 @@
                 ['A', 'B'].forEach(t => {
                     document.getElementById(`col-${t}`).style.setProperty('--team-color', m.teams[t].color); 
                     const nameEl = document.getElementById(`name-${t}`); const fireHTML = (t === 'A' && streakA >= 3) || (t === 'B' && streakB >= 3) ? '<span class="fire-icon">🔥</span>' : ''; nameEl.innerHTML = `${m.teams[t].name} ${fireHTML}`; 
+
+                    if (showHintA && t === 'A' && s.role === 'referee') nameEl.classList.add('needs-serve-select');
+                    else if (showHintB && t === 'B' && s.role === 'referee') nameEl.classList.add('needs-serve-select');
+                    else nameEl.classList.remove('needs-serve-select');
 
                     const serveEl = document.getElementById(`serve-${t}`); 
                     if (shouldHideForFans) {
@@ -650,8 +688,7 @@
             } catch (error) { UIEngine.modal('ERROR', 'No se pudo generar el Mega Reporte JPG.'); btn.innerHTML = originalIcon; btn.style.pointerEvents = 'auto'; btn.disabled = false; } 
         }
     };
-
-    const EventManager = {
+const EventManager = {
         isRequestingTimeout: false, chatCooldownActive: false, _lastScoreTime: 0, _lastReactionTime: 0, _lastCardTime: 0, _swapTimeout: null, hypePoints: 0,
         init() {
             document.body.addEventListener('click', e => {
@@ -678,6 +715,7 @@
                     case 'CLOSE_MODALS': document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('active')); break; 
                     case 'FINISH_SET': this.promptFinishSet(); break; case 'FINISH_MATCH': UIEngine.modal('FIN DEL PARTIDO', 'Ya no se podrá modificar el marcador.', [{text:'CANCELAR', type:'cancel'},{text:'OK', type:'confirm', callback:()=>this.finishMatch()}]); break;
                     case 'REQUEST_TIMEOUT': this.requestTimeout(el.getAttribute('data-team')); break;
+                    case 'CANCEL_TIMEOUT': TimerSystem.stopTimeoutFromUI(); break;
                     case 'PAUSE_MATCH': this.pauseMatch(); break;
                     case 'SCORE_POINT': this.handleScoreClick(el.getAttribute('data-team')); break;
                     case 'MANUAL_SWAP': this.manualSwap(); break;
@@ -693,7 +731,7 @@
                     case 'RECORD_STAT': this.prepareStat(el.getAttribute('data-stat')); break; case 'CONFIRM_STAT_PLAYER': this.confirmStatPlayer(el.getAttribute('data-player'), el.getAttribute('data-playername')); break;
                     case 'TOGGLE_VAR': this.toggleVar(); break;
                     case 'REPORT_TAB': document.querySelectorAll('#screen-report .nav-btn').forEach(b => b.classList.remove('active-tab')); el.classList.add('active-tab'); document.querySelectorAll('.report-tab-content').forEach(c => c.classList.remove('active')); document.getElementById('rtab-' + el.getAttribute('data-tab')).classList.add('active'); break;
-                    case 'VIEW_REPORT': this.generateMatchReport(el.getAttribute('data-code')); break; case 'VIEW_REPORT_LIVE': this.generateMatchReport(StateManager.state.roomCode); break; case 'SHARE_REPORT': UIEngine.shareReport(); break; case 'CLOSE_REPORT_SCREEN': document.getElementById('screen-report').classList.remove('active'); break;
+                    case 'VIEW_REPORT': this.generateMatchReport(el.getAttribute('data-code')); break; case 'VIEW_REPORT_LIVE': this.generateMatchReport(StateManager.state.roomCode); break; case 'SHARE_REPORT': UIEngine.shareReport(); break; case 'CLOSE_REPORT_SCREEN': if(StateManager.state.role === 'referee' && StateManager.state.matches[StateManager.state.roomCode]?.status === 'finished') { StateManager.dispatch('LEAVE_BOARD'); document.getElementById('screen-report').classList.remove('active'); } else { document.getElementById('screen-report').classList.remove('active'); } break;
                     case 'PROMPT_CREATE_TOURNAMENT': this.promptCreateTournament(); break; case 'LOAD_STANDINGS': this.loadStandingsScreen(); break; case 'LOAD_STANDINGS_TABLE': this.calculateStandings(); break;
                     case 'OPEN_STARTERS_MODAL': this.openStartersModal(el.getAttribute('data-team')); break; case 'TOGGLE_STARTER': this.toggleStarter(el.getAttribute('data-index')); break; case 'SAVE_STARTERS': this.saveStarters(); break;
                     case 'OPEN_SUBS_MODAL': this.openSubsModal(); break; case 'SUB_SWITCH_TEAM': this.subSwitchTeam(el.getAttribute('data-team')); break; case 'CONFIRM_SUB': this.confirmSub(); break;
@@ -738,7 +776,8 @@
                     hint.innerText = "Conectando al partido..."; const m = await NetworkLayer.fetchAllMatches(); StateManager.dispatch('SYNC_MATCHES', { matches: m });
                     const match = StateManager.state.matches[code];
                     if (!match) { hint.innerText = "El partido no existe."; UIEngine.triggerShake('btn-auth-submit'); btnSubmit.disabled = false; return; }
-                    if (match.status === 'finished') { UIEngine.modal('PARTIDO FINALIZADO', 'Este partido ya ha terminado. Podrás ver el marcador final y el reporte.', [{text: 'ENTRAR', type: 'confirm', callback: () => { StateManager.state.role = 'client'; StateManager.state.currentUser = nick; StateManager.state.nickname = nick; StateManager.dispatch('LOAD_ROOM', { code }); }}]); hint.innerText = ''; btnSubmit.disabled = false; return; }
+                    if (match.status === 'finished') { UIEngine.modal('PARTIDO FINALIZADO', 'Este partido ya ha terminado. Podrás ver el marcador final y el reporte.', [{text: 'ENTRAR', type: 'confirm', callback: () => { localStorage.setItem('VOL_CLIENT_SESSION', JSON.stringify({code, nick})); StateManager.state.role = 'client'; StateManager.state.currentUser = nick; StateManager.state.nickname = nick; StateManager.dispatch('LOAD_ROOM', { code }); }}]); hint.innerText = ''; btnSubmit.disabled = false; return; }
+                    localStorage.setItem('VOL_CLIENT_SESSION', JSON.stringify({code, nick}));
                     StateManager.state.role = 'client'; StateManager.state.currentUser = nick; StateManager.state.nickname = nick; StateManager.dispatch('LOAD_ROOM', { code }); hint.innerText = ''; btnSubmit.disabled = false; return; 
                 } 
                 hint.innerText = 'Conectando a la Base de Datos...';
@@ -866,166 +905,175 @@
             let pbpTitle = `PUNTO ${updatedM.teams[team].name.toUpperCase()}`; if(statType === 'ace') pbpTitle = `🎯 ACE ${updatedM.teams[team].name.toUpperCase()}`; if(statType === 'bloqueo') pbpTitle = `🧱 BLOQUEO ${updatedM.teams[team].name.toUpperCase()}`; if(statType.startsWith('f_')) pbpTitle = `⚠️ ERROR RIVAL`;
             const pbpBadge = `<span class="pbp-score-badge" style="background:${updatedM.teams[team].color}; color:#000;">${updatedM.scores.A}-${updatedM.scores.B}</span>`;
             const pName = playerInfo && playerInfo.name !== 'Colectivo' ? ` (#${playerInfo.num} ${playerInfo.name})` : '';
-            const sysMsg = `${pbpBadge} <span class="pbp-text">${pbpTitle}${pName}</span>`;
-            document.documentElement.style.setProperty('--pbp-color', updatedM.teams[team].color);
-            NetworkLayer.sendChat(code, 'SISTEMA', sysMsg, true, true);
-
-            if (updatedM.currentSet === updatedM.rules?.maxSets && updatedM.scores[team] === 8 && updatedM.scores[team === 'A' ? 'B' : 'A'] < 8) { 
-                if(EventManager._swapTimeout) clearTimeout(EventManager._swapTimeout);
-                EventManager._swapTimeout = setTimeout(() => { StateManager.mutateMatch(m2 => { m2.courtSwapped = !m2.courtSwapped; }, false, true, "Cambio de lado (Punto 8)"); UIEngine.modal('🔄 CAMBIO DE CANCHA', 'Se ha alcanzado el punto 8 en el Tie-Break. El sistema ha rotado los equipos automáticamente.', [{text:'ENTENDIDO', type:'confirm'}]); }, 1500); 
-            } 
-            
-            if ((updatedM.scores.A >= limit || updatedM.scores.B >= limit) && Math.abs(updatedM.scores.A - updatedM.scores.B) >= 2) { 
-                StateManager.mutateMatch(match => { if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } }, true, true);
-                AudioEngine.end(); setTimeout(() => this.promptFinishSet(), 1200); 
-            } else { NetworkLayer.push(code, updatedM, StateManager.state.currentTenant, true); }
+            NetworkLayer.sendChat(code, 'SISTEMA', `${pbpBadge} <span class="pbp-text">${pbpTitle}${pName}</span>`, true, true);
+                
+            const opp = team === 'A' ? 'B' : 'A';
+            if (updatedM.scores[team] >= limit && (updatedM.scores[team] - updatedM.scores[opp]) >= 2) {
+                AudioEngine.end();
+                if(navigator.vibrate) navigator.vibrate([300, 100, 300]);
+                const btn = document.getElementById('btn-dock-finish-set');
+                if (btn) { btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.style.animation = 'pulseServeAlert 1s infinite alternate'; }
+            }
         },
 
-        openUndoLog() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!m || !m.historySnapshots || m.historySnapshots.length === 0) { UIEngine.modal('VACÍO', 'No hay acciones para deshacer.', [{text:'OK', type:'cancel'}]); return; } if (m.timer && m.timer.isRunning) TimerSystem.toggle(); let html = ''; const rev = [...m.historySnapshots].reverse(); rev.forEach((snap, idx) => { const realIdx = m.historySnapshots.length - 1 - idx; html += `<div class="undo-log-item ui-pulse" data-action="UNDO_TO" data-index="${realIdx}"><div style="display:flex; flex-direction:column;"><span style="color:var(--text-accent); font-weight:900;">${snap.action}</span><span style="color:var(--text-muted); font-size:0.75rem;">Set ${snap.state.currentSet} | ${snap.state.scores.A} - ${snap.state.scores.B}</span></div><i class="ph-bold ph-arrow-u-up-left" style="color:var(--color-danger); font-size:1.2rem;"></i></div>`; }); document.getElementById('undo-list-container').innerHTML = html; document.getElementById('undo-modal').classList.add('active'); },
-        openPenaltyModal() { const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m) return; if (m.timer && m.timer.isRunning) TimerSystem.toggle(); document.getElementById('penalty-team-select').innerHTML = `<option value="A">${m.teams.A.name}</option><option value="B">${m.teams.B.name}</option>`; this.updatePenaltyPlayers(); document.getElementById('penalty-modal').classList.add('active'); },
-        updatePenaltyPlayers() { const m = StateManager.state.matches[StateManager.state.roomCode]; const team = document.getElementById('penalty-team-select').value; const roster = m.teams[team].roster || []; let html = `<option value="banca">BANCA / ENTRENADOR</option>`; roster.forEach(p => { html += `<option value="${p.number}">#${p.number} ${p.name}</option>`; }); document.getElementById('penalty-player-select').innerHTML = html; },
-        issueCard(color) { if(Date.now() - this._lastCardTime < 1000) return; this._lastCardTime = Date.now(); const m = StateManager.state.matches[StateManager.state.roomCode]; const team = document.getElementById('penalty-team-select').value; const playerNum = document.getElementById('penalty-player-select').value; let playerName = 'Banca/Entrenador'; if(playerNum !== 'banca') { const pInfo = m.teams[team].roster.find(p => p.number.toString() === playerNum); if(pInfo) playerName = pInfo.name; } const logName = `Tarjeta ${color==='red'?'Roja':'Amarilla'} - ${team}`; StateManager.mutateMatch(match => { if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: color==='red'?'p_red':'p_yellow', s: `${match.scores.A} - ${match.scores.B}`, p: playerNum }); } }, false, true, logName); document.getElementById('penalty-modal').classList.remove('active'); AudioEngine.horn(); if (color === 'red') { setTimeout(() => { const opp = team === 'A' ? 'B' : 'A'; this.score(opp, 'simple', {num: 'Equipo', name: 'Colectivo (Punto por Sanción)'}); }, 500); } },
+        openUndoLog() { 
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; 
+            if(!m || !m.historySnapshots || m.historySnapshots.length === 0) return UIEngine.modal('HISTORIAL VACÍO', 'No hay acciones para deshacer.'); 
+            let html = ''; 
+            const snaps = [...m.historySnapshots].reverse(); 
+            snaps.forEach((s, i) => { 
+                const realIndex = m.historySnapshots.length - 1 - i; 
+                html += `<div class="undo-log-item"><div style="flex:1;">${s.action} <span style="font-size:0.7rem; color:var(--text-muted); display:block;">Puntaje: ${s.state.scores.A} - ${s.state.scores.B}</span></div><button class="glass-btn ui-pulse" style="flex:0; padding:5px 15px;" data-action="UNDO_TO" data-index="${realIndex}"><i class="ph ph-arrow-u-up-left"></i></button></div>`; 
+            }); 
+            document.getElementById('undo-list-container').innerHTML = html; 
+            document.getElementById('undo-modal').classList.add('active'); 
+        },
 
-        promptFinishSet() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if (!code || !m || m.timeouts?.A?.isRunning || m.timeouts?.B?.isRunning || m.varActive || (m.timer && m.timer.isRunning)) { AudioEngine.error(); UIEngine.modal('ACCIÓN DENEGADA', 'Debes detener el cronómetro del partido y cerrar cualquier revisión activa antes de finalizar el set.'); return; } const limit = m.currentSet === m.rules?.maxSets ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25); const diff = Math.abs(m.scores.A - m.scores.B); if ((m.scores.A < limit && m.scores.B < limit) || diff < 2) { UIEngine.modal('SET INCOMPLETO', `Faltan puntos para cerrar el set. Límite: ${limit}, Diferencia mínima: 2.`); return; } const winner = m.scores.A > m.scores.B ? 'A' : 'B'; UIEngine.modal('CERRAR SET ' + m.currentSet, `¿Confirmas que el Set ${m.currentSet} ha terminado con victoria para ${m.teams[winner].name}?`, [ {text: 'CANCELAR', type: 'cancel'}, {text: 'SÍ, CERRAR SET', type: 'confirm', callback: () => this.finishSet()} ]); },
-        finishSet() { 
-            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; const winner = m.scores.A > m.scores.B ? 'A' : 'B'; 
-            AudioEngine.whistle(); setTimeout(()=>AudioEngine.whistle(), 400); 
+        openPenaltyModal() { 
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if(!m) return; 
+            document.getElementById('penalty-team-select').innerHTML = `<option value="A">${m.teams.A.name}</option><option value="B">${m.teams.B.name}</option>`; 
+            this.updatePenaltyPlayers(); document.getElementById('penalty-modal').classList.add('active'); 
+        },
+        updatePenaltyPlayers() { 
+            const team = document.getElementById('penalty-team-select').value; 
+            const m = StateManager.state.matches[StateManager.state.roomCode]; 
+            let html = '<option value="banca">Miembro de la Banca / CT</option>'; 
+            m.teams[team].roster.forEach(p => { html += `<option value="${p.number}">#${p.number} ${p.name}</option>`; }); 
+            document.getElementById('penalty-player-select').innerHTML = html; 
+        },
+        issueCard(color) { 
+            const team = document.getElementById('penalty-team-select').value; 
+            const playerNum = document.getElementById('penalty-player-select').value; 
+            const m = StateManager.state.matches[StateManager.state.roomCode]; 
+            const playerName = playerNum === 'banca' ? 'Banca/CT' : (m.teams[team].roster.find(p => p.number == playerNum)?.name || 'Jugador'); 
+            const opp = team === 'A' ? 'B' : 'A'; 
+            let desc = color === 'yellow' ? `Tarjeta Amarilla (Advertencia)` : `Tarjeta Roja (Castigo)`;
+            
             StateManager.mutateMatch(match => { 
-                match.sets[winner] += 1; match.historySets.push({ A: match.scores.A, B: match.scores.B }); match.scores.A = 0; match.scores.B = 0; match.timeouts = { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }; match.courtSwapped = !match.courtSwapped; 
-                if (match.timer) { match.timer.elapsedTime = 0; match.timer.isRunning = false; match.timer.startTime = null; } 
-                const setsNeeded = Math.ceil((match.rules?.maxSets||3)/2); 
-                if (match.sets.A >= setsNeeded || match.sets.B >= setsNeeded) { 
+                if(!match.timeline[match.currentSet]) match.timeline[match.currentSet] = []; 
+                if(color === 'red') { 
+                    match.scores[opp] += 1; 
+                    match.timeline[match.currentSet].push({ t: team, r: 'p_red', s: `${match.scores.A} - ${match.scores.B}`, p: {num: playerNum, name: playerName} }); 
+                } else { 
+                    match.timeline[match.currentSet].push({ t: team, r: 'p_yellow', s: `${match.scores.A} - ${match.scores.B}`, p: {num: playerNum, name: playerName} }); 
+                } 
+            }, false, true, desc); 
+            
+            document.getElementById('penalty-modal').classList.remove('active'); 
+            AudioEngine.whistle(); 
+        },
+
+        promptFinishSet() { 
+            const m = StateManager.state.matches[StateManager.state.roomCode]; 
+            UIEngine.modal(`CERRAR SET ${m.currentSet}`, `¿El set ha finalizado oficialmente con el marcador ${m.scores.A} - ${m.scores.B}?`, [ {text:'CANCELAR', type:'cancel'}, {text:'CERRAR SET', type:'confirm', callback: () => { const btn = document.getElementById('btn-dock-finish-set'); if (btn) { btn.style.animation = 'none'; btn.classList.remove('ui-pulse'); } this.finishSet(); }} ]); 
+        },
+
+        finishSet() { 
+            const code = StateManager.state.roomCode; 
+            StateManager.mutateMatch(match => { 
+                const winner = match.scores.A > match.scores.B ? 'A' : 'B'; 
+                match.sets[winner] += 1; 
+                match.historySets.push({ A: match.scores.A, B: match.scores.B }); 
+                
+                if (match.timer && match.timer.isRunning) { 
+                    match.timer.isRunning = false; 
+                    match.timer.elapsedTime += (Date.now() - match.timer.startTime); 
+                    match.timer.startTime = null; 
+                } 
+                
+                const reqToWin = Math.ceil((match.rules?.maxSets || 3) / 2); 
+                if (match.sets.A >= reqToWin || match.sets.B >= reqToWin) { 
                     match.status = 'finished'; 
                 } else { 
                     match.currentSet += 1; 
-                    if (!match.timeline) match.timeline = {};
-                    match.timeline[match.currentSet] = []; 
-                    if (match.currentSet === match.rules?.maxSets) match.servingFirst = null; 
-                    else if (match.initialServe) match.servingFirst = (match.currentSet % 2 === 0) ? (match.initialServe === 'A' ? 'B' : 'A') : match.initialServe;
+                    match.scores = { A: 0, B: 0 }; 
+                    match.courtSwapped = !match.courtSwapped; 
+                    match.servingFirst = null; 
                 } 
-            }, false, true, "Fin de Set " + m.currentSet); 
+            }, false, true, "Fin Set"); 
             
             const updatedM = StateManager.state.matches[code]; 
             if (updatedM.status === 'finished') { 
-                AudioEngine.end(); this.finishMatch(); 
-            } else {
-                UIEngine.render(StateManager.state);
-            }
-        },
-
-        calculateSuggestedMVP() {
-            const m = StateManager.state.matches[StateManager.state.roomCode]; if (!m || !m.timeline) return null;
-            let statsMap = {};
-            Object.values(m.timeline).forEach(setPlays => {
-                setPlays.forEach(play => {
-                    if (play.p && play.p.num !== 'Equipo') {
-                        const pid = `${play.t}_${play.p.num}`;
-                        if (!statsMap[pid]) statsMap[pid] = { name: play.p.name, num: play.p.num, team: play.t, score: 0 };
-                        if (play.r === 'ataque') statsMap[pid].score += 2;
-                        if (play.r === 'bloqueo' || play.r === 'ace') statsMap[pid].score += 3;
-                        if (play.r.startsWith('f_')) statsMap[pid].score -= 1; 
-                    }
-                });
-            });
-            const ranked = Object.values(statsMap).sort((a, b) => b.score - a.score);
-            return ranked.length > 0 ? ranked[0] : null;
+                this.finishMatch(); 
+            } else { 
+                NetworkLayer.sendChat(code, 'SISTEMA', `🏁 FIN DEL SET. Ganador del set: ${updatedM.scores.A > updatedM.scores.B ? updatedM.teams.A.name : updatedM.teams.B.name}`, true); 
+                UIEngine.modal('PREPARAR SIGUIENTE SET', `Los equipos han cambiado de lado automáticamente.`); 
+            } 
         },
 
         finishMatch() { 
-            const code = StateManager.state.roomCode; 
-            const m = StateManager.state.matches[code];
-            const winnerCode = m.sets.A > m.sets.B ? 'A' : 'B';
+            const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; 
+            const winner = m.sets.A > m.sets.B ? 'A' : 'B'; 
             
-            StateManager.mutateMatch(match => { 
-                match.status = 'finished'; 
-                if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } 
-            }, false, true, "Fin del Partido (Manual)"); 
+            AudioEngine.end(); setTimeout(() => AudioEngine.end(), 1000); setTimeout(() => AudioEngine.end(), 2000); 
             
-            AudioEngine.end(); 
-            NetworkLayer.sendChat(code, 'SISTEMA', `🏆 ¡PARTIDO FINALIZADO! VICTORIA PARA ${m.teams[winnerCode].name.toUpperCase()}`, true);
+            let mvpInfo = { name: "N/A", num: "0" }; 
+            ['A', 'B'].forEach(t => { m.teams[t].roster.forEach(p => { if (t === winner && p.is_captain) { mvpInfo = p; } }); }); 
+
+            NetworkLayer.sendChat(code, 'SISTEMA', `🏆 PARTIDO FINALIZADO. VICTORIA PARA ${m.teams[winner].name}`, true); 
+            UIEngine.showVictoryScreen(m.teams[winner], mvpInfo); 
             
-            if(StateManager.state.role === 'client') {
-                const mvp = this.calculateSuggestedMVP();
-                UIEngine.showVictoryScreen(m.teams[winnerCode], mvp);
-                setTimeout(() => this.generateMatchReport(code), 10000);
-            } else {
-                UIEngine.modal('PARTIDO FINALIZADO', `¡${m.teams[winnerCode].name} ha ganado el encuentro!`, [{text:'VER REPORTE', type:'confirm', callback: () => this.generateMatchReport(code)}]); 
-            }
+            setTimeout(() => { 
+                StateManager.mutateMatch(match => { match.status = 'finished'; }, false, true, "Fin Partido"); 
+                if(StateManager.state.role === 'referee') { 
+                    UIEngine.modal('PARTIDO FINALIZADO', 'El partido ha concluido y se ha guardado en el historial.', [ { text: 'VER REPORTE', type: 'confirm', callback: () => this.generateMatchReport(code) }, { text: 'VOLVER AL MENÚ', type: 'cancel', callback: () => StateManager.dispatch('LEAVE_BOARD') } ]); 
+                } 
+            }, 6000); 
         },
 
         generateMatchReport(code) { 
-            const m = StateManager.state.matches[code]; if(!m) return; let html = ''; const setsNeeded = Math.ceil((m.rules?.maxSets||3)/2); let isFinal = m.sets.A >= setsNeeded || m.sets.B >= setsNeeded || m.status === 'finished'; let winner = m.sets.A > m.sets.B ? 'A' : (m.sets.B > m.sets.A ? 'B' : null);
-            html += `<div id="rtab-resumen" class="report-tab-content active">`; if(isFinal && winner) { html += `<div class="mvp-card"><div style="font-weight:900; font-size:1rem; opacity:0.8;">VICTORIA PARA</div><div style="font-family:var(--font-display); font-size:3rem; line-height:1; margin:10px 0; text-shadow:0 4px 10px rgba(0,0,0,0.3);">${m.teams[winner].name}</div><div style="font-size:1.5rem; font-weight:900;">${m.sets.A} - ${m.sets.B}</div></div>`; }
-            html += `<div class="stats-table-wrapper"><table class="stats-table"><tr><th style="text-align:left;">CONCEPTO</th><th style="color:${m.teams.A.color}; width:80px; max-width:80px; overflow:hidden; text-overflow:ellipsis;">${m.teams.A.name}</th><th style="color:${m.teams.B.color}; width:80px; max-width:80px; overflow:hidden; text-overflow:ellipsis;">${m.teams.B.name}</th></tr>`; let totalPtsA = 0, totalPtsB = 0; if(m.historySets) { m.historySets.forEach(s => { totalPtsA += s.A; totalPtsB += s.B; }); } totalPtsA += m.scores.A; totalPtsB += m.scores.B; html += `<tr><td style="text-align:left; font-weight:900;">Puntos Totales</td><td class="col-pts">${totalPtsA}</td><td class="col-pts">${totalPtsB}</td></tr><tr><td style="text-align:left; font-weight:900;">Sets Ganados</td><td class="col-pts">${m.sets.A}</td><td class="col-pts">${m.sets.B}</td></tr>`; const statsA = m.stats?.A || DEFAULTS.stats(); const statsB = m.stats?.B || DEFAULTS.stats(); html += `<tr><td style="text-align:left; color:var(--text-accent);">Ataques Puntos</td><td>${statsA.ataque||0}</td><td>${statsB.ataque||0}</td></tr><tr><td style="text-align:left; color:var(--text-accent);">Bloqueos Puntos</td><td>${statsA.bloqueo||0}</td><td>${statsB.bloqueo||0}</td></tr><tr><td style="text-align:left; color:var(--text-accent);">Aces (Saque)</td><td>${statsA.ace||0}</td><td>${statsB.ace||0}</td></tr>`; const errA = (statsA.f_fuera||0)+(statsA.f_red||0)+(statsA.f_llevada||0)+(statsA.f_doble||0)+(statsA.f_linea||0)+(statsA.f_rotacion||0)+(statsA.f_invasion||0); const errB = (statsB.f_fuera||0)+(statsB.f_red||0)+(statsB.f_llevada||0)+(statsB.f_doble||0)+(statsB.f_linea||0)+(statsB.f_rotacion||0)+(statsB.f_invasion||0); 
-            html += `<tr><td style="text-align:left; color:var(--color-danger);">Errores No Forzados</td><td class="col-err">${errA}</td><td class="col-err">${errB}</td></tr>`;
-            html += `</table></div></div>`;
+            const m = StateManager.state.matches[code]; if (!m) return; 
+            const statsA = m.stats.A || {}; const statsB = m.stats.B || {}; 
+            const sA = m.sets.A; const sB = m.sets.B; 
+            const winA = sA > sB; const winB = sB > sA; 
+            let html = `<div id="rtab-resumen" class="report-tab-content active"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;"><div style="text-align:center; flex:1; color:${m.teams.A.color}; font-weight:900; font-size:1.5rem; text-transform:uppercase;">${m.teams.A.name}<br><span style="font-family:var(--font-display); font-size:3.5rem; color:${winA?'var(--text-main)':'var(--text-muted)'};">${sA}</span></div><div style="font-weight:900; color:var(--text-muted); padding:0 15px; font-size:1rem;">VS</div><div style="text-align:center; flex:1; color:${m.teams.B.color}; font-weight:900; font-size:1.5rem; text-transform:uppercase;">${m.teams.B.name}<br><span style="font-family:var(--font-display); font-size:3.5rem; color:${winB?'var(--text-main)':'var(--text-muted)'};">${sB}</span></div></div>`; 
             
-            // Tab Timeline WIDE
-            html += `<div id="rtab-timeline" class="report-tab-content">`;
-            html += `<div style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-bottom:15px; font-weight:700;"><i class="ph ph-arrows-out-line-horizontal"></i> Desliza para ver la evolución del set</div>`;
-            html += `<div class="timeline-wide-wrapper">`;
+            let setsHtml = `<div style="display:flex; gap:10px; justify-content:center; margin-bottom: 25px; flex-wrap: wrap;">`; 
+            if(m.historySets && m.historySets.length > 0) { 
+                m.historySets.forEach((s, i) => { setsHtml += `<div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:12px; padding:10px 15px; text-align:center; min-width:80px;"><div style="font-size:0.7rem; color:var(--text-muted); font-weight:800; margin-bottom:5px;">SET ${i+1}</div><div style="font-family:var(--font-display); font-size:1.5rem; color:var(--text-main);">${s.A} - ${s.B}</div></div>`; }); 
+            } else { setsHtml += `<div style="color:var(--text-muted); font-size:0.9rem;">No hay sets finalizados.</div>`; } 
+            setsHtml += `</div>`; html += setsHtml; 
             
-            for(let s = 1; s <= (m.rules?.maxSets || 3); s++) {
-                if(!m.timeline[s] || m.timeline[s].length === 0) continue;
-                const plays = m.timeline[s];
-                let setScoreA = 0, setScoreB = 0;
-                
-                let trackA = `<div class="tl-track">`, trackB = `<div class="tl-track">`;
-                
-                plays.forEach(p => {
-                    const team = typeof p === 'string' ? null : p.t;
-                    const isRedCard = typeof p !== 'string' && p.r === 'p_red';
-                    
-                    if (team === 'A' || (team === 'B' && isRedCard)) {
-                        setScoreA++;
-                        trackA += `<div class="tl-box" style="background: ${m.teams.A.color}; color: #000;">${setScoreA}</div>`;
-                        trackB += `<div class="tl-spacer"></div>`;
-                    } else if (team === 'B' || (team === 'A' && isRedCard)) {
-                        setScoreB++;
-                        trackB += `<div class="tl-box" style="background: ${m.teams.B.color}; color: #000;">${setScoreB}</div>`;
-                        trackA += `<div class="tl-spacer"></div>`;
-                    }
-                });
-                trackA += `</div>`; trackB += `</div>`;
-                
-                let dur = m.historySets && m.historySets[s-1] ? 'FINALIZADO' : 'EN JUEGO';
-                
-                html += `<div class="tl-set-row">
-                    <div class="tl-meta"><div class="tl-meta-set">SET ${s}</div><div style="font-size:0.7rem; color:var(--text-muted); font-weight:800;">${dur}</div><div class="tl-meta-score" style="margin-top:5px;"><span style="color:${m.teams.A.color}">${setScoreA}</span> - <span style="color:${m.teams.B.color}">${setScoreB}</span></div></div>
-                    <div class="tl-tracks">${trackA}${trackB}</div>
-                </div>`;
-            }
-            html += `</div></div>`;
+            html += `<div class="stats-table-wrapper"><table class="stats-table"><tr><th style="text-align:left;">CONCEPTO</th><th>${m.teams.A.name}</th><th>${m.teams.B.name}</th></tr>`; 
+            html += `<tr><td style="text-align:left;">Ataques Efectivos</td><td class="col-pts">${statsA.ataque||0}</td><td class="col-pts">${statsB.ataque||0}</td></tr>`; 
+            html += `<tr><td style="text-align:left;">Puntos de Bloqueo</td><td class="col-pts">${statsA.bloqueo||0}</td><td class="col-pts">${statsB.bloqueo||0}</td></tr>`; 
+            html += `<tr><td style="text-align:left;">Aces (Saque)</td><td class="col-pts">${statsA.ace||0}</td><td class="col-pts">${statsB.ace||0}</td></tr>`; 
+            const errA = (statsA.f_fuera||0)+(statsA.f_red||0)+(statsA.f_llevada||0)+(statsA.f_doble||0)+(statsA.f_linea||0)+(statsA.f_rotacion||0)+(statsA.f_invasion||0); 
+            const errB = (statsB.f_fuera||0)+(statsB.f_red||0)+(statsB.f_llevada||0)+(statsB.f_doble||0)+(statsB.f_linea||0)+(statsB.f_rotacion||0)+(statsB.f_invasion||0); 
+            html += `<tr><td style="text-align:left; color:var(--color-danger);">Errores No Forzados</td><td class="col-err">${errA}</td><td class="col-err">${errB}</td></tr>`; 
+            html += `</table></div></div>`; 
+            
+            html += `<div id="rtab-timeline" class="report-tab-content"><div style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-bottom:15px; font-weight:700;"><i class="ph ph-arrows-out-line-horizontal"></i> Desliza para ver la evolución del set</div><div class="timeline-wide-wrapper">`; 
+            for(let s = 1; s <= (m.rules?.maxSets || 3); s++) { 
+                if(!m.timeline[s] || m.timeline[s].length === 0) continue; 
+                const plays = m.timeline[s]; let setScoreA = 0, setScoreB = 0; let trackA = `<div class="tl-track">`, trackB = `<div class="tl-track">`; 
+                plays.forEach(p => { 
+                    const team = typeof p === 'string' ? null : p.t; const isRedCard = typeof p !== 'string' && p.r === 'p_red'; 
+                    if (team === 'A' || (team === 'B' && isRedCard)) { setScoreA++; trackA += `<div class="tl-box" style="background: ${m.teams.A.color}; color: #000;">${setScoreA}</div>`; trackB += `<div class="tl-spacer"></div>`; } 
+                    else if (team === 'B' || (team === 'A' && isRedCard)) { setScoreB++; trackB += `<div class="tl-box" style="background: ${m.teams.B.color}; color: #000;">${setScoreB}</div>`; trackA += `<div class="tl-spacer"></div>`; } 
+                }); 
+                trackA += `</div>`; trackB += `</div>`; let dur = m.historySets && m.historySets[s-1] ? 'FINALIZADO' : 'EN JUEGO'; 
+                html += `<div class="tl-set-row"><div class="tl-meta"><div class="tl-meta-set">SET ${s}</div><div style="font-size:0.7rem; color:var(--text-muted); font-weight:800;">${dur}</div><div class="tl-meta-score" style="margin-top:5px;"><span style="color:${m.teams.A.color}">${setScoreA}</span> - <span style="color:${m.teams.B.color}">${setScoreB}</span></div></div><div class="tl-tracks">${trackA}${trackB}</div></div>`; 
+            } 
+            html += `</div></div>`; 
 
-            // Tab Jugadores
-            html += `<div id="rtab-jugadores" class="report-tab-content"><div style="text-align:center; padding: 20px; color:var(--text-muted); font-weight:700;">Estadísticas individuales en desarrollo.</div>`;
-            html += `<div style="display:flex; gap:10px; margin-bottom:15px;"><button class="btn-primary ui-pulse" style="flex:1; background:${m.teams.A.color}; color:#000; box-shadow:none;">${m.teams.A.name}</button><button class="btn-primary ui-pulse" style="flex:1; background:${m.teams.B.color}; color:#000; box-shadow:none;">${m.teams.B.name}</button></div></div>`;
+            html += `<div id="rtab-jugadores" class="report-tab-content"><div style="text-align:center; padding: 20px; color:var(--text-muted); font-weight:700;">Estadísticas individuales en desarrollo.</div><div style="display:flex; gap:10px; margin-bottom:15px;"><button class="btn-primary ui-pulse" style="flex:1; background:${m.teams.A.color}; color:#000; box-shadow:none;">${m.teams.A.name}</button><button class="btn-primary ui-pulse" style="flex:1; background:${m.teams.B.color}; color:#000; box-shadow:none;">${m.teams.B.name}</button></div></div>`; 
             
-            // Tab Acta
-            html += `<div id="rtab-acta" class="report-tab-content">`;
-            for(let s = 1; s <= (m.rules?.maxSets || 3); s++) {
-                if(!m.timeline[s] || m.timeline[s].length === 0) continue;
-                html += `<h3 style="color:var(--text-muted); margin-bottom:10px; font-size:1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">SET ${s}</h3>`;
-                const plays = m.timeline[s];
-                plays.forEach((p, idx) => {
-                    let color = p.t === 'A' ? m.teams.A.color : m.teams.B.color;
-                    let desc = '';
-                    if(typeof p === 'string') desc = p;
-                    else {
-                        if(p.r === 'p_yellow') desc = `🟨 Amarilla a ${p.p}`;
-                        else if(p.r === 'p_red') desc = `🟥 Roja a ${p.p}`;
-                        else {
-                            let playerText = p.p ? (p.p.num === 'Equipo' ? 'Colectivo' : `#${p.p.num} ${p.p.name}`) : '';
-                            desc = `${p.r.replace('f_', 'Error: ').toUpperCase()} - ${playerText}`;
-                        }
-                    }
-                    html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:6px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:4px;"><div style="display:flex; align-items:center; gap:8px;"><div style="width:8px; height:8px; border-radius:50%; background:${color};"></div><div style="font-size:0.8rem; color:var(--text-main); font-weight:700;">${desc}</div></div><div style="font-family:var(--font-display); font-size:1rem; color:var(--text-muted);">${p.s || ''}</div></div>`;
-                });
-            }
-            html += `</div>`;
+            html += `<div id="rtab-acta" class="report-tab-content">`; 
+            for(let s = 1; s <= (m.rules?.maxSets || 3); s++) { 
+                if(!m.timeline[s] || m.timeline[s].length === 0) continue; 
+                html += `<h3 style="color:var(--text-muted); margin-bottom:10px; font-size:1rem; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:5px;">SET ${s}</h3>`; 
+                const plays = m.timeline[s]; 
+                plays.forEach((p, idx) => { 
+                    let color = p.t === 'A' ? m.teams.A.color : m.teams.B.color; let desc = ''; 
+                    if(typeof p === 'string') desc = p; 
+                    else { if(p.r === 'p_yellow') desc = `🟨 Amarilla a ${p.p}`; else if(p.r === 'p_red') desc = `🟥 Roja a ${p.p}`; else { let playerText = p.p ? (p.p.num === 'Equipo' ? 'Colectivo' : `#${p.p.num} ${p.p.name}`) : ''; desc = `${p.r.replace('f_', 'Error: ').toUpperCase()} - ${playerText}`; } } 
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); padding:6px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:4px;"><div style="display:flex; align-items:center; gap:8px;"><div style="width:8px; height:8px; border-radius:50%; background:${color};"></div><div style="font-size:0.8rem; color:var(--text-main); font-weight:700;">${desc}</div></div><div style="font-family:var(--font-display); font-size:1rem; color:var(--text-muted);">${p.s || ''}</div></div>`; 
+                }); 
+            } 
+            html += `</div>`; 
 
-            document.getElementById('report-content').innerHTML = html;
-            document.getElementById('screen-report').classList.add('active');
+            document.getElementById('report-content').innerHTML = html; document.getElementById('screen-report').classList.add('active'); 
         },
 
         requestTimeout(team) { 
@@ -1034,42 +1082,23 @@
             if (m.timeouts[team].left <= 0) { UIEngine.modal('LÍMITE ALCANZADO', `El equipo ${m.teams[team].name} ya no tiene Tiempos Fuera.`); return; } 
             const logName = "Tiempo Fuera - " + team; 
             StateManager.mutateMatch(match => { 
-                const t = match.timeouts[team]; 
-                t.left -= 1; t.isRunning = true; t.startTime = Date.now(); 
-                t.resumeTimerAfter = match.timer.isRunning; 
-                if (match.timer && match.timer.isRunning) { 
-                    match.timer.isRunning = false; 
-                    match.timer.elapsedTime += (Date.now() - match.timer.startTime); 
-                    match.timer.startTime = null; 
-                } 
-                if(match.timeline && match.timeline[match.currentSet]) { 
-                    match.timeline[match.currentSet].push({ t: team, r: 'simple', s: 'T/O' }); 
-                } 
+                const t = match.timeouts[team]; t.left -= 1; t.isRunning = true; t.startTime = Date.now(); t.resumeTimerAfter = false; 
+                if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } 
+                if(match.timeline && match.timeline[match.currentSet]) { match.timeline[match.currentSet].push({ t: team, r: 'simple', s: 'T/O' }); } 
             }, false, true, logName); 
         },
 
         pauseMatch() { 
             const code = StateManager.state.roomCode; 
-            StateManager.mutateMatch(match => { 
-                if (match.timer && match.timer.isRunning) { 
-                    match.timer.isRunning = false; 
-                    match.timer.elapsedTime += (Date.now() - match.timer.startTime); 
-                    match.timer.startTime = null; 
-                } 
-            }, false, true, "Pausa Manual"); 
+            StateManager.mutateMatch(match => { if (match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } }, false, true, "Pausa Manual"); 
         },
 
-        manualSwap() { 
-            StateManager.mutateMatch(m => { m.courtSwapped = !m.courtSwapped; }, false, true, "Cambio de Lado Manual"); 
-        },
+        manualSwap() { StateManager.mutateMatch(m => { m.courtSwapped = !m.courtSwapped; }, false, true, "Cambio de Lado Manual"); },
 
         setFirstServe(team) { 
             const s = StateManager.state; const m = s.matches[s.roomCode]; 
             if (s.role !== 'referee' || !m || m.scores.A > 0 || m.scores.B > 0) return; 
-            StateManager.mutateMatch(match => { 
-                match.servingFirst = team; 
-                if (match.currentSet === 1) match.initialServe = team;
-            }, false, true, "Sorteo Saque"); 
+            StateManager.mutateMatch(match => { match.servingFirst = team; if (match.currentSet === 1) match.initialServe = team; }, false, true, "Sorteo Saque"); 
         },
 
         sendChat() { 
@@ -1081,33 +1110,15 @@
         },
 
         sendReaction(emoji) { 
-            if (Date.now() - this._lastReactionTime < 500) return; 
-            this._lastReactionTime = Date.now();
-            
-            this.hypePoints += 10; 
-            if (this.hypePoints > 100) this.hypePoints = 100;
-            
-            UIEngine.updateHype();
-            UIEngine.spawnReaction(emoji); 
-            NetworkLayer.sendReaction(emoji); 
-            
-            if (!window.hypeInterval) {
-                window.hypeInterval = setInterval(() => {
-                    this.hypePoints -= 2;
-                    if (this.hypePoints < 0) this.hypePoints = 0;
-                    UIEngine.updateHype();
-                    if (this.hypePoints === 0) { clearInterval(window.hypeInterval); window.hypeInterval = null; }
-                }, 200);
-            }
+            if (Date.now() - this._lastReactionTime < 500) return; this._lastReactionTime = Date.now();
+            this.hypePoints += 10; if (this.hypePoints > 100) this.hypePoints = 100;
+            UIEngine.updateHype(); UIEngine.spawnReaction(emoji); NetworkLayer.sendReaction(emoji); 
+            if (!window.hypeInterval) { window.hypeInterval = setInterval(() => { this.hypePoints -= 2; if (this.hypePoints < 0) this.hypePoints = 0; UIEngine.updateHype(); if (this.hypePoints === 0) { clearInterval(window.hypeInterval); window.hypeInterval = null; } }, 200); }
         },
 
         toggleBroadcastSettings() {
-            const liveOn = document.getElementById('toggle-broadcast-live').checked;
-            const chatOn = document.getElementById('toggle-broadcast-chat').checked;
-            StateManager.mutateMatch(match => {
-                match.broadcast.isLive = liveOn;
-                match.broadcast.chatEnabled = chatOn;
-            }, false, true, "Ajuste Transmisión");
+            const liveOn = document.getElementById('toggle-broadcast-live').checked; const chatOn = document.getElementById('toggle-broadcast-chat').checked;
+            StateManager.mutateMatch(match => { match.broadcast.isLive = liveOn; match.broadcast.chatEnabled = chatOn; }, false, true, "Ajuste Transmisión");
         },
 
         castVote(vote) {
@@ -1122,9 +1133,7 @@
         NetworkLayer.setupRealtimeSync();
         TimerSystem.start();
         
-        if (navigator.onLine) {
-            NetworkLayer.syncOfflineData();
-        }
+        if (navigator.onLine) { NetworkLayer.syncOfflineData(); }
         window.addEventListener('online', () => NetworkLayer.syncOfflineData());
         
         const params = new URLSearchParams(window.location.search);
