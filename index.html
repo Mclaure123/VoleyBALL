@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#060913" id="meta-theme-color">
-    <title>Volley Pro V10.6 - Master Monolith</title>
+    <title>Volley Pro V11 - Master Monolith</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -83,7 +83,7 @@
         #momentum-B { height: 100%; transition: width 0.5s ease-out; background: var(--color-gold); }
 
         .match-hud { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 9vh; padding: 0 10px; background: rgba(15,23,42,0.6); backdrop-filter: blur(10px); z-index: 2; position: relative; flex-shrink: 0; border-bottom: 1px solid rgba(255,255,255,0.05); } body.light-theme .match-hud { background: rgba(241, 245, 249, 0.7); border-bottom-color: rgba(0,0,0,0.1); }
-        .hud-left { display: flex; align-items: center; justify-content: flex-start; gap: 8px; } .hud-center { display: flex; justify-content: center; align-items: center; } .hud-right { display: flex; align-items: center; justify-content: flex-end; } 
+        .hud-left { display: flex; align-items: center; justify-content: flex-start; gap: 8px; } .hud-center { display: flex; justify-content: center; align-items: center; } .hud-right { display: flex; align-items: center; justify-content: flex-end; gap: 8px; } 
         
         .timer-display { font-family: var(--font-display); font-size: 2.2rem; transition: all 0.3s ease; line-height: 1; white-space: nowrap; padding: 0 10px; border-radius: 8px; border: 1px solid transparent; }
         .timer-active { color: var(--color-timer); text-shadow: 0 2px 8px rgba(0, 230, 118, 0.4); }
@@ -138,9 +138,10 @@
         .tl-w-track::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(255,255,255,0.2); transform: translateY(-50%); z-index: 0; }
         .tl-w-col { display: flex; flex-direction: column; gap: 12px; z-index: 1; min-width: 28px; }
         .tl-w-cell { height: 28px; display: flex; justify-content: center; align-items: center; }
-        .tl-w-box { width: 28px; height: 28px; border-radius: 4px; font-family: var(--font-display); font-size: 1.1rem; color: #000; display: flex; justify-content: center; align-items: center; font-weight: 900; line-height: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); }
+        .tl-w-box { width: 28px; height: 28px; border-radius: 4px; font-family: var(--font-display); font-size: 1.1rem; color: #FFF; text-shadow: 0 1px 3px rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; font-weight: 900; line-height: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); }
         body.light-theme .tl-w-track::before { background: rgba(0,0,0,0.2); }
         body.light-theme .tl-w-meta { background: rgba(255,255,255,0.8); }
+        body.light-theme .tl-w-box { color: #fff; text-shadow: none; }
 
         #board-chat-section { display: none; flex-direction: row; flex: 0 0 35%; height: 35%; background: var(--bg-deep); border-top: 1px solid rgba(255,255,255,0.1); position: relative; } .client-mode:not(.chat-closed) #board-chat-section { display: flex; } body.light-theme #board-chat-section { border-top-color: rgba(0,0,0,0.1); }
         .chat-reactions-bar { display: flex; flex-direction: column; justify-content: space-around; align-items: center; width: 50px; background: var(--bg-surface); border-right: 1px solid rgba(255,255,255,0.05); padding: 10px 0; z-index: 2; } .chat-reactions-bar .btn-icon { background: rgba(255,255,255,0.05); border-radius: 50%; height: 36px; width: 36px; font-size: 1rem; } body.light-theme .chat-reactions-bar { border-right-color: rgba(0,0,0,0.1); } body.light-theme .chat-reactions-bar .btn-icon { background: rgba(0,0,0,0.05); }
@@ -152,7 +153,6 @@
         .chat-sys { align-self: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border-subtle); color: var(--text-main); font-weight: 800; text-align: center; border-radius: 12px; padding: 6px 12px; font-size: 0.8rem; max-width: 95%; margin: 5px 0; } 
         .chat-sys-divider { width: 100%; text-align: center; margin: 10px 0; position: relative; } .chat-sys-divider span { background: var(--bg-deep); padding: 0 10px; color: var(--text-muted); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; position: relative; z-index: 1; } .chat-sys-divider::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.1); z-index: 0; } body.light-theme .chat-sys-divider::before { background: rgba(0,0,0,0.1); }
         
-        /* Estilo para el Narrador Virtual */
         .chat-sys.caster-msg { align-self: flex-start; background: rgba(255, 214, 0, 0.1); border: 1px solid rgba(255, 214, 0, 0.3); color: var(--color-gold); text-align: left; font-style: italic; font-weight: 800; font-size: 0.85rem; padding: 8px 12px; margin: 4px 0; max-width: 85%; border-radius: 0 12px 12px 12px; }
         body.light-theme .chat-sys.caster-msg { background: rgba(255, 214, 0, 0.15); color: #B28900; border-color: rgba(255, 214, 0, 0.5); }
 
@@ -177,9 +177,21 @@
         .needs-serve-select { animation: pulseServeAlert 1s infinite alternate; border: 2px dashed var(--text-accent); border-radius: 10px; padding: 5px; }
         @keyframes pulseServeAlert { from { box-shadow: 0 0 5px var(--text-accent); } to { box-shadow: 0 0 20px var(--text-accent), inset 0 0 10px var(--text-accent); } }
         #client-finished-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:var(--bg-deep); z-index: 100; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding: 20px; }
+
+        /* --- MODO IMPRESIÓN (ACTA) --- */
+        @media print {
+            body, html { background: white !important; height: auto !important; overflow: visible !important; }
+            #app-container { display: none !important; }
+            #print-zone { display: block !important; position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh; background: white; color: black; z-index: 99999; padding: 20px; font-family: sans-serif; }
+            .no-print { display: none !important; }
+            @page { margin: 2cm; size: A4 portrait; }
+        }
+        #print-zone { display: none; }
     </style>
 </head>
 <body>
+
+<div id="print-zone"></div>
 
 <div id="app-container">
     <canvas id="reaction-canvas"></canvas>
@@ -187,10 +199,10 @@
     <div id="flash-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:#fff;opacity:0;pointer-events:none;z-index:9999;transition:opacity 0.4s ease-out;"></div>
     
     <div id="var-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(234, 88, 12, 0.95); z-index:9990; flex-direction:column; justify-content:center; align-items:center; backdrop-filter:blur(15px);">
-        <i class="ph-bold ph-monitor-play" style="font-size: 6rem; color: #fff; margin-bottom: 2vh; animation: pulseGlow 1.5s infinite;"></i><h1 style="font-family: var(--font-display); font-size: 4rem; color: #fff; letter-spacing: 2px; text-align: center; line-height: 1;">REVISIÓN<br>EN CURSO</h1><p style="color: #fff; font-weight: 900; font-size: 1.2rem; margin-top: 1vh; text-transform: uppercase;">Desafío Solicitado (VAR)</p><button id="btn-close-var" aria-label="Cerrar VAR" class="btn-primary ui-pulse" style="margin-top: 6vh; display:none; background: #fff; color: #EA580C; padding: 2vh 4vw; box-shadow: 0 10px 20px rgba(0,0,0,0.5);" data-action="TOGGLE_VAR"><i class="ph-bold ph-check-circle" style="font-size: 1.5rem;"></i> REANUDAR PARTIDO</button>
+        <i class="ph-bold ph-monitor-play" style="font-size: 6rem; color: #fff; margin-bottom: 2vh; animation: pulseGlow 1.5s infinite;"></i><h1 style="font-family: var(--font-display); font-size: 4rem; color: #fff; letter-spacing: 2px; text-align: center; line-height: 1;">REVISIÓN<br>EN CURSO</h1><p style="color: #fff; font-weight: 900; font-size: 1.2rem; margin-top: 1vh; text-transform: uppercase;">Desafío Solicitado (VAR)</p><button aria-label="Cerrar VAR" class="btn-primary ui-pulse" style="margin-top: 6vh; display:none; background: #fff; color: #EA580C; padding: 2vh 4vw; box-shadow: 0 10px 20px rgba(0,0,0,0.5);" data-action="TOGGLE_VAR"><i class="ph-bold ph-check-circle" style="font-size: 1.5rem;"></i> REANUDAR PARTIDO</button>
     </div>
     
-    <div id="timeout-overlay-wrapper"><div class="timeout-box" id="overlay-timeout-box"><div class="timeout-title">TIEMPO FUERA SOLICITADO</div><div class="timeout-timer font-score" id="overlay-timeout-timer">30</div><div class="timeout-team" id="overlay-timeout-team">TEAM...</div><button id="btn-cancel-timeout" aria-label="Cancelar Tiempo Fuera" class="btn-primary ui-pulse" style="margin-top:15px; width:100%; background:var(--color-danger); display:none;" data-action="CANCEL_TIMEOUT">CORTAR TIEMPO</button></div></div>
+    <div id="timeout-overlay-wrapper"><div class="timeout-box" id="overlay-timeout-box"><div class="timeout-title">TIEMPO FUERA SOLICITADO</div><div class="timeout-timer font-score" id="overlay-timeout-timer">30</div><div class="timeout-team" id="overlay-timeout-team">TEAM...</div><button aria-label="Cancelar Tiempo Fuera" class="btn-primary ui-pulse" style="margin-top:15px; width:100%; background:var(--color-danger); display:none;" data-action="CANCEL_TIMEOUT">CORTAR TIEMPO</button></div></div>
     
     <div id="client-finished-overlay"><i class="ph-fill ph-trophy" style="font-size: 5rem; color:var(--color-gold); margin-bottom: 20px;"></i><h1 style="font-family:var(--font-display); font-size:3.5rem; color:#fff;" id="cfo-title">PARTIDO FINALIZADO</h1><p style="color:var(--text-muted); font-size: 1.2rem;" id="cfo-score">A 0 - 0 B</p><button aria-label="Salir" class="btn-primary ui-pulse" style="margin-top:30px; background:var(--text-accent); color:#000;" data-action="LEAVE_BOARD">SALIR DEL PARTIDO</button></div>
 
@@ -213,7 +225,7 @@
         <div class="top-header" style="background: transparent; border: none; padding: 0; justify-content: flex-end;"><button aria-label="Cambiar Tema" class="btn-icon ui-pulse" data-action="TOGGLE_THEME" title="Cambiar Tema"><i class="ph-fill ph-sun theme-icon"></i></button></div>
         <div style="text-align:left; margin-bottom:20px; margin-top: 10px; flex-shrink: 0; user-select: none;">
             <h1 id="app-title-secret" class="ui-pulse" style="font-family: var(--font-display); font-size:3.5rem; font-weight:900; line-height:1; color:var(--text-main); letter-spacing: 1px; cursor: pointer;">Volley <span style="color: var(--text-accent);">Pro</span></h1>
-            <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top: 5px;">V10.6 - Master Monolith</p>
+            <p style="font-size:0.9rem; color:var(--text-muted); font-weight:700; margin-top: 5px;">V11 - Master Monolith</p>
         </div>
         <div style="display:flex; flex-direction:column; gap:10px; padding-bottom: 20px;">
             <div class="dash-card ui-pulse" id="card-superuser" style="display: none; border-left-color: var(--color-accent-orange);" data-action="REQUEST_AUTH" data-role="superuser"><div><h3 style="color:var(--text-main); margin-bottom:2px; font-size: 1rem; font-weight: 900; text-transform: uppercase;">Súper Usuario</h3><p style="font-size:0.8rem; color:var(--text-muted); font-weight: 700;">Administrador Global.</p></div><i class="ph-fill ph-crown" style="font-size:2rem; color:var(--color-accent-orange);"></i></div>
@@ -312,10 +324,14 @@
                     <div id="momentum-B"></div>
                 </div>
 
-                <div class="match-hud">
-                    <div class="hud-left"><button id="btn-share-hub" aria-label="Compartir" class="btn-icon ui-pulse" title="Compartir Partido" data-action="OPEN_SHARE_HUB" style="display:none; color: var(--text-accent);"><i id="icon-share-status" class="ph ph-share-network"></i></button><button id="btn-report-live" aria-label="Reporte" class="btn-icon ui-pulse" title="Ver Estadísticas" data-action="VIEW_REPORT_LIVE" style="display:none; color: var(--color-gold);"><i class="ph ph-chart-line"></i></button><button id="btn-toggle-chat" aria-label="Opciones de Chat" class="btn-icon ui-pulse" title="Opciones/Chat" data-action="TOGGLE_CHAT_PANEL" style="display:none;"><i id="icon-chat-status" class="ph ph-chat-circle-text" style="color: var(--color-timer);"></i></button><button aria-label="Atras" class="btn-icon ui-pulse" data-action="LEAVE_BOARD" style="color:var(--text-muted);"><i class="ph ph-arrow-left"></i></button></div>
-                    <div class="hud-center"><div id="timer" class="timer-display color-timer ui-pulse" data-action="TOGGLE_TIMER">00:00:00</div></div>
-                    <div class="hud-right"><button id="btn-exit-match" aria-label="Salir del Partido" class="btn-icon ui-pulse" title="Salir del partido" data-action="PROMPT_EXIT" style="color:var(--color-danger);"><i class="ph-bold ph-sign-out"></i></button></div>
+                <div class="match-hud" id="main-match-hud">
+                    <div class="hud-left"><button id="btn-share-hub" aria-label="Compartir" class="btn-icon ui-pulse" title="Compartir Partido" data-action="OPEN_SHARE_HUB" style="display:none; color: var(--text-accent);"><i id="icon-share-status" class="ph ph-share-network"></i></button><button id="btn-report-live" aria-label="Reporte" class="btn-icon ui-pulse" title="Ver Estadísticas" data-action="VIEW_REPORT_LIVE" style="display:none; color: var(--color-gold);"><i class="ph ph-chart-line"></i></button><button id="btn-toggle-chat" aria-label="Opciones de Chat" class="btn-icon ui-pulse" title="Opciones/Chat" data-action="TOGGLE_CHAT_PANEL" style="display:none;"><i id="icon-chat-status" class="ph ph-chat-circle-text" style="color: var(--color-timer);"></i></button></div>
+                    <div class="hud-center" style="flex-direction: column; justify-content: center;">
+                        <div id="timer-global" style="font-size: 0.75rem; color: var(--text-muted); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">GLOBAL TIME <span id="timer-g-val">00:00:00</span></div>
+                        <div id="timer" class="timer-display color-timer ui-pulse" data-action="TOGGLE_TIMER" style="margin-top: -3px; font-size: 2.5rem;">00:00</div>
+                        <div style="font-size: 0.6rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-top: -2px;">SET TIME</div>
+                    </div>
+                    <div class="hud-right"><button aria-label="Atras" class="btn-icon ui-pulse" id="btn-back-board" data-action="LEAVE_BOARD" style="color:var(--text-muted);"><i class="ph ph-arrow-left"></i></button><button id="btn-exit-match" aria-label="Salir del Partido" class="btn-icon ui-pulse" title="Salir del partido" data-action="PROMPT_EXIT" style="color:var(--color-danger);"><i class="ph-bold ph-sign-out"></i></button></div>
                 </div>
                 
                 <div class="teams-container" id="board-teams-container">
@@ -360,7 +376,7 @@
 <script>
 /** [1] PWA AUTO-INSTALLER SCRIPT */
 (function setupPWA(){
-    const manifest = {name:"Volley Pro V10.6",short_name:"VolleyPro",start_url:".",display:"standalone",background_color:"#060913",theme_color:"#00E5FF",icons:[{src:"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏐</text></svg>",sizes:"512x512",type:"image/svg+xml"}]};
+    const manifest = {name:"Volley Pro V11",short_name:"VolleyPro",start_url:".",display:"standalone",background_color:"#060913",theme_color:"#00E5FF",icons:[{src:"data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏐</text></svg>",sizes:"512x512",type:"image/svg+xml"}]};
     const mBlob = new Blob([JSON.stringify(manifest)],{type:'application/json'});
     document.head.insertAdjacentHTML('beforeend',`<link rel="manifest" href="${URL.createObjectURL(mBlob)}">`);
     if('serviceWorker' in navigator){
@@ -411,10 +427,11 @@
         }
     };
 
-    /** [CHAT BATCHING SHIELD] */
+    /** [CHAT BATCHING SHIELD - BUG XSS FIX] */
     const ChatShield = {
         _buffer: [], _lastFlush: 0,
-        push(nick, msg, isMe, isSystem, isPbp, isCaster = false) { this._buffer.push({ nick, msg, isMe, isSystem, isPbp, isCaster }); this.scheduleFlush(); },
+        sanitize(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; },
+        push(nick, msg, isMe, isSystem, isPbp, isCaster = false) { this._buffer.push({ nick: this.sanitize(nick), msg: this.sanitize(msg), isMe, isSystem, isPbp, isCaster }); this.scheduleFlush(); },
         scheduleFlush() { const now = Date.now(); if (now - this._lastFlush > 300) { this.flush(); this._lastFlush = now; } },
         flush() {
             if (this._buffer.length === 0) return;
@@ -563,7 +580,7 @@
                 if(EventManager._swapTimeout) { clearTimeout(EventManager._swapTimeout); EventManager._swapTimeout = null; }
                 this.state.matches[code] = pastState; AudioEngine.error(); 
                 UIEngine.render(this.state); 
-                UIEngine.renderTime(); // BUG 4 FIX: Render inmediato del reloj
+                UIEngine.renderTime(); // Render inmediato del reloj
                 NetworkLayer.push(code, pastState, this.state.currentTenant, true); document.getElementById('undo-modal').classList.remove('active'); 
                 
                 NetworkLayer.sendChat(code, '🎙️ NARRADOR', `🚨 El árbitro ha corregido la última jugada. Marcador actualizado: ${pastState.scores.A} - ${pastState.scores.B}`, true, false, true);
@@ -573,7 +590,7 @@
 
     /** [5] NETWORK LAYER */
     const NetworkLayer = {
-        _isSyncing: false, _pendingUpdate: null, chatChannel: null, connectionStatus: true, _isSubscribed: false,
+        _isSyncing: false, _isSyncingOffline: false, _pendingUpdate: null, chatChannel: null, connectionStatus: true, _isSubscribed: false,
         setupRealtimeSync() { 
             if (!supabase) { this.connectionStatus = false; return; } 
             if (this._isSubscribed) return; 
@@ -633,6 +650,8 @@
         },
         
         syncOfflineData: async function() { 
+            if (this._isSyncingOffline) return; 
+            this._isSyncingOffline = true;
             for (let i = 0; i < localStorage.length; i++) { 
                 const key = localStorage.key(i); 
                 if (key && key.startsWith('VOL_OFFLINE_')) { 
@@ -649,6 +668,7 @@
                     }
                 } 
             } 
+            this._isSyncingOffline = false;
         }
     };
 
@@ -756,8 +776,16 @@
                 
                 const overlay = document.getElementById('broadcast-paused-overlay'); const chatInput = document.getElementById('chat-input'); const chatBtn = document.getElementById('btn-send-chat'); if (s.role === 'client') { if (m.broadcast && !m.broadcast.isLive) { overlay.style.display = 'flex'; } else { overlay.style.display = 'none'; } if (m.broadcast && !m.broadcast.chatEnabled) { chatInput.disabled = true; chatBtn.disabled = true; chatInput.placeholder = "Chat desactivado"; } else if (!EventManager.chatCooldownActive) { chatInput.disabled = false; chatBtn.disabled = false; chatInput.placeholder = "Mensaje..."; } } else { overlay.style.display = 'none'; }
                 
-                const chatToggleBtn = document.getElementById('btn-toggle-chat'); const chatIcon = document.getElementById('icon-chat-status'); const btnShareHub = document.getElementById('btn-share-hub'); const btnRep = document.getElementById('btn-report-live');
-                if(s.role === 'referee') { if(chatToggleBtn) { chatToggleBtn.style.display = 'flex'; if (m.broadcast?.chatEnabled !== false) { chatIcon.className = 'ph ph-chat-circle-text'; chatIcon.style.color = 'var(--color-timer)'; } else { chatIcon.className = 'ph ph-chat-circle-slash'; chatIcon.style.color = 'var(--color-danger)'; } } if(btnShareHub) btnShareHub.style.display = 'flex'; if(btnRep) btnRep.style.display = 'flex'; document.getElementById('toggle-broadcast-live').checked = m.broadcast?.isLive !== false; document.getElementById('toggle-broadcast-chat').checked = m.broadcast?.chatEnabled !== false; } else if(s.role === 'client') { if(chatToggleBtn) chatToggleBtn.style.display = 'flex'; if(btnShareHub) btnShareHub.style.display = 'flex'; if(btnRep) btnRep.style.display = 'flex'; }
+                const chatToggleBtn = document.getElementById('btn-toggle-chat'); const chatIcon = document.getElementById('icon-chat-status'); const btnShareHub = document.getElementById('btn-share-hub'); const btnRep = document.getElementById('btn-report-live'); const btnBackBoard = document.getElementById('btn-back-board');
+                
+                if (m.status === 'finished') {
+                    if (btnBackBoard) btnBackBoard.style.display = 'none';
+                    if (btnShareHub) btnShareHub.style.display = 'none';
+                    if (chatToggleBtn) chatToggleBtn.style.display = 'none';
+                } else {
+                    if (btnBackBoard) btnBackBoard.style.display = 'flex';
+                    if(s.role === 'referee') { if(chatToggleBtn) { chatToggleBtn.style.display = 'flex'; if (m.broadcast?.chatEnabled !== false) { chatIcon.className = 'ph ph-chat-circle-text'; chatIcon.style.color = 'var(--color-timer)'; } else { chatIcon.className = 'ph ph-chat-circle-slash'; chatIcon.style.color = 'var(--color-danger)'; } } if(btnShareHub) btnShareHub.style.display = 'flex'; if(btnRep) btnRep.style.display = 'flex'; document.getElementById('toggle-broadcast-live').checked = m.broadcast?.isLive !== false; document.getElementById('toggle-broadcast-chat').checked = m.broadcast?.chatEnabled !== false; } else if(s.role === 'client') { if(chatToggleBtn) chatToggleBtn.style.display = 'flex'; if(btnShareHub) btnShareHub.style.display = 'flex'; if(btnRep) btnRep.style.display = 'flex'; }
+                }
 
                 const varOverlay = document.getElementById('var-overlay'); if (m.varActive) { varOverlay.style.display = 'flex'; document.getElementById('btn-close-var').style.display = (s.role === 'referee') ? 'flex' : 'none'; } else if (varOverlay) { varOverlay.style.display = 'none'; }
                 if (s.role === 'referee') this.renderPlays('ref-plays-container', m);
@@ -827,7 +855,39 @@
         spawnConfetti: function() { const cont = document.getElementById('confetti-container'); if(!cont) return; for(let i=0; i<100; i++) { const p = document.createElement('div'); p.className = 'confetti-piece'; p.style.left = Math.random() * 100 + 'vw'; p.style.backgroundColor = APP_COLORS[Math.floor(Math.random()*APP_COLORS.length)]; p.style.animationDelay = Math.random() * 3 + 's'; cont.appendChild(p); } },
         modal: function(title, msg, actions = [{text:'OK', type:'cancel'}]) { const m = document.getElementById('custom-modal'); document.getElementById('modal-title').innerHTML = title; document.getElementById('modal-msg').innerHTML = msg; const actCont = document.getElementById('modal-actions'); actCont.innerHTML = ''; actions.forEach(a => { const btn = document.createElement('button'); btn.className = `modal-btn modal-btn-${a.type} ui-pulse`; btn.innerHTML = a.text; btn.onclick = () => { if(a.callback) a.callback(); if(a.type !== 'danger' || (a.type === 'danger' && a.callback)) m.classList.remove('active'); }; actCont.appendChild(btn); }); m.classList.add('active'); },
         triggerShake: function(id) { const el = document.getElementById(id); if(!el) return; el.classList.remove('ui-shake'); void el.offsetWidth; el.classList.add('ui-shake'); },
-        renderTime: function() { const code = StateManager.state.roomCode; const m = StateManager.state.matches[code]; if(!m || !m.timer) return; let totalSeconds = Math.floor(m.timer.elapsedTime / 1000); if(m.timer.isRunning && m.timer.startTime) { totalSeconds += Math.floor((Date.now() - m.timer.startTime) / 1000); } const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0'); const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0'); const secs = String(totalSeconds % 60).padStart(2, '0'); const timerEl = document.getElementById('timer'); if(timerEl) { timerEl.innerText = `${hrs}:${mins}:${secs}`; if(!m.timer.isRunning) { timerEl.classList.add('timer-stopped'); timerEl.classList.remove('timer-active'); } else { timerEl.classList.add('timer-active'); timerEl.classList.remove('timer-stopped'); } } },
+        renderTime: function() { 
+            const code = StateManager.state.roomCode; 
+            const m = StateManager.state.matches[code]; 
+            if(!m || !m.timer) return; 
+            
+            let totalMs = m.timer.elapsedTime; 
+            if(m.timer.isRunning && m.timer.startTime) { totalMs += (Date.now() - m.timer.startTime); } 
+            
+            let msAnteriores = 0;
+            if (m.historySets && m.historySets.length > 0) { m.historySets.forEach(s => msAnteriores += (s.duration || 0)); }
+            
+            let currentSetMs = totalMs - msAnteriores;
+            if (currentSetMs < 0) currentSetMs = 0;
+            
+            let totalSeconds = Math.floor(totalMs / 1000); 
+            const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, '0'); 
+            const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0'); 
+            const secs = String(totalSeconds % 60).padStart(2, '0'); 
+            
+            let setSeconds = Math.floor(currentSetMs / 1000);
+            const sMins = String(Math.floor(setSeconds / 60)).padStart(2, '0');
+            const sSecs = String(setSeconds % 60).padStart(2, '0');
+
+            const timerEl = document.getElementById('timer'); 
+            const timerGlobalEl = document.getElementById('timer-g-val');
+
+            if(timerEl) { 
+                timerEl.innerText = `${sMins}:${sSecs}`; 
+                if(!m.timer.isRunning) { timerEl.classList.add('timer-stopped'); timerEl.classList.remove('timer-active'); } 
+                else { timerEl.classList.add('timer-active'); timerEl.classList.remove('timer-stopped'); } 
+            }
+            if(timerGlobalEl) { timerGlobalEl.innerText = `${hrs}:${mins}:${secs}`; }
+        },
         renderPlays: function(containerId, m) { const cont = document.getElementById(containerId); if(!cont) return; if(!m.timeline || !m.timeline[m.currentSet] || m.timeline[m.currentSet].length === 0) { cont.innerHTML = '<div style="color:var(--text-muted); font-size:0.9rem; padding: 2vh; text-align:center;">No hay jugadas registradas en este set.</div>'; return; } let html = ''; const plays = [...m.timeline[m.currentSet]].reverse(); plays.forEach((p, idx) => { const num = m.timeline[m.currentSet].length - idx; let color = p.t === 'A' ? m.teams.A.color : m.teams.B.color; let desc = ''; if(typeof p === 'string') desc = p; else { if(p.r === 'p_yellow') desc = `🟨 Amarilla a ${p.p}`; else if(p.r === 'p_red') desc = `🟥 Roja a ${p.p}`; else if(p.r === 'sub') desc = `🔄 ${p.s}`; else { let playerText = p.p ? (p.p.num === 'Equipo' ? 'Colectivo' : `#${p.p.num} ${p.p.name}`) : ''; desc = `${p.r.replace('f_', 'Error: ').toUpperCase()} - ${playerText}`; } } html += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:8px; border-bottom:1px solid var(--border-subtle);"><div style="display:flex; align-items:center; gap:8px;"><div style="font-family:monospace; color:var(--text-muted); font-size:0.8rem;">${num}</div><div style="width:10px; height:10px; border-radius:50%; background:${color};"></div><div style="font-size:0.85rem; color:var(--text-main); font-weight:700;">${desc}</div></div><div style="font-family:var(--font-display); font-size:1.1rem; color:var(--text-main);">${p.s || ''}</div></div>`; }); cont.innerHTML = html; },
         openShareHub: function() { const code = StateManager.state.roomCode; if (!code) return; document.getElementById('share-code-display').innerText = code; const url = `${window.location.origin}${window.location.pathname}?role=espectador&code=${code}`; const qrCont = document.getElementById('qr-container'); qrCont.innerHTML = ''; new QRCode(qrCont, { text: url, width: 150, height: 150, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M }); document.getElementById('share-hub-modal').classList.add('active'); },
         copyMagicLink: function() { const code = StateManager.state.roomCode; const url = `${window.location.origin}${window.location.pathname}?role=espectador&code=${code}`; navigator.clipboard.writeText(url).then(() => { this.modal('¡LINK COPIADO!', 'El enlace se ha copiado al portapapeles.', [{text: 'OK', type: 'confirm'}]); }).catch(err => { this.modal('ERROR', 'No se pudo copiar.', [{text: 'OK', type: 'cancel'}]); }); },
@@ -839,7 +899,7 @@
             try { 
                 const exportContainer = document.createElement('div'); exportContainer.style.position = 'absolute'; exportContainer.style.left = '-9999px'; exportContainer.style.top = '0'; exportContainer.style.width = '800px'; exportContainer.style.backgroundColor = StateManager.state.theme === 'light' ? '#F1F5F9' : '#060913'; exportContainer.style.padding = '40px'; exportContainer.style.display = 'flex'; exportContainer.style.flexDirection = 'column'; exportContainer.style.gap = '30px';
                 const header = document.createElement('div'); header.innerHTML = `<h1 style="font-family:'Bebas Neue', sans-serif; font-size:4.5rem; text-align:center; color:#00E5FF; margin-bottom:5px; line-height:1;">REPORTE OFICIAL</h1><p style="text-align:center; font-family:'Oswald', sans-serif; font-size:1.5rem; color:#94A3B8; font-weight:700;">VOLLEY PRO - PARTIDO: ${code}</p><hr style="border-color: rgba(255,255,255,0.1); margin-top:20px;">`; exportContainer.appendChild(header);
-                const tabResumen = document.getElementById('rtab-resumen').cloneNode(true); tabResumen.style.display = 'flex'; const tabTimeline = document.getElementById('rtab-timeline').cloneNode(true); tabTimeline.style.display = 'flex'; const tabActa = document.getElementById('rtab-acta').cloneNode(true); tabActa.style.display = 'flex';
+                const tabResumen = document.getElementById('rtab-resumen').cloneNode(true); tabResumen.style.display = 'flex'; const tabTimeline = document.getElementById('rtab-timeline').cloneNode(true); tabTimeline.style.display = 'flex'; const tabActa = document.getElementById('rtab-acta').querySelector('#acta-document').cloneNode(true); tabActa.style.display = 'block';
                 exportContainer.appendChild(tabResumen); exportContainer.appendChild(tabTimeline); exportContainer.appendChild(tabActa);
                 document.body.appendChild(exportContainer);
                 const canvas = await html2canvas(exportContainer, { backgroundColor: StateManager.state.theme === 'light' ? '#F1F5F9' : '#060913', scale: 2, useCORS: true }); 
@@ -850,6 +910,12 @@
                     btn.innerHTML = originalIcon; btn.style.pointerEvents = 'auto'; btn.disabled = false; 
                 }, 'image/jpeg', 0.90); 
             } catch (error) { UIEngine.modal('ERROR', 'No se pudo generar el reporte.'); btn.innerHTML = originalIcon; btn.style.pointerEvents = 'auto'; btn.disabled = false; } 
+        },
+        printActa: function() {
+            const actaHTML = document.getElementById('acta-document').innerHTML;
+            const printZone = document.getElementById('print-zone');
+            printZone.innerHTML = `<div style="max-width: 800px; margin: 0 auto; line-height: 1.6;">${actaHTML.replace(/color:var\(--text-main\)/g, 'color:black').replace(/background:var\(--bg-card\)/g, 'background:white').replace(/border:1px solid var\(--border-subtle\)/g, 'border:none')}</div>`;
+            window.print();
         }
     };
 
@@ -906,6 +972,7 @@
                     case 'OPEN_SHARE_HUB': UIEngine.openShareHub(); break; case 'COPY_MAGIC_LINK': UIEngine.copyMagicLink(); break; case 'NATIVE_SHARE': UIEngine.nativeShare(); break;
                     case 'TOGGLE_CHAT_PANEL': this.toggleChatPanel(); break; case 'PROMPT_EXIT': this.promptExit(); break;
                     case 'ADMIN_LIVE_WARN': UIEngine.modal('🔴 PARTIDO EN CURSO', 'Inicia sesión con la cuenta del Árbitro para operar la mesa.', [{text:'ENTENDIDO', type:'cancel'}]); break;
+                    case 'PRINT_ACTA': UIEngine.printActa(); break;
                 }
             });
 
@@ -924,7 +991,6 @@
             let secretTaps = 0, secretTimer = null; const titleEl = document.getElementById('app-title-secret'); if(titleEl) { titleEl.addEventListener('click', () => { secretTaps++; clearTimeout(secretTimer); if(secretTaps >= 5) { const suCard = document.getElementById('card-superuser'); if(suCard) { suCard.style.display = 'flex'; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } secretTaps = 0; } secretTimer = setTimeout(() => { secretTaps = 0; }, 1000); }); }
         },
 
-        // BUG 1 FIX: Funciones para Titulares (Starters)
         openStartersModal(team) {
             const m = StateManager.state.matches[StateManager.state.roomCode];
             if (!m) return;
@@ -940,7 +1006,7 @@
                          </label>`;
             });
             document.getElementById('starters-list-container').innerHTML = html;
-            this.toggleStarter(); // Update counts
+            this.toggleStarter(); 
             document.getElementById('starters-modal').classList.add('active');
         },
         toggleStarter() {
@@ -953,18 +1019,12 @@
         saveStarters() {
             const team = document.getElementById('btn-save-starters').getAttribute('data-team');
             const cbs = document.querySelectorAll('.starter-cb');
-            StateManager.mutateMatch(m => {
-                cbs.forEach((cb, i) => { m.teams[team].roster[i].on_court = cb.checked; });
-            }, false, true, "Guardar Titulares " + team);
+            StateManager.mutateMatch(m => { cbs.forEach((cb, i) => { m.teams[team].roster[i].on_court = cb.checked; }); }, false, true, "Guardar Titulares " + team);
             document.getElementById('starters-modal').classList.remove('active');
             AudioEngine.popA();
         },
 
-        // BUG 1 FIX: Funciones para Sustituciones FIVB (Subs)
-        openSubsModal() {
-            this.subSwitchTeam('A');
-            document.getElementById('subs-modal').classList.add('active');
-        },
+        openSubsModal() { this.subSwitchTeam('A'); document.getElementById('subs-modal').classList.add('active'); },
         subSwitchTeam(team) {
             const m = StateManager.state.matches[StateManager.state.roomCode];
             if (!m) return;
@@ -978,7 +1038,7 @@
 
             let outHtml = ''; let inHtml = '';
             m.teams[team].roster.forEach((p, i) => {
-                if(p.is_libero) return; // Líberos no cuentan como cambio normal
+                if(p.is_libero) return; 
                 if(p.on_court) outHtml += `<option value="${i}">#${p.number} ${p.name}</option>`;
                 else inHtml += `<option value="${i}">#${p.number} ${p.name}</option>`;
             });
@@ -990,19 +1050,13 @@
             const m = StateManager.state.matches[StateManager.state.roomCode];
             const setNum = m.currentSet;
 
-            if (m.rules.fivbSubs && m.subs[setNum][team] >= 6) {
-                UIEngine.modal('LÍMITE ALCANZADO', 'Este equipo ya agotó sus 6 cambios en este set.', [{text:'OK', type:'cancel'}]);
-                AudioEngine.error(); return;
-            }
+            if (m.rules.fivbSubs && m.subs[setNum][team] >= 6) { UIEngine.modal('LÍMITE ALCANZADO', 'Este equipo ya agotó sus 6 cambios en este set.', [{text:'OK', type:'cancel'}]); AudioEngine.error(); return; }
 
-            const outIdx = document.getElementById('sub-out-select').value;
-            const inIdx = document.getElementById('sub-in-select').value;
+            const outIdx = document.getElementById('sub-out-select').value; const inIdx = document.getElementById('sub-in-select').value;
             if(outIdx === '' || inIdx === '') return;
 
             StateManager.mutateMatch(match => {
-                match.teams[team].roster[outIdx].on_court = false;
-                match.teams[team].roster[inIdx].on_court = true;
-                match.subs[match.currentSet][team]++;
+                match.teams[team].roster[outIdx].on_court = false; match.teams[team].roster[inIdx].on_court = true; match.subs[match.currentSet][team]++;
                 if(!match.timeline[match.currentSet]) match.timeline[match.currentSet] = [];
                 match.timeline[match.currentSet].push({ t: team, r: 'sub', s: `Cambio: Entra #${match.teams[team].roster[inIdx].number}, Sale #${match.teams[team].roster[outIdx].number}`});
             }, false, true, "Sustitución " + team);
@@ -1050,21 +1104,20 @@
         openRulesModal() { let savedRules = localStorage.getItem('VOL_RULES_' + StateManager.state.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); document.getElementById('admin-cfg-sets').value = rules.maxSets; document.getElementById('admin-cfg-pts').value = rules.ptsPerSet; document.getElementById('admin-cfg-tie').value = rules.ptsTieBreak; document.getElementById('admin-cfg-subs').checked = rules.fivbSubs || false; document.getElementById('rules-modal').classList.add('active'); },
         saveRules() { let ptsPerSet = parseInt(document.getElementById('admin-cfg-pts').value); let ptsTieBreak = parseInt(document.getElementById('admin-cfg-tie').value); if (ptsTieBreak > ptsPerSet) { ptsTieBreak = ptsPerSet; UIEngine.modal('REGLAS CORREGIDAS', 'El Tie-Break se ha ajustado.'); } const rules = { maxSets: parseInt(document.getElementById('admin-cfg-sets').value), ptsPerSet, ptsTieBreak, fivbSubs: document.getElementById('admin-cfg-subs').checked }; localStorage.setItem('VOL_RULES_' + StateManager.state.currentTenant, JSON.stringify(rules)); document.getElementById('rules-modal').classList.remove('active'); },
         checkSetupValidity() { const s = StateManager.state; const tid = document.getElementById('select-tournament').value; const ref = document.getElementById('input-referee').value; const hasA = s.draft.A.dbId !== null; const hasB = s.draft.B.dbId !== null; const btn = document.getElementById('btn-create-match-v5'); const txt = document.getElementById('txt-save-match'); const schedDateStr = document.getElementById('input-schedule-date').value; if (tid && ref && hasA && hasB) { btn.disabled = false; if(s.editingMatchCode) txt.innerText = 'GUARDAR CAMBIOS'; else txt.innerText = schedDateStr ? 'PROGRAMAR PARTIDO' : 'CREAR E INICIAR'; } else { btn.disabled = true; txt.innerText = 'FALTAN DATOS'; } },
-        saveMatch() { const s = StateManager.state; const ref = document.getElementById('input-referee').value || 'Local'; const tid = document.getElementById('select-tournament').value; const schedDateStr = document.getElementById('input-schedule-date').value; let matchStatus = 'active'; if(schedDateStr) { matchStatus = 'scheduled'; } let savedRules = localStorage.getItem('VOL_RULES_' + s.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); const pCount = rules.fivbSubs ? 12 : 6; ['A', 'B'].forEach(t => { if (!s.draft[t].roster || s.draft[t].roster.length === 0) { s.draft[t].roster = Array.from({length: pCount}, (_, i) => ({ id: 'gen_'+t+'_'+(i+1), number: i+1, name: 'Jugador '+(i+1), is_captain: false, is_libero: false, on_court: false })); } }); if (s.editingMatchCode) { const code = s.editingMatchCode; let m = JSON.parse(JSON.stringify(s.matches[code])); m.teams = s.draft; m.referee = ref; m.tournamentId = tid; m.scheduled_at = schedDateStr; m.status = matchStatus; StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: m } }); NetworkLayer.push(code, m, s.currentTenant, true); StateManager.state.editingMatchCode = null; } else { const code = Math.random().toString(36).substring(2, 8).toUpperCase(); const mData = { code, status: matchStatus, scheduled_at: schedDateStr, tournamentId: tid, teams: s.draft, referee: ref, rules: rules, scores: { A: 0, B: 0 }, sets: { A: 0, B: 0 }, timer: { isRunning: false, elapsedTime: 0, startTime: null }, stats: { A: DEFAULTS.stats(), B: DEFAULTS.stats() }, timeline: { 1:[], 2:[], 3:[], 4:[], 5:[] }, currentSet: 1, historySets: [], historySnapshots: [], timeouts: { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }, subs: { 1: {A:0,B:0}, 2: {A:0,B:0}, 3: {A:0,B:0}, 4: {A:0,B:0}, 5: {A:0,B:0} }, broadcast: DEFAULTS.broadcast(), courtSwapped: false, servingFirst: null, varActive: false }; StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: mData } }); NetworkLayer.push(code, mData, s.currentTenant, true); } StateManager.dispatch('NAVIGATE', { screen: 'dashboard' }); },
+        saveMatch() { const s = StateManager.state; const ref = document.getElementById('input-referee').value || 'Local'; const tid = document.getElementById('select-tournament').value; const schedDateStr = document.getElementById('input-schedule-date').value; let matchStatus = 'active'; if(schedDateStr) { matchStatus = 'scheduled'; } let savedRules = localStorage.getItem('VOL_RULES_' + s.currentTenant); let rules = savedRules ? JSON.parse(savedRules) : DEFAULTS.rules(); const pCount = rules.fivbSubs ? 12 : 6; ['A', 'B'].forEach(t => { if (!s.draft[t].roster || s.draft[t].roster.length === 0) { s.draft[t].roster = Array.from({length: pCount}, (_, i) => ({ id: 'gen_'+t+'_'+(i+1), number: i+1, name: 'Jugador '+(i+1), is_captain: false, is_libero: false, on_court: false })); } }); if (s.editingMatchCode) { const code = s.editingMatchCode; let m = JSON.parse(JSON.stringify(s.matches[code])); m.teams = s.draft; m.referee = ref; m.tournamentId = tid; m.scheduled_at = schedDateStr; m.status = matchStatus; StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: m } }); NetworkLayer.push(code, m, s.currentTenant, true); StateManager.state.editingMatchCode = null; } else { const code = Math.random().toString(36).substring(2, 8).toUpperCase(); const mData = { code, status: matchStatus, scheduled_at: schedDateStr, tournamentId: tid, teams: s.draft, referee: ref, rules: rules, scores: { A: 0, B: 0 }, sets: { A: 0, B: 0 }, timer: { isRunning: false, elapsedTime: 0, startTime: null }, stats: { A: DEFAULTS.stats(), B: DEFAULTS.stats() }, timeline: { 1:[], 2:[], 3:[], 4:[], 5:[] }, currentSet: 1, historySets: [], historySnapshots: [], timeouts: { A: DEFAULTS.timeouts(), B: DEFAULTS.timeouts() }, subs: { 1: {A:0,B:0}, 2: {A:0,B:0}, 3: {A:0,B:0}, 4: {A:0,B:0}, 5: {A:0,B:0} }, broadcast: DEFAULTS.broadcast(), courtSwapped: false, servingFirst: null, varActive: false, tieBreakSwapped: false }; StateManager.dispatch('SYNC_MATCHES', { matches: { [code]: mData } }); NetworkLayer.push(code, mData, s.currentTenant, true); } StateManager.dispatch('NAVIGATE', { screen: 'dashboard' }); },
         openTeamSelectorModal(targetTeam) { StateManager.dispatch('CFG_TEAM', { team: targetTeam }); const oppTeam = targetTeam === 'A' ? 'B' : 'A'; const oppId = StateManager.state.draft[oppTeam].dbId; let html = ''; StateManager.state.dbTeamsList.forEach(t => { if (t.id === oppId) return; html += `<div class="ts-btn" data-action="SELECT_TEAM" data-id="${t.id}"><div class="ts-color" style="background: ${t.color};"></div><div class="ts-name">${t.name}</div></div>`; }); if(html === '') html = `<div style="font-size:0.9rem; font-weight:700; color:var(--text-muted); padding: 20px; grid-column: span 2;">No hay equipos.</div>`; document.getElementById('ts-list').innerHTML = html; document.getElementById('team-select-modal').classList.add('active'); },
         async selectTeamDB(id) { document.getElementById('team-select-modal').classList.remove('active'); const cfg = StateManager.state.cfgTeam; const btn = document.getElementById('btn-select-team-' + cfg); const t = StateManager.state.dbTeamsList.find(x => x.id === id); if (t) { btn.innerHTML = `<span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:${t.color}; margin-right:8px; border:1px solid rgba(0,0,0,0.5);"></span> <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 80%;">${t.name}</span>`; btn.style.borderColor = t.color; btn.style.color = '#000'; btn.style.background = t.color; StateManager.state.draft[cfg].color = t.color; StateManager.state.draft[cfg].name = t.name; StateManager.state.draft[cfg].dbId = t.id; const players = await NetworkLayer.fetchPlayersDB(t.id); StateManager.state.draft[cfg].roster = players; } this.checkSetupValidity(); },
         async loadStandingsScreen() { const t = await NetworkLayer.fetchTournaments(); let html = '<option value="">Selecciona un torneo...</option>'; t.forEach(tr => html += `<option value="${tr.id}">${tr.name}</option>`); document.getElementById('select-standings-tournament').innerHTML = html; document.getElementById('standings-content').innerHTML = '<div style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:0.85rem; font-weight:700;">Selecciona un torneo.</div>'; StateManager.dispatch('NAVIGATE', { screen: 'standings' }); },
-        calculateStandings() { const tid = document.getElementById('select-standings-tournament').value; if(!tid) return; const matches = Object.values(StateManager.state.matches).filter(m => m.tournamentId === tid && m.status === 'finished'); if(matches.length === 0) { document.getElementById('standings-content').innerHTML = '<div style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:0.85rem; font-weight:700;">No hay partidos finalizados.</div>'; return; } let sTable = {}; matches.forEach(m => { ['A', 'B'].forEach(t => { const name = m.teams[t].name; if(!sTable[name]) sTable[name] = { name, color: m.teams[t].color, pts: 0, w: 0, l: 0, sw: 0, sl: 0, pw: 0, pl: 0 }; }); const winT = m.sets.A > m.sets.B ? 'A' : 'B'; const losT = winT === 'A' ? 'B' : 'A'; sTable[m.teams[winT].name].w += 1; sTable[m.teams[losT].name].l += 1; sTable[m.teams[winT].name].sw += m.sets[winT]; sTable[m.teams[winT].name].sl += m.sets[losT]; sTable[m.teams[losT].name].sw += m.sets[losT]; sTable[m.teams[losT].name].sl += m.sets[winT]; if (m.historySets && m.historySets.length > 0) { m.historySets.forEach(setInfo => { sTable[m.teams['A'].name].pw += setInfo.A; sTable[m.teams['A'].name].pl += setInfo.B; sTable[m.teams['B'].name].pw += setInfo.B; sTable[m.teams['B'].name].pl += setInfo.A; }); } if(m.sets[losT] === m.sets[winT] - 1) { sTable[m.teams[winT].name].pts += 2; sTable[m.teams[losT].name].pts += 1; } else { sTable[m.teams[winT].name].pts += 3; } }); const ranked = Object.values(sTable).sort((a,b) => { if(b.pts !== a.pts) return b.pts - a.pts; const ratioSetA = a.sl === 0 ? 99 : a.sw/a.sl; const ratioSetB = b.sl === 0 ? 99 : b.sw/b.sl; if(ratioSetB !== ratioSetA) return ratioSetB - ratioSetA; const ratioPtsA = a.pl === 0 ? a.pw : a.pw/a.pl; const ratioPtsB = b.pl === 0 ? b.pw : b.pw/b.pl; return ratioPtsB - ratioPtsA; }); let html = `<table class="standings-table"><tr><th>#</th><th class="st-team">Equipo</th><th>PTS</th><th>G</th><th>P</th><th>SF</th><th>SC</th></tr>`; ranked.forEach((r, i) => { html += `<tr><td class="st-rank">${i+1}</td><td class="st-team" style="color:${r.color};">${r.name}</td><td class="st-pts">${r.pts}</td><td>${r.w}</td><td>${r.l}</td><td>${r.sw}</td><td>${r.sl}</td></tr>`; }); html += `</table>`; document.getElementById('standings-content').innerHTML = html; },
-        
+        calculateStandings() { const tid = document.getElementById('select-standings-tournament').value; if(!tid) return; const matches = Object.values(StateManager.state.matches).filter(m => m.tournamentId === tid && m.status === 'finished'); if(matches.length === 0) { document.getElementById('standings-content').innerHTML = '<div style="text-align:center; padding:30px 0; color:var(--text-muted); font-size:0.85rem; font-weight:700;">No hay partidos finalizados.</div>'; return; } let sTable = {}; matches.forEach(m => { ['A', 'B'].forEach(t => { const name = m.teams[t].name; if(!sTable[name]) sTable[name] = { name, color: m.teams[t].color, pts: 0, w: 0, l: 0, sw: 0, sl: 0, pw: 0, pl: 0 }; }); const winT = m.sets.A > m.sets.B ? 'A' : 'B'; const losT = winT === 'A' ? 'B' : 'A'; sTable[m.teams[winT].name].w++; sTable[m.teams[losT].name].l++; sTable[m.teams[winT].name].sw += m.sets[winT]; sTable[m.teams[losT].name].sl += m.sets[winT]; sTable[m.teams[losT].name].sw += m.sets[losT]; sTable[m.teams[winT].name].sl += m.sets[losT]; let ptsW = 0, ptsL = 0; if (m.historySets) { m.historySets.forEach(s => { ptsW += s[winT]; ptsL += s[losT]; }); } sTable[m.teams[winT].name].pw += ptsW; sTable[m.teams[losT].name].pl += ptsW; sTable[m.teams[losT].name].pw += ptsL; sTable[m.teams[winT].name].pl += ptsL; if (m.sets[winT] === 3 && (m.sets[losT] === 0 || m.sets[losT] === 1)) { sTable[m.teams[winT].name].pts += 3; } else if (m.sets[winT] === 3 && m.sets[losT] === 2) { sTable[m.teams[winT].name].pts += 2; sTable[m.teams[losT].name].pts += 1; } else if (m.sets[winT] === 2 && (m.sets[losT] === 0 || m.sets[losT] === 1)) { sTable[m.teams[winT].name].pts += 3; } else if (m.sets[winT] === 2 && m.sets[losT] === 1 && m.rules?.maxSets === 3) { sTable[m.teams[winT].name].pts += 2; sTable[m.teams[losT].name].pts += 1; } }); const arr = Object.values(sTable).sort((a,b) => { if (a.pts !== b.pts) return b.pts - a.pts; if (a.w !== b.w) return b.w - a.w; const ratioA = a.sl === 0 ? 99 : a.sw/a.sl; const ratioB = b.sl === 0 ? 99 : b.sw/b.sl; if (ratioA !== ratioB) return ratioB - ratioA; const pRatioA = a.pl === 0 ? 99 : a.pw/a.pl; const pRatioB = b.pl === 0 ? 99 : b.pw/b.pl; return pRatioB - pRatioA; }); let html = '<table class="standings-table"><tr><th>POS</th><th>EQUIPO</th><th>PTS</th><th>G/P</th><th>SETS</th><th>PUNTOS</th></tr>'; arr.forEach((t, i) => { let colorBlock = `<div style="display:inline-block; width:8px; height:8px; background:${t.color}; border-radius:50%; margin-right:5px;"></div>`; html += `<tr><td class="st-rank">${i+1}</td><td class="st-team">${colorBlock}${t.name}</td><td class="st-pts">${t.pts}</td><td>${t.w}/${t.l}</td><td style="font-size:0.75rem; color:var(--text-muted);">${t.sw} - ${t.sl}</td><td style="font-size:0.75rem; color:var(--text-muted);">${t.pw} - ${t.pl}</td></tr>`; }); html += '</table>'; document.getElementById('standings-content').innerHTML = html; },
+
         async loadTeamsScreen() { const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); StateManager.dispatch('NAVIGATE', { screen: 'teams' }); },
-        async createTeamDB() { const name = document.getElementById('input-new-team-name').value.trim(); const color = document.getElementById('input-new-team-color').value; if (!name) return UIEngine.triggerShake('input-new-team-name');
-const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { document.getElementById('input-new-team-name').value = ''; const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); AudioEngine.popA(); } },
+        async createTeamDB() { const name = document.getElementById('input-new-team-name').value.trim(); const color = document.getElementById('input-new-team-color').value; if (!name) return UIEngine.triggerShake('input-new-team-name'); const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { document.getElementById('input-new-team-name').value = ''; const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); AudioEngine.popA(); } },
         deleteTeamDB(id) { UIEngine.modal('ELIMINAR EQUIPO', 'Se borrará el equipo y sus jugadores.', [{text:'CANCELAR', type:'cancel'}, {text:'ELIMINAR', type:'danger', callback: async () => { const res = await NetworkLayer.deleteTeamDB(id); if(res.success) { const teams = await NetworkLayer.fetchTeamsDB(); StateManager.dispatch('SET_DB_TEAMS', { list: teams }); } }}]); },
         
         async loadPlayersDB(teamId, teamName, teamColor) { const p = await NetworkLayer.fetchPlayersDB(teamId); StateManager.dispatch('SET_DB_PLAYERS', { list: p, teamId }); document.getElementById('rm-team-name').innerText = teamName; document.getElementById('rm-team-name').style.color = teamColor; this.renderRosterManageList(); document.getElementById('roster-manage-modal').classList.add('active'); },
         async createPlayerDB() { const tid = StateManager.state.currentDbTeamView; const name = document.getElementById('input-player-name').value.trim(); const numStr = document.getElementById('input-player-number').value.trim(); const isCap = document.getElementById('input-player-cap').checked; const isLib = document.getElementById('input-player-lib').checked; if(!tid || !name || !numStr) return UIEngine.triggerShake('input-player-name'); const num = parseInt(numStr); const res = await NetworkLayer.createPlayerDB(tid, name, num, isCap, isLib); if(res.success) { document.getElementById('input-player-name').value = ''; document.getElementById('input-player-number').value = ''; document.getElementById('input-player-cap').checked = false; document.getElementById('input-player-lib').checked = false; const p = await NetworkLayer.fetchPlayersDB(tid); StateManager.dispatch('SET_DB_PLAYERS', { list: p, teamId: tid }); this.renderRosterManageList(); } },
         deletePlayerDB(id) { UIEngine.modal('ELIMINAR JUGADOR', '¿Seguro?', [{text:'CANCELAR', type:'cancel'}, {text:'ELIMINAR', type:'danger', callback: async () => { const tid = StateManager.state.currentDbTeamView; const res = await NetworkLayer.deletePlayerDB(id); if(res.success && tid) { const p = await NetworkLayer.fetchPlayersDB(tid); StateManager.dispatch('SET_DB_PLAYERS', { list: p, teamId: tid }); this.renderRosterManageList(); } }}]); },
-        renderRosterManageList() { const cont = document.getElementById('players-list-container'); if(StateManager.state.dbPlayersList.length > 0) { cont.innerHTML = StateManager.state.dbPlayersList.map(p => `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);"><div style="display:flex; align-items:center; gap:10px;"><div style="font-family:monospace; color:var(--text-muted); font-size:1.1rem; font-weight:900;">#${p.number}</div><div style="font-weight:800; color:var(--text-main); font-size:0.95rem;">${p.name} ${p.is_captain?'<span style="color:var(--text-accent);">(C)</span>':''} ${p.is_libero?'<span style="color:var(--color-gold);">(L)</span>':''}</div></div><button class="btn-icon" style="color:var(--color-danger); background:rgba(239, 68, 68, 0.1); border-radius:8px; width:35px; height:35px; padding:5px;" data-action="DELETE_PLAYER_DB" data-id="${p.id}"><i class="ph ph-trash"></i></button></div>`).join(''); } else { cont.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px; font-weight:700;">No hay jugadores en este equipo.</div>'; } },
+        renderRosterManageList() { const cont = document.getElementById('players-list-container'); if(StateManager.state.dbPlayersList.length > 0) { cont.innerHTML = StateManager.state.dbPlayersList.map(p => `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1);"><div style="display:flex; align-items:center; gap:10px;"><div style="font-family:monospace; color:var(--text-muted); font-size:1.1rem; font-weight:900;">#${p.number}</div><div style="font-weight:800; color:var(--text-main); font-size:0.95rem;">${p.name} ${p.is_captain?'<span style="color:var(--text-accent);">(C)</span>':''} ${p.is_libero?'<span style="color:var(--color-gold);">(L)</span>':''}</div></div><button aria-label="Borrar" class="btn-icon" style="color:var(--color-danger); background:rgba(239, 68, 68, 0.1); border-radius:8px; width:35px; height:35px; padding:5px;" data-action="DELETE_PLAYER_DB" data-id="${p.id}"><i class="ph ph-trash"></i></button></div>`).join(''); } else { cont.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:20px; font-weight:700;">No hay jugadores en este equipo.</div>'; } },
         
         openLiveRoster(team) { 
             const m = StateManager.state.matches[StateManager.state.roomCode]; 
@@ -1088,8 +1141,8 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             
             StateManager.mutateMatch(match => {
                 match.teams[team].roster.forEach((p, i) => {
-                    p.number = parseInt(nums[i].value);
-                    p.name = names[i].value.trim();
+                    p.number = parseInt(nums[i].value) || 0;
+                    p.name = names[i].value.trim() || 'Jugador ' + i;
                     p.is_libero = libs[i].checked;
                 });
             }, false, true, "Edición Roster " + team);
@@ -1136,7 +1189,7 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
                 this.hypePoints = Math.min(100, this.hypePoints + 30); UIEngine.updateHype(); 
                 NetworkLayer.sendChat(code, '🎙️ NARRADOR', `Punto por sanción para ${m.teams[oppTeam].name}.`, true, false, true);
                 
-                // BUG 3 FIX: Narrar punto rojo en el caster
+                // NARRAR PUNTO ROJO EN CASTER
                 const updatedMatch = StateManager.state.matches[code];
                 CasterEngine.trigger(updatedMatch, 'point', oppTeam);
             }
@@ -1158,9 +1211,15 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             
             let rosterHtml = ''; 
             targetTeamInfo.roster.forEach((p, idx) => { 
-                rosterHtml += `<button class="btn-primary ui-pulse" style="background:var(--bg-card); border:1px solid ${targetTeamInfo.color}; box-shadow:none; flex-direction:column; padding:15px; font-size:1rem; height:auto; color:var(--text-main);" data-action="CONFIRM_STAT_PLAYER" data-player="${p.number}" data-playername="${p.name}"><div style="font-family:monospace; font-size:1.5rem; color:${targetTeamInfo.color}; line-height:1; font-weight:900;">#${p.number}</div><div style="font-size:0.8rem; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">${p.name}</div></button>`; 
+                let isDisabled = false; let opacityStyle = "1";
+                if (p.is_libero && (statKey === 'ataque' || statKey === 'bloqueo' || statKey === 'ace')) { isDisabled = true; opacityStyle = "0.3"; }
+                
+                rosterHtml += `<button aria-label="Jugador ${p.name}" class="btn-primary ui-pulse" style="background:var(--bg-card); border:1px solid ${targetTeamInfo.color}; box-shadow:none; flex-direction:column; padding:15px; font-size:1rem; height:auto; color:var(--text-main); opacity:${opacityStyle};" data-action="${isDisabled ? '' : 'CONFIRM_STAT_PLAYER'}" data-player="${p.number}" data-playername="${p.name}" ${isDisabled ? 'disabled' : ''}>
+                                <div style="font-family:monospace; font-size:1.5rem; color:${targetTeamInfo.color}; line-height:1; font-weight:900;">#${p.number}</div>
+                                <div style="font-size:0.8rem; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;">${p.name}</div>
+                            </button>`; 
             }); 
-            rosterHtml += `<button class="btn-primary ui-pulse" style="grid-column: span 2; background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px dashed var(--border-subtle); box-shadow:none; padding:15px; font-size:0.9rem;" data-action="CONFIRM_STAT_PLAYER" data-player="Equipo" data-playername="Colectivo">ERROR COLECTIVO / RED</button>`;
+            rosterHtml += `<button aria-label="Equipo Completo" class="btn-primary ui-pulse" style="grid-column: span 2; background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px dashed var(--border-subtle); box-shadow:none; padding:15px; font-size:0.9rem;" data-action="CONFIRM_STAT_PLAYER" data-player="Equipo" data-playername="Colectivo">ERROR COLECTIVO / RED</button>`;
             
             document.getElementById('sp-player-list').innerHTML = rosterHtml; 
             document.getElementById('stats-modal').classList.remove('active'); 
@@ -1169,8 +1228,6 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
         
         confirmStatPlayer(playerNum, playerName) { 
             const statKey = StateManager.state.pendingStat; const team = StateManager.state.currentStatTeam; const code = StateManager.state.roomCode; 
-            const isError = statKey.startsWith('f_');
-            const actorTeam = isError ? (team === 'A' ? 'B' : 'A') : team;
             const playerObj = { num: playerNum, name: playerName };
 
             StateManager.mutateMatch(match => { 
@@ -1204,7 +1261,7 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             let html = ''; const snaps = [...m.historySnapshots].reverse(); 
             snaps.forEach((s, idx) => { 
                 const realIdx = m.historySnapshots.length - 1 - idx; 
-                html += `<div class="undo-log-item"><div style="flex:1;"><strong>${s.action}</strong><br><span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-display);">Marcador: ${s.state.scores.A} - ${s.state.scores.B}</span></div><button class="btn-primary ui-pulse" style="padding: 8px 15px; font-size: 0.8rem; box-shadow:none; background:var(--color-danger);" data-action="UNDO_TO" data-index="${realIdx}">RESTAURAR</button></div>`; 
+                html += `<div class="undo-log-item"><div style="flex:1;"><strong>${s.action}</strong><br><span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-display);">Marcador: ${s.state.scores.A} - ${s.state.scores.B}</span></div><button aria-label="Restaurar" class="btn-primary ui-pulse" style="padding: 8px 15px; font-size: 0.8rem; box-shadow:none; background:var(--color-danger);" data-action="UNDO_TO" data-index="${realIdx}">RESTAURAR</button></div>`; 
             }); 
             document.getElementById('undo-list-container').innerHTML = html; document.getElementById('undo-modal').classList.add('active'); 
         },
@@ -1221,7 +1278,12 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
         },
 
         manualSwap() { 
-            StateManager.mutateMatch(match => { match.courtSwapped = !match.courtSwapped; }, false, false, "Cambio de Cancha"); 
+            const m = StateManager.state.matches[StateManager.state.roomCode];
+            if (m.currentSet === m.rules?.maxSets && (m.scores.A >= 8 || m.scores.B >= 8)) {
+                StateManager.mutateMatch(match => { match.courtSwapped = !match.courtSwapped; match.tieBreakSwapped = true; }, false, false, "Cambio de Cancha Manual"); 
+            } else {
+                StateManager.mutateMatch(match => { match.courtSwapped = !match.courtSwapped; }, false, false, "Cambio de Cancha"); 
+            }
         },
 
         setFirstServe(team) { 
@@ -1238,6 +1300,15 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             
             const code = StateManager.state.roomCode; const s = StateManager.state; const m = s.matches[code]; 
             if (s.role !== 'referee' || m.status === 'finished' || m.status === 'scheduled') return; 
+            
+            const isTieBreak = m.currentSet === (m.rules?.maxSets || 3);
+            const limit = isTieBreak ? (m.rules?.ptsTieBreak || 15) : (m.rules?.ptsPerSet || 25);
+            
+            if ((m.scores.A >= limit && (m.scores.A - m.scores.B) >= 2) || (m.scores.B >= limit && (m.scores.B - m.scores.A) >= 2)) {
+                this.promptFinishSet();
+                return;
+            }
+
             if (!m.timer || !m.timer.isRunning) { UIEngine.modal('RELOJ DETENIDO', 'Inicia el cronómetro antes de sumar puntos.', [{text:'OK', type:'cancel'}]); AudioEngine.error(); return; } 
             if (m.scores.A === 0 && m.scores.B === 0 && !m.servingFirst) { UIEngine.triggerShake(`name-${team}`); AudioEngine.error(); UIEngine.modal('FALTA SAQUE', 'Toca el nombre del equipo que realizará el primer saque del set.', [{text:'ENTENDIDO', type:'confirm'}]); return; } 
             
@@ -1254,8 +1325,14 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             team === 'A' ? AudioEngine.popA() : AudioEngine.popB(); 
             if (navigator.vibrate) navigator.vibrate(50);
             
-            const isTieBreak = m.currentSet === m.rules?.maxSets; 
-            if (isTieBreak && m.scores[team] === 8) { 
+            const newScoreTeam = m.scores[team];
+            const newScoreOpp = m.scores[opp];
+            if (newScoreTeam >= limit && (newScoreTeam - newScoreOpp) >= 2) {
+                AudioEngine.whistle();
+                setTimeout(() => this.promptFinishSet(), 500);
+            }
+            
+            if (isTieBreak && m.scores[team] === 8 && !m.tieBreakSwapped) { 
                 AudioEngine.whistle(); 
                 UIEngine.modal('CAMBIO DE LADO', 'El equipo llegó a 8 puntos.', [{text:'CAMBIAR AHORA', type:'confirm', callback: () => this.manualSwap() }]); 
             } 
@@ -1287,12 +1364,25 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             
             StateManager.mutateMatch(match => { 
                 match.sets[winT]++; 
-                match.historySets.push({ A: match.scores.A, B: match.scores.B }); 
+                
+                let tiempoSetsAnteriores = 0;
+                match.historySets.forEach(s => tiempoSetsAnteriores += (s.duration || 0));
+                let msActual = match.timer.elapsedTime;
+                if (match.timer.isRunning && match.timer.startTime) {
+                    msActual += (Date.now() - match.timer.startTime);
+                }
+                let duracionDeEsteSet = msActual - tiempoSetsAnteriores;
+
+                match.historySets.push({ 
+                    A: match.scores.A, 
+                    B: match.scores.B,
+                    duration: duracionDeEsteSet
+                }); 
                 
                 const reqToWin = Math.ceil((match.rules?.maxSets||3)/2); 
                 if (match.sets[winT] >= reqToWin) { 
                     match.status = 'finished'; 
-                    if(match.timer) match.timer.isRunning = false; 
+                    if(match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } 
                 } else { 
                     match.currentSet++; 
                     match.scores = { A: 0, B: 0 }; 
@@ -1300,11 +1390,10 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
                     match.timeline[match.currentSet] = []; 
                     match.courtSwapped = !match.courtSwapped; 
                     
-                    // BUG 2 FIX: Reiniciar contadores de Tiempos Fuera por equipo
                     match.timeouts.A.left = 2; match.timeouts.A.isRunning = false; match.timeouts.A.startTime = null;
                     match.timeouts.B.left = 2; match.timeouts.B.isRunning = false; match.timeouts.B.startTime = null;
 
-                    if(match.timer) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } 
+                    if(match.timer && match.timer.isRunning) { match.timer.isRunning = false; match.timer.elapsedTime += (Date.now() - match.timer.startTime); match.timer.startTime = null; } 
                 } 
             }, false, true, "Fin del Set " + m.currentSet); 
             
@@ -1381,8 +1470,19 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
                         <div style="text-align:center;"><div style="font-family:var(--font-display); font-size:4rem; color:${m.teams.A.color}; line-height:1;">${m.sets.A}</div><div style="font-weight:900; color:var(--text-muted);">${m.teams.A.name}</div></div>
                         <div style="font-family:var(--font-display); font-size:2rem; color:var(--text-muted);">VS</div>
                         <div style="text-align:center;"><div style="font-family:var(--font-display); font-size:4rem; color:${m.teams.B.color}; line-height:1;">${m.sets.B}</div><div style="font-weight:900; color:var(--text-muted);">${m.teams.B.name}</div></div>
-                     </div>`;
-            if(m.historySets && m.historySets.length > 0) { html += `<div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:20px;">`; m.historySets.forEach((s, i) => { html += `<div style="background:var(--bg-card); border:1px solid var(--border-subtle); padding:10px 15px; border-radius:8px; text-align:center;"><div style="font-size:0.8rem; color:var(--text-muted); font-weight:900;">SET ${i+1}</div><div style="font-family:var(--font-display); font-size:1.5rem;">${s.A} - ${s.B}</div></div>`; }); html += `</div>`; }
+                    </div>`;
+            if(m.historySets && m.historySets.length > 0) { 
+                html += `<div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-bottom:20px;">`; 
+                m.historySets.forEach((s, i) => { 
+                    let minStr = s.duration ? Math.floor(s.duration/60000) + ' min' : '--';
+                    html += `<div style="background:var(--bg-card); border:1px solid var(--border-subtle); padding:10px 15px; border-radius:8px; text-align:center; min-width: 90px;">
+                                <div style="font-size:0.8rem; color:var(--text-muted); font-weight:900;">SET ${i+1}</div>
+                                <div style="font-family:var(--font-display); font-size:1.5rem;">${s.A} - ${s.B}</div>
+                                <div style="font-size:0.75rem; color:var(--color-timer); font-weight:800; margin-top: 2px;">⏱ ${minStr}</div>
+                            </div>`; 
+                }); 
+                html += `</div>`; 
+            }
             html += mvpStr;
             html += `</div>`;
 
@@ -1422,18 +1522,18 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
                             html += `<div class="tl-w-col">
                                         <div class="tl-w-cell"><div class="tl-w-box" style="background:${m.teams.A.color};">${scoreA}</div></div>
                                         <div class="tl-w-cell"></div>
-                                     </div>`;
+                                    </div>`;
                         } else if (p.t === 'B') {
                             html += `<div class="tl-w-col">
                                         <div class="tl-w-cell"></div>
                                         <div class="tl-w-cell"><div class="tl-w-box" style="background:${m.teams.B.color};">${scoreB}</div></div>
-                                     </div>`;
+                                    </div>`;
                         }
                     });
                     
                     html += `       </div>
                                 </div>
-                             </div>`;
+                            </div>`;
                 });
             } else { 
                 html += `<div style="text-align:center; padding:20px; color:var(--text-muted); font-weight:700;">Sin datos de línea de tiempo.</div>`; 
@@ -1450,14 +1550,42 @@ const res = await NetworkLayer.createTeamDB(name, color); if(res.success) { docu
             });
             html += `</div>`;
 
-            html += `<div id="rtab-acta" class="report-tab-content"><div style="background:var(--bg-card); border:1px solid var(--border-subtle); padding:20px; border-radius:12px; font-family:monospace; font-size:0.85rem; color:var(--text-main); white-space:pre-wrap; word-wrap:break-word;">`;
-            html += `COMPETICIÓN: ${m.tournamentId || 'Amistoso'}\nFECHA: ${new Date().toLocaleDateString()}\nÁRBITRO: ${m.referee}\nCÓDIGO MATCH: ${m.code}\n\n`;
-            html += `REGLAS APLICADAS:\n- Mejor de ${m.rules?.maxSets||3} Sets\n- Puntos: ${m.rules?.ptsPerSet||25} (Tie: ${m.rules?.ptsTieBreak||15})\n\n`;
-            html += `--- SANCIONES DISCIPLINARIAS ---\n`;
+            html += `<div id="rtab-acta" class="report-tab-content">
+                        <button aria-label="Imprimir Acta" class="btn-primary ui-pulse no-print" style="margin-bottom: 15px; background: var(--text-main); color: var(--bg-deep);" data-action="PRINT_ACTA">
+                            <i class="ph ph-printer"></i> IMPRIMIR / GUARDAR PDF
+                        </button>
+                        <div id="acta-document" style="background:var(--bg-card); border:1px solid var(--border-subtle); padding:20px; border-radius:12px; font-family:monospace; font-size:0.9rem; color:var(--text-main); white-space:pre-wrap; word-wrap:break-word;">
+<div style="text-align:center; font-size:1.5rem; font-weight:bold; margin-bottom:10px;">ACTA OFICIAL DE ENCUENTRO</div>
+COMPETICIÓN: ${m.tournamentId || 'Amistoso'}
+FECHA: ${new Date(m.scheduled_at || Date.now()).toLocaleDateString()}
+ÁRBITRO: ${m.referee}
+DURACIÓN TOTAL: ${totalTimeStr}
+CÓDIGO MATCH: ${m.code}
+
+--- RESULTADO ---
+${m.teams.A.name} [ ${m.sets.A} - ${m.sets.B} ] ${m.teams.B.name}
+
+--- DETALLE POR SET ---
+${m.historySets && m.historySets.length > 0 ? m.historySets.map((s, i) => `SET ${i+1}: ${s.A} - ${s.B} (${s.duration ? Math.floor(s.duration/60000) : '--'} min)`).join('\n') : 'Sin sets completados.'}
+
+REGLAS APLICADAS:
+- Mejor de ${m.rules?.maxSets||3} Sets
+- Puntos por Set: ${m.rules?.ptsPerSet||25} (Tie: ${m.rules?.ptsTieBreak||15})
+
+--- SANCIONES DISCIPLINARIAS ---
+`;
             let foundCards = false;
             if(m.timeline) { Object.keys(m.timeline).forEach(set => { m.timeline[set].forEach(play => { if(play.r === 'p_yellow' || play.r === 'p_red') { html += `SET ${set}: ${play.s}\n`; foundCards = true; } }); }); }
             if(!foundCards) html += `Ninguna.\n`;
-            html += `\n--- FIRMA DEL ÁRBITRO ---\n\n\n___________________________\n${m.referee}</div></div>`;
+            html += `
+--- FIRMA DEL ÁRBITRO ---
+
+
+
+___________________________
+${m.referee}
+                        </div>
+                    </div>`;
 
             document.getElementById('report-content').innerHTML = html;
             document.getElementById('screen-report').classList.add('active');
